@@ -5,20 +5,29 @@
 //  Created by Mohamed Amine AIT BELARBI on 13/02/2025.
 //
 
+// Réponse GeoJSON FeatureCollection
+struct VLilleFeatureCollection: Codable {
+    let features: [VLilleFeature]
+}
+
+struct VLilleFeature: Codable {
+    let properties: VLilleStation
+}
+
 // Modèle de données pour une station VLille
-struct VLilleStation: Codable, Identifiable {
-    var id: String { stationID }
-    
+struct VLilleStation: Codable, Identifiable, Hashable {
+    var id: Int { identifiantStation }
+
     enum CodingKeys: String, CodingKey {
-        case stationID = "@id"
+        case identifiantStation = "identifiant_station"
         case nom, adresse, commune, etat, type
         case nbPlacesDispo = "nb_places_dispo"
         case nbVelosDispo = "nb_velos_dispo"
         case etatConnexion = "etat_connexion"
         case x, y, dateModification = "date_modification"
     }
-    
-    let stationID: String
+
+    let identifiantStation: Int
     let nom: String
     let adresse: String
     let commune: String?
@@ -30,11 +39,4 @@ struct VLilleStation: Codable, Identifiable {
     let x: Double
     let y: Double
     let dateModification: String
-}
-
-// Réponse JSON complète
-struct VLilleModel: Codable {
-    let numberMatched: Int
-    let numberReturned: Int
-    let records: [VLilleStation]
 }

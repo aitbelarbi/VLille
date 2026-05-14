@@ -7,12 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		C422B5F22FB512D800989946 /* LilleGrandPlace.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = LilleGrandPlace.gpx; path = Vlille/LilleGrandPlace.gpx; sourceTree = "<group>"; };
 		C4CEB6CC2D5DFE1100968635 /* Vlille.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vlille.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C4CEB6FF2D5DFE1100968635 /* Exceptions for "Vlille" folder in "Vlille" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C4CEB6CB2D5DFE1100968635 /* Vlille */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C4CEB6CE2D5DFE1100968635 /* Vlille */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C4CEB6FF2D5DFE1100968635 /* Exceptions for "Vlille" folder in "Vlille" target */,
+			);
 			path = Vlille;
 			sourceTree = "<group>";
 		};
@@ -32,6 +46,7 @@
 		C4CEB6C32D5DFE1100968635 = {
 			isa = PBXGroup;
 			children = (
+				C422B5F22FB512D800989946 /* LilleGrandPlace.gpx */,
 				C4CEB6CE2D5DFE1100968635 /* Vlille */,
 				C4CEB6CD2D5DFE1100968635 /* Products */,
 			);
@@ -251,7 +266,8 @@
 				DEVELOPMENT_TEAM = 69N284B548;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Vlille/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -290,7 +306,8 @@
 				DEVELOPMENT_TEAM = 69N284B548;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Vlille/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

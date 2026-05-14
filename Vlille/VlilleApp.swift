@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct VlilleApp: App {
+    @StateObject private var favoritesStore = FavoritesStore()
+    @StateObject private var locationManager = LocationManager()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
+                .environmentObject(favoritesStore)
+                .environmentObject(locationManager)
         }
     }
 }
