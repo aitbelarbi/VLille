@@ -31,7 +31,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     
     func fetchStations() {
         guard let requestUrl = URL(string: url) else {
-            self.errorMessage = "URL invalide"
+            self.errorMessage = String(localized: "URL invalide")
             return
         }
         
@@ -48,21 +48,21 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                 self?.isLoading = false
                 
                 if let error = error {
-                    self?.errorMessage = "Erreur réseau: \(error.localizedDescription)"
+                    self?.errorMessage = String(format: String(localized: "Erreur réseau: %@"), error.localizedDescription)
                     return
                 }
-                
+
                 guard let data = data else {
-                    self?.errorMessage = "Données non disponibles"
+                    self?.errorMessage = String(localized: "Données non disponibles")
                     return
                 }
-                
+
                 do {
                     let decodedResponse = try JSONDecoder().decode(VLilleFeatureCollection.self, from: data)
                     self?.stations = decodedResponse.features.map { $0.properties }
                     self?.lastUpdated = Date()
                 } catch {
-                    self?.errorMessage = "Erreur de décodage: \(error.localizedDescription)"
+                    self?.errorMessage = String(format: String(localized: "Erreur de décodage: %@"), error.localizedDescription)
                 }
             }
         }.resume()

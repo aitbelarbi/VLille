@@ -18,6 +18,8 @@ struct MapView: View {
         case hybride = "Hybride"
         case `3d` = "3D Réaliste"
         
+        var localizedTitle: LocalizedStringKey { LocalizedStringKey(rawValue) }
+
         var id: String { self.rawValue }
         
         var icon: String {
@@ -65,7 +67,7 @@ struct MapView: View {
                         Menu {
                             Picker("Type de carte", selection: $selectedMapType) {
                                 ForEach(MapType.allCases) { type in
-                                    Label(type.rawValue, systemImage: type.icon).tag(type)
+                                    Label(type.localizedTitle, systemImage: type.icon).tag(type)
                                 }
                             }
                         } label: {
@@ -406,7 +408,7 @@ struct StationDetailView: View {
 
 struct StatBadge: View {
     let value: Int
-    let label: String
+    let label: LocalizedStringKey
     let icon: String
     let color: Color
 
