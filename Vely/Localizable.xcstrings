@@ -4,6 +4,9 @@
     "%lld" : {
 
     },
+    "%lld stations" : {
+
+    },
     "3D Réaliste" : {
       "localizations" : {
         "en" : {
@@ -228,33 +231,36 @@
         }
       }
     },
-    "Données non disponibles" : {
+    "Données mises à jour" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data unavailable"
+            "value" : "Data updated"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Datos no disponibles"
+            "value" : "Datos actualizados"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dati non disponibili"
+            "value" : "Dati aggiornati"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dados indisponíveis"
+            "value" : "Dados atualizados"
           }
         }
       }
+    },
+    "Données non disponibles" : {
+
     },
     "Erreur de décodage: %@" : {
       "localizations" : {
@@ -620,6 +626,34 @@
         }
       }
     },
+    "Toutes les stations" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All stations"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las estaciones"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutte le stazioni"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as estações"
+          }
+        }
+      }
+    },
     "Type de carte" : {
       "localizations" : {
         "en" : {
@@ -700,6 +734,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bicicletas"
+          }
+        }
+      }
+    },
+    "Vélos disponibles" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Available bikes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicicletas disponibles"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biciclette disponibili"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicicletas disponíveis"
           }
         }
       }

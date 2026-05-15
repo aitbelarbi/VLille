@@ -34,18 +34,46 @@ struct MapView: View {
     
     // 2. AJOUT : L'état pour mémoriser le choix de l'utilisateur
     @State private var selectedMapType: MapType = .standard
+    @State private var showOnlyAvailable = false
+    @State private var showRefreshToast = false
+
+    var displayedStations: [VLilleStation] {
+        showOnlyAvailable ? viewModel.stations.filter { $0.nbVelosDispo > 0 } : viewModel.stations
+    }
+
+    var displayedClusters: [StationCluster] {
+        let span = visibleRegion?.span ?? MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        guard span.latitudeDelta > 0.015 else {
+            return displayedStations.map {
+                StationCluster(id: "s_\($0.id)", coordinate: CLLocationCoordinate2D(latitude: $0.y, longitude: $0.x), stations: [$0])
+            }
+        }
+        let cellSize = span.latitudeDelta / 6
+        var groups: [String: [VLilleStation]] = [:]
+        for station in displayedStations {
+            let row = Int(floor(station.y / cellSize))
+            let col = Int(floor(station.x / cellSize))
+            groups["\(row)_\(col)", default: []].append(station)
+        }
+        return groups.map { key, group in
+            let avgLat = group.reduce(0.0) { $0 + $1.y } / Double(group.count)
+            let avgLon = group.reduce(0.0) { $0 + $1.x } / Double(group.count)
+            return StationCluster(id: key, coordinate: CLLocationCoordinate2D(latitude: avgLat, longitude: avgLon), stations: group)
+        }
+    }
 
     var body: some View {
         NavigationStack {
             ZStack {
-                Map(position: $cameraPosition, selection: $selectedStation) {
+                Map(position: $cameraPosition) {
                     UserAnnotation()
 
-                    ForEach(viewModel.stations) { station in
-                        Annotation(station.nom, coordinate: CLLocationCoordinate2D(latitude: station.y, longitude: station.x)) {
-                            StationMarkerView(station: station, isFavorite: favoritesStore.isFavorite(station))
+                    ForEach(displayedClusters) { cluster in
+                        Annotation("", coordinate: cluster.coordinate) {
+                            ClusterMarkerView(cluster: cluster, favoritesStore: favoritesStore) {
+                                handleClusterTap(cluster)
+                            }
                         }
-                        .tag(station)
                     }
 
                     if let route = currentRoute {
@@ -59,11 +87,67 @@ struct MapView: View {
                     visibleRegion = context.region
                 }
 
+                // Top bar : filtre
+                VStack {
+                    HStack {
+                        Button {
+                            withAnimation(.spring(response: 0.3)) {
+                                showOnlyAvailable.toggle()
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: showOnlyAvailable ? "bicycle.circle.fill" : "bicycle.circle")
+                                    .font(.system(size: 16, weight: .semibold))
+                                Text(showOnlyAvailable ? LocalizedStringKey("Vélos disponibles") : LocalizedStringKey("Toutes les stations"))
+                                    .font(.subheadline.weight(.semibold))
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .background(
+                                showOnlyAvailable
+                                    ? AnyShapeStyle(Color.indigo)
+                                    : AnyShapeStyle(.regularMaterial),
+                                in: Capsule()
+                            )
+                            .foregroundStyle(showOnlyAvailable ? .white : .primary)
+                            .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 3)
+                        }
+                        .scaleEffect(showOnlyAvailable ? 1.03 : 1.0)
+
+                        Spacer()
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 8)
+
+                    // Toast refresh
+                    if showRefreshToast {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.clockwise.circle.fill")
+                                .foregroundStyle(.green)
+                            Text("Données mises à jour", comment: "")
+                                .font(.footnote.weight(.medium))
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(.regularMaterial, in: Capsule())
+                        .shadow(color: .black.opacity(0.1), radius: 4)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    }
+
+                    Spacer()
+                }
+                .onChange(of: viewModel.lastUpdated) {
+                    guard viewModel.lastUpdated != nil else { return }
+                    withAnimation(.easeOut) { showRefreshToast = true }
+                    Task {
+                        try? await Task.sleep(for: .seconds(2))
+                        withAnimation(.easeIn) { showRefreshToast = false }
+                    }
+                }
+
                 VStack {
                     Spacer()
                     VStack(spacing: 8) {
-                        
-                        // 4. AJOUT : Le bouton de sélection du type de carte
                         Menu {
                             Picker("Type de carte", selection: $selectedMapType) {
                                 ForEach(MapType.allCases) { type in
@@ -161,6 +245,26 @@ struct MapView: View {
         }
     }
 
+    private func handleClusterTap(_ cluster: StationCluster) {
+        if cluster.stations.count == 1 {
+            selectedStation = cluster.stations[0]
+        } else {
+            let lats = cluster.stations.map { $0.y }
+            let lons = cluster.stations.map { $0.x }
+            guard let minLat = lats.min(), let maxLat = lats.max(),
+                  let minLon = lons.min(), let maxLon = lons.max() else { return }
+            withAnimation {
+                cameraPosition = .region(MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2),
+                    span: MKCoordinateSpan(
+                        latitudeDelta: max((maxLat - minLat) * 2.5, 0.005),
+                        longitudeDelta: max((maxLon - minLon) * 2.5, 0.005)
+                    )
+                ))
+            }
+        }
+    }
+
     private func calculateRoute(to station: VLilleStation) {
         guard let userLocation = locationManager.userLocation else { return }
         isCalculatingRoute = true
@@ -230,6 +334,56 @@ struct MapView: View {
     }
 }
 
+
+// MARK: - Clustering
+
+struct StationCluster: Identifiable {
+    let id: String
+    let coordinate: CLLocationCoordinate2D
+    let stations: [VLilleStation]
+
+    var isCluster: Bool { stations.count > 1 }
+    var totalBikes: Int { stations.reduce(0) { $0 + $1.nbVelosDispo } }
+
+    var markerColor: Color {
+        guard stations.allSatisfy({ $0.etat == "EN SERVICE" }) == false
+                ? stations.contains(where: { $0.etat == "EN SERVICE" })
+                : true
+        else { return .red }
+        return totalBikes > 0 ? .green : .orange
+    }
+}
+
+struct ClusterMarkerView: View {
+    let cluster: StationCluster
+    let favoritesStore: FavoritesStore
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            if cluster.isCluster {
+                ZStack {
+                    Circle()
+                        .fill(cluster.markerColor)
+                        .frame(width: 44, height: 44)
+                        .shadow(radius: 3)
+                    VStack(spacing: 1) {
+                        Text("\(cluster.totalBikes)")
+                            .font(.caption.bold())
+                            .foregroundStyle(.white)
+                        Text("\(cluster.stations.count) stations")
+                            .font(.system(size: 7))
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                }
+            } else {
+                let station = cluster.stations[0]
+                StationMarkerView(station: station, isFavorite: favoritesStore.isFavorite(station))
+            }
+        }
+        .buttonStyle(.plain)
+    }
+}
 
 // MARK: - Marqueur sur la carte
 
