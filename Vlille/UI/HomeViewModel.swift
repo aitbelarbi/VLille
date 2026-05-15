@@ -12,10 +12,20 @@ class HomeViewModel: NSObject, ObservableObject, URLSessionDelegate, URLSessionT
     @Published var stations: [VLilleStation] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
-    
+    @Published var lastUpdated: Date?
+
     private var session: URLSession?
-    
+
     let url = "https://data.lillemetropole.fr/geoserver/ogc/features/v1/collections/dsp_ilevia:vlille_temps_reel/items"
+
+    func startAutoRefresh() async {
+        fetchStations()
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(30))
+            guard !Task.isCancelled else { break }
+            fetchStations()
+        }
+    }
     
     func fetchStations() {
         guard let requestUrl = URL(string: url) else {
@@ -48,6 +58,7 @@ class HomeViewModel: NSObject, ObservableObject, URLSessionDelegate, URLSessionT
                 do {
                     let decodedResponse = try JSONDecoder().decode(VLilleFeatureCollection.self, from: data)
                     self?.stations = decodedResponse.features.map { $0.properties }
+                    self?.lastUpdated = Date()
                 } catch {
                     self?.errorMessage = "Erreur de décodage: \(error.localizedDescription)"
                 }

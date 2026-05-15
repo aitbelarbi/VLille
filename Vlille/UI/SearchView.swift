@@ -16,7 +16,6 @@ struct SearchView: View {
     @State private var localSearchResults: [MKMapItem] = []
     @State private var isSearchingPlaces = false
 
-    // Stations filtrées par nom / adresse / commune
     var filteredStations: [VLilleStation] {
         guard !query.isEmpty else { return [] }
         let q = query.lowercased()
@@ -30,7 +29,6 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             List {
-                // Résultats stations VLille
                 if !filteredStations.isEmpty {
                     Section("Stations VLille") {
                         ForEach(filteredStations) { station in
@@ -97,7 +95,9 @@ struct SearchView: View {
         Task {
             let results = try? await MKLocalSearch(request: request).start()
             await MainActor.run {
-                localSearchResults = results?.mapItems ?? []
+                localSearchResults = results?.mapItems.filter { item in
+                    item.placemark.countryCode == "FR"
+                } ?? []
                 isSearchingPlaces = false
             }
         }

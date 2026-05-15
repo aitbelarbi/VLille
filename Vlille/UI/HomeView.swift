@@ -1,40 +1,6 @@
 import SwiftUI
 import MapKit
 
-// MARK: - Tab principale
-
-struct MainTabView: View {
-    @StateObject private var viewModel = HomeViewModel()
-    @State private var selectedTab = 0
-    @State private var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 50.6292, longitude: 3.0573),
-            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        )
-    )
-
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            Tab("Carte", systemImage: "map", value: 0) {
-                MapView(viewModel: viewModel, cameraPosition: $cameraPosition)
-            }
-            if selectedTab != 2 {
-                Tab("Favoris", systemImage: "star", value: 1) {
-                    FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
-                }
-            }
-
-            Tab("Recherche", systemImage: "magnifyingglass", value: 2, role: .search) {                SearchView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
-            }
-        }
-        .onAppear {
-            viewModel.fetchStations()
-        }
-    }
-}
-
-// MARK: - Vue Carte
-
 struct MapView: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var favoritesStore: FavoritesStore
@@ -211,99 +177,6 @@ struct MapView: View {
     }
 }
 
-// MARK: - Vue Favoris
-
-struct FavoritesView: View {
-    @ObservedObject var viewModel: HomeViewModel
-    @EnvironmentObject var favoritesStore: FavoritesStore
-    @Binding var selectedTab: Int
-    @Binding var cameraPosition: MapCameraPosition
-    @State private var selectedStation: VLilleStation?
-
-    var favoriteStations: [VLilleStation] {
-        viewModel.stations.filter { favoritesStore.isFavorite($0) }
-    }
-
-    var body: some View {
-        NavigationStack {
-            Group {
-                if favoriteStations.isEmpty {
-                    ContentUnavailableView(
-                        "Aucun favori",
-                        systemImage: "star.slash",
-                        description: Text("Ajoutez des stations en favoris depuis la carte.")
-                    )
-                } else {
-                    List(favoriteStations) { station in
-                        Button {
-                            goToStation(station)
-                        } label: {
-                            StationRowView(station: station)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-            .navigationTitle("Favoris")
-            .sheet(item: $selectedStation) { station in
-                StationDetailView(station: station)
-                    .presentationDetents([.height(340)])
-                    .presentationDragIndicator(.visible)
-            }
-        }
-    }
-
-    private func goToStation(_ station: VLilleStation) {
-        cameraPosition = .region(
-            MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: station.y, longitude: station.x),
-                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
-            )
-        )
-        selectedTab = 0
-    }
-}
-
-// MARK: - Ligne station (liste favoris)
-
-struct StationRowView: View {
-    let station: VLilleStation
-
-    var statusColor: Color {
-        guard station.etat == "EN SERVICE" else { return .red }
-        return station.nbVelosDispo > 0 ? .green : .orange
-    }
-
-    var body: some View {
-        HStack(spacing: 12) {
-            ZStack {
-                Circle()
-                    .fill(statusColor)
-                    .frame(width: 40, height: 40)
-                Text("\(station.nbVelosDispo)")
-                    .font(.callout.bold())
-                    .foregroundStyle(.white)
-            }
-            VStack(alignment: .leading, spacing: 2) {
-                Text(station.nom)
-                    .font(.headline)
-                Text(station.adresse)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 2) {
-                Label("\(station.nbVelosDispo)", systemImage: "bicycle")
-                    .font(.caption.bold())
-                    .foregroundStyle(.green)
-                Label("\(station.nbPlacesDispo)", systemImage: "parkingsign")
-                    .font(.caption.bold())
-                    .foregroundStyle(.blue)
-            }
-        }
-        .padding(.vertical, 4)
-    }
-}
 
 // MARK: - Marqueur sur la carte
 
@@ -329,7 +202,7 @@ struct StationMarkerView: View {
             }
             if isFavorite {
                 Image(systemName: "star.fill")
-                    .font(.system(size: 10))
+                    .font(.system(size: 12))
                     .foregroundStyle(.yellow)
                     .offset(x: 4, y: -4)
             }
