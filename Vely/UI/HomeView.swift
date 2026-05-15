@@ -2,9 +2,9 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    @ObservedObject var viewModel: HomeViewModel
-    @EnvironmentObject var favoritesStore: FavoritesStore
-    @EnvironmentObject var locationManager: LocationManager
+    var viewModel: HomeViewModel
+    @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(LocationManager.self) var locationManager
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: VLilleStation?
     @State private var currentRoute: MKRoute?
@@ -267,8 +267,8 @@ struct StationDetailView: View {
     let station: VLilleStation
     let isCalculatingRoute: Bool
     let onRouteRequest: (() -> Void)?
-    @EnvironmentObject var favoritesStore: FavoritesStore
-    @EnvironmentObject var locationManager: LocationManager
+    @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(LocationManager.self) var locationManager
     @Environment(\.openURL) private var openURL
     @State private var showMapAppPicker = false
 
@@ -430,6 +430,6 @@ struct StatBadge: View {
 
 #Preview {
     MainTabView()
-        .environmentObject(FavoritesStore())
-        .environmentObject(LocationManager())
+        .environment(FavoritesStore())
+        .environment(LocationManager())
 }

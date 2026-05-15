@@ -9,14 +9,14 @@ import SwiftUI
 
 @main
 struct VelyApp: App {
-    @StateObject private var favoritesStore = FavoritesStore()
-    @StateObject private var locationManager = LocationManager()
+    @State private var favoritesStore = FavoritesStore()
+    @State private var locationManager = LocationManager()
 
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .environmentObject(favoritesStore)
-                .environmentObject(locationManager)
+                .environment(favoritesStore)
+                .environment(locationManager)
         }
     }
 }

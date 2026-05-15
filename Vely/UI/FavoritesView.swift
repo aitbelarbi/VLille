@@ -9,8 +9,8 @@ import SwiftUI
 import MapKit
 
 struct FavoritesView: View {
-    @ObservedObject var viewModel: HomeViewModel
-    @EnvironmentObject var favoritesStore: FavoritesStore
+    var viewModel: HomeViewModel
+    @Environment(FavoritesStore.self) var favoritesStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: VLilleStation?

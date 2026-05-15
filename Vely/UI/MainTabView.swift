@@ -8,9 +8,8 @@
 import SwiftUI
 import MapKit
 
-
 struct MainTabView: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @State private var viewModel = HomeViewModel()
     @State private var selectedTab = 0
     @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(

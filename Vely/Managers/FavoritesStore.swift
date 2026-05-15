@@ -4,11 +4,12 @@
 //
 
 import Foundation
+import Observation
 
-class FavoritesStore: ObservableObject {
-    @Published private(set) var favoriteIDs: Set<Int> = []
-
-    private let key = "favorite_station_ids"
+@Observable
+class FavoritesStore {
+    private(set) var favoriteIDs: Set<Int> = []
+    @ObservationIgnored private let key = "favorite_station_ids"
 
     init() {
         let saved = UserDefaults.standard.array(forKey: key) as? [Int] ?? []

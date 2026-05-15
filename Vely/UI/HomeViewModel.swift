@@ -6,16 +6,18 @@
 //
 
 import Foundation
+import Observation
 
-// ViewModel qui récupère les données
-class HomeViewModel: NSObject, ObservableObject, URLSessionDelegate, URLSessionTaskDelegate {
-    @Published var stations: [VLilleStation] = []
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    @Published var lastUpdated: Date?
+@Observable
+class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
+    var stations: [VLilleStation] = []
+    var isLoading = false
+    var errorMessage: String?
+    var lastUpdated: Date?
 
+    @ObservationIgnored
     private var session: URLSession?
-
+    @ObservationIgnored 
     let url = "https://data.lillemetropole.fr/geoserver/ogc/features/v1/collections/dsp_ilevia:vlille_temps_reel/items"
 
     func startAutoRefresh() async {

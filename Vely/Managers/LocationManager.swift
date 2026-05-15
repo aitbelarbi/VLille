@@ -4,12 +4,13 @@
 //
 
 import CoreLocation
+import Observation
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var userLocation: CLLocation?
-    @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
-
-    private let manager = CLLocationManager()
+@Observable
+class LocationManager: NSObject, CLLocationManagerDelegate {
+    var userLocation: CLLocation?
+    var authorizationStatus: CLAuthorizationStatus = .notDetermined
+    @ObservationIgnored private let manager = CLLocationManager()
 
     override init() {
         super.init()

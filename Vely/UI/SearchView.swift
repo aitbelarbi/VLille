@@ -7,10 +7,10 @@ import SwiftUI
 import MapKit
 
 struct SearchView: View {
-    @ObservedObject var viewModel: HomeViewModel
+    var viewModel: HomeViewModel
+    @Environment(FavoritesStore.self) var favoritesStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
-    @EnvironmentObject var favoritesStore: FavoritesStore
 
     @State private var query = ""
     @State private var localSearchResults: [MKMapItem] = []
