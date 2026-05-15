@@ -30,7 +30,7 @@ struct SearchView: View {
         NavigationStack {
             List {
                 if !filteredStations.isEmpty {
-                    Section("Stations VLille") {
+                    Section("Stations vélo") {
                         ForEach(filteredStations) { station in
                             Button { goToStation(station) } label: {
                                 StationRowView(station: station)
@@ -66,7 +66,7 @@ struct SearchView: View {
                     ContentUnavailableView(
                         "Rechercher",
                         systemImage: "magnifyingglass",
-                        description: Text("Cherchez une station VLille, une rue ou un lieu.")
+                        description: Text("Cherchez une station vélo, une rue ou un lieu.")
                     )
                 } else if filteredStations.isEmpty && localSearchResults.isEmpty && !isSearchingPlaces {
                     ContentUnavailableView.search(text: query)

@@ -26,7 +26,7 @@
     </dict>
 
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Votre position est utilisée pour trouver les stations VLille les plus proches et calculer un itinéraire.</string>
+    <string>Votre position est utilisée pour trouver les stations vélo les plus proches et calculer un itinéraire.</string>
 
     <key>LSApplicationQueriesSchemes</key>
     <array>

@@ -11,12 +11,32 @@ struct MapView: View {
     @State private var isCalculatingRoute = false
     @State private var hascenteredOnUser = false
     @State private var visibleRegion: MKCoordinateRegion?
+    
+    enum MapType: String, CaseIterable, Identifiable {
+        case standard = "Standard"
+        case satellite = "Satellite"
+        case hybride = "Hybride"
+        case `3d` = "3D Réaliste"
+        
+        var id: String { self.rawValue }
+        
+        var icon: String {
+            switch self {
+            case .standard: return "map"
+            case .satellite: return "globe.europe.africa"
+            case .hybride: return "square.3.layers.3d.bottom.filled"
+            case .`3d`: return "building.2"
+            }
+        }
+    }
+    
+    // 2. AJOUT : L'état pour mémoriser le choix de l'utilisateur
+    @State private var selectedMapType: MapType = .standard
 
     var body: some View {
         NavigationStack {
             ZStack {
                 Map(position: $cameraPosition, selection: $selectedStation) {
-                    // Position utilisateur
                     UserAnnotation()
 
                     ForEach(viewModel.stations) { station in
@@ -26,22 +46,39 @@ struct MapView: View {
                         .tag(station)
                     }
 
-                    // Tracé de l'itinéraire
                     if let route = currentRoute {
                         MapPolyline(route.polyline)
                             .stroke(.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
                     }
                 }
                 .ignoresSafeArea(edges: .bottom)
+                .mapStyle(currentMapStyle)
                 .onMapCameraChange { context in
                     visibleRegion = context.region
                 }
 
-                // Boutons zoom + centrage
                 VStack {
                     Spacer()
                     VStack(spacing: 8) {
-                        // Centrer sur l'utilisateur
+                        
+                        // 4. AJOUT : Le bouton de sélection du type de carte
+                        Menu {
+                            Picker("Type de carte", selection: $selectedMapType) {
+                                ForEach(MapType.allCases) { type in
+                                    Label(type.rawValue, systemImage: type.icon).tag(type)
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "square.3.layers.3d")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(.primary)
+                                .frame(width: 40, height: 40)
+                        }
+                        .background(.regularMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+                        
+                        // Tes boutons existants (Centrage)
                         Button { centerOnUser() } label: {
                             Image(systemName: "location.fill")
                                 .font(.system(size: 16, weight: .semibold))
@@ -80,6 +117,7 @@ struct MapView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
 
+                // ... Reste de tes ProgressView et messages d'erreur inchangés ...
                 if viewModel.isLoading {
                     ProgressView("Chargement...")
                         .padding()
@@ -97,7 +135,7 @@ struct MapView: View {
                     }
                 }
             }
-            .navigationTitle("Stations VLille")
+            .navigationTitle("Stations vélo")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedStation) { station in
                 StationDetailView(station: station, isCalculatingRoute: isCalculatingRoute) {
@@ -174,6 +212,19 @@ struct MapView: View {
                 longitudeDelta: max(0.001, min(region.span.longitudeDelta * factor, 180))
             )
         ))
+    }
+    
+    private var currentMapStyle: MapStyle {
+        switch selectedMapType {
+        case .standard:
+            return .standard(elevation: .flat, showsTraffic: false)
+        case .satellite:
+            return .imagery(elevation: .flat)
+        case .hybride:
+            return .hybrid(elevation: .flat, showsTraffic: false)
+        case .`3d`:
+            return .standard(elevation: .realistic, showsTraffic: false)
+        }
     }
 }
 
