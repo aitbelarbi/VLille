@@ -151,7 +151,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Datos no disponibles"
+            "value" : "Datos temporalmente no disponibles. Por favor, inténtelo de nuevo más tarde."
           }
         },
         "fr" : {
@@ -163,13 +163,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dati non disponibili"
+            "value" : "Dati temporaneamente non disponibili. Riprova più tardi."
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dados indisponíveis"
+            "value" : "Dados temporariamente indisponíveis. Por favor, tente novamente mais tarde."
           }
         }
       }
@@ -185,7 +185,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error de decodificación: %@"
+            "value" : "Error al procesar los datos. Por favor, inténtelo de nuevo."
           }
         },
         "fr" : {
@@ -197,13 +197,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Errore di decodifica: %@"
+            "value" : "Errore nell'elaborazione dei dati. Riprova."
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro de decodificação: %@"
+            "value" : "Erro ao processar os dados. Por favor, tente novamente."
           }
         }
       }
@@ -219,7 +219,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "URL inválida"
+            "value" : "Enlace inválido. Contacte con el soporte si el problema persiste."
           }
         },
         "fr" : {
@@ -231,13 +231,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "URL non valido"
+            "value" : "Link non valido. Contatta il supporto se il problema persiste."
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "URL inválida"
+            "value" : "Link inválido. Contacte o suporte se o problema persistir."
           }
         }
       }
@@ -253,7 +253,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error de red: %@"
+            "value" : "No se puede conectar. Compruebe su conexión a Internet y vuelva a intentarlo."
           }
         },
         "fr" : {
@@ -265,13 +265,13 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Errore di rete: %@"
+            "value" : "Impossibile connettersi. Verifica la tua connessione Internet e riprova."
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro de rede: %@"
+            "value" : "Não foi possível conectar. Verifique sua conexão com a Internet e tente novamente."
           }
         }
       }

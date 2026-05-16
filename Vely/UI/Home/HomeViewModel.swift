@@ -47,7 +47,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 
-                if let error = error {
+                if error != nil {
                     self?.errorMessage = String(localized: "error_network")
                     return
                 }
@@ -66,6 +66,10 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                 }
             }
         }.resume()
+    }
+
+    func dismissError() {
+        self.errorMessage = nil
     }
     
     // MARK: - URLSessionDelegate (session-level)
