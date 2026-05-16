@@ -20,16 +20,16 @@ struct MainTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("Carte", systemImage: "map", value: 0) {
+            Tab("tab_map", systemImage: "map", value: 0) {
                 MapView(viewModel: viewModel, cameraPosition: $cameraPosition)
             }
             if selectedTab != 2 {
-                Tab("Favoris", systemImage: "star", value: 1) {
+                Tab("tab_favorites", systemImage: "star", value: 1) {
                     FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
                 }
             }
 
-            Tab("Recherche", systemImage: "magnifyingglass", value: 2, role: .search) {
+            Tab("tab_search", systemImage: "magnifyingglass", value: 2, role: .search) {
                 SearchView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
             }
         }

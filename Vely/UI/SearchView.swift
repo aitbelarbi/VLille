@@ -30,7 +30,7 @@ struct SearchView: View {
         NavigationStack {
             List {
                 if !filteredStations.isEmpty {
-                    Section("Stations vélo") {
+                    Section("home_title") {
                         ForEach(filteredStations) { station in
                             Button { goToStation(station) } label: {
                                 StationRowView(station: station)
@@ -42,7 +42,7 @@ struct SearchView: View {
 
                 // Résultats lieux / adresses
                 if !localSearchResults.isEmpty {
-                    Section("Lieux et adresses") {
+                    Section("search_places_title") {
                         ForEach(localSearchResults, id: \.self) { item in
                             Button { goToPlace(item) } label: {
                                 VStack(alignment: .leading, spacing: 2) {
@@ -64,16 +64,16 @@ struct SearchView: View {
                 // État vide
                 if query.isEmpty {
                     ContentUnavailableView(
-                        "Rechercher",
+                        "search_empty_title",
                         systemImage: "magnifyingglass",
-                        description: Text("Cherchez une station vélo, une rue ou un lieu.")
+                        description: Text("search_empty_hint")
                     )
                 } else if filteredStations.isEmpty && localSearchResults.isEmpty && !isSearchingPlaces {
                     ContentUnavailableView.search(text: query)
                 }
             }
-            .navigationTitle("Recherche")
-            .searchable(text: $query, prompt: "Station, rue, lieu…")
+            .navigationTitle("tab_search")
+            .searchable(text: $query, prompt: LocalizedStringKey("search_placeholder"))
             .onChange(of: query) { _, newValue in
                 searchPlaces(newValue)
             }

@@ -24,9 +24,9 @@ struct FavoritesView: View {
             Group {
                 if favoriteStations.isEmpty {
                     ContentUnavailableView(
-                        "Aucun favori",
+                        "favorites_empty_title",
                         systemImage: "star.slash",
-                        description: Text("Ajoutez des stations en favoris depuis la carte.")
+                        description: Text("favorites_empty_hint")
                     )
                 } else {
                     List(favoriteStations) { station in
@@ -39,7 +39,7 @@ struct FavoritesView: View {
                     }
                 }
             }
-            .navigationTitle("Favoris")
+            .navigationTitle("tab_favorites")
             .sheet(item: $selectedStation) { station in
                 StationDetailView(station: station)
                     .presentationDetents([.height(340)])

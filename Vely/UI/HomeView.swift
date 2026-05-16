@@ -13,10 +13,10 @@ struct MapView: View {
     @State private var visibleRegion: MKCoordinateRegion?
     
     enum MapType: String, CaseIterable, Identifiable {
-        case standard = "Standard"
-        case satellite = "Satellite"
-        case hybride = "Hybride"
-        case `3d` = "3D Réaliste"
+        case standard = "map_type_standard"
+        case satellite = "map_type_satellite"
+        case hybride = "map_type_hybrid"
+        case `3d` = "map_type_3d"
         
         var localizedTitle: LocalizedStringKey { LocalizedStringKey(rawValue) }
 
@@ -98,7 +98,7 @@ struct MapView: View {
                             HStack(spacing: 6) {
                                 Image(systemName: showOnlyAvailable ? "bicycle.circle.fill" : "bicycle.circle")
                                     .font(.system(size: 16, weight: .semibold))
-                                Text(showOnlyAvailable ? LocalizedStringKey("Vélos disponibles") : LocalizedStringKey("Toutes les stations"))
+                                Text(showOnlyAvailable ? LocalizedStringKey("filter_available_bikes") : LocalizedStringKey("filter_all_stations"))
                                     .font(.subheadline.weight(.semibold))
                             }
                             .padding(.horizontal, 16)
@@ -124,7 +124,7 @@ struct MapView: View {
                         HStack(spacing: 6) {
                             Image(systemName: "arrow.clockwise.circle.fill")
                                 .foregroundStyle(.green)
-                            Text("Données mises à jour", comment: "")
+                            Text("toast_data_updated")
                                 .font(.footnote.weight(.medium))
                         }
                         .padding(.horizontal, 14)
@@ -149,7 +149,7 @@ struct MapView: View {
                     Spacer()
                     VStack(spacing: 8) {
                         Menu {
-                            Picker("Type de carte", selection: $selectedMapType) {
+                            Picker("map_type_picker_title", selection: $selectedMapType) {
                                 ForEach(MapType.allCases) { type in
                                     Label(type.localizedTitle, systemImage: type.icon).tag(type)
                                 }
@@ -205,7 +205,7 @@ struct MapView: View {
 
                 // ... Reste de tes ProgressView et messages d'erreur inchangés ...
                 if viewModel.isLoading {
-                    ProgressView("Chargement...")
+                    ProgressView("common_loading")
                         .padding()
                         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
                 }
@@ -221,7 +221,7 @@ struct MapView: View {
                     }
                 }
             }
-            .navigationTitle("Stations vélo")
+            .navigationTitle("home_title")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedStation) { station in
                 StationDetailView(station: station, isCalculatingRoute: isCalculatingRoute) {
@@ -371,7 +371,7 @@ struct ClusterMarkerView: View {
                         Text("\(cluster.totalBikes)")
                             .font(.caption.bold())
                             .foregroundStyle(.white)
-                        Text("\(cluster.stations.count) stations")
+                        Text(String(format: String(localized: "cluster_stations_count"), Int64(cluster.stations.count)))
                             .font(.system(size: 7))
                             .foregroundStyle(.white.opacity(0.85))
                     }
@@ -478,9 +478,9 @@ struct StationDetailView: View {
             }
 
             HStack(spacing: 0) {
-                StatBadge(value: station.nbVelosDispo, label: "Vélos", icon: "bicycle", color: .green)
+                StatBadge(value: station.nbVelosDispo, label: "station_bikes", icon: "bicycle", color: .green)
                 Divider().frame(height: 50)
-                StatBadge(value: station.nbPlacesDispo, label: "Places", icon: "parkingsign", color: .blue)
+                StatBadge(value: station.nbPlacesDispo, label: "station_spots", icon: "parkingsign", color: .blue)
             }
             .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
 
@@ -505,7 +505,7 @@ struct StationDetailView: View {
                             } else {
                                 Image(systemName: "figure.walk")
                             }
-                            Text("À pied")
+                            Text("routing_walking")
                                 .fontWeight(.semibold)
                         }
                         .frame(maxWidth: .infinity)
@@ -519,7 +519,7 @@ struct StationDetailView: View {
                     Button { showMapAppPicker = true } label: {
                         HStack {
                             Image(systemName: "bicycle")
-                            Text("À vélo")
+                            Text("routing_cycling")
                                 .fontWeight(.semibold)
                         }
                         .frame(maxWidth: .infinity)
@@ -528,7 +528,7 @@ struct StationDetailView: View {
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
-                    .confirmationDialog("Ouvrir avec…", isPresented: $showMapAppPicker, titleVisibility: .visible) {
+                    .confirmationDialog("action_open_with", isPresented: $showMapAppPicker, titleVisibility: .visible) {
                         ForEach(availableMapApps, id: \.name) { app in
                             Button(app.name) { app.action() }
                         }
