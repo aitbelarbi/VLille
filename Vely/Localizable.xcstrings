@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "fr",
   "strings" : {
+    "%lld" : {
+
+    },
     "action_open_with" : {
       "localizations" : {
         "en" : {
@@ -69,6 +72,40 @@
         }
       }
     },
+    "common_cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
     "common_loading" : {
       "localizations" : {
         "en" : {
@@ -108,7 +145,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Data unavailable"
+            "value" : "Data temporarily unavailable. Please try again later."
           }
         },
         "es" : {
@@ -120,7 +157,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Données non disponibles"
+            "value" : "Données momentanément indisponibles. Réessayez plus tard."
           }
         },
         "it" : {
@@ -142,7 +179,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Decoding error: %@"
+            "value" : "Error processing data. Please try again."
           }
         },
         "es" : {
@@ -154,7 +191,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erreur de décodage : %@"
+            "value" : "Erreur lors du traitement des données. Réessayez."
           }
         },
         "it" : {
@@ -176,7 +213,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invalid URL"
+            "value" : "Invalid link. Please contact support if this persists."
           }
         },
         "es" : {
@@ -188,7 +225,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "URL invalide"
+            "value" : "Lien invalide. Contactez le support si le problème persiste."
           }
         },
         "it" : {
@@ -210,7 +247,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Network error: %@"
+            "value" : "Unable to connect. Check your internet connection and try again."
           }
         },
         "es" : {
@@ -222,7 +259,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erreur réseau : %@"
+            "value" : "Impossible de se connecter. Vérifiez votre connexion Internet et réessayez."
           }
         },
         "it" : {
@@ -405,6 +442,142 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estações de bicicleta"
+          }
+        }
+      }
+    },
+    "location_denied_alert_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To get directions to a station, enable location access in your app settings."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para obtener indicaciones a una estación, activa el acceso a la ubicación en los ajustes de la app."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour calculer un itinéraire vers une station, activez la géolocalisation dans les réglages de l'app."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per ottenere indicazioni verso una stazione, attiva la geolocalizzazione nelle impostazioni dell'app."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para obter direções para uma estação, ative a geolocalização nas configurações do app."
+          }
+        }
+      }
+    },
+    "location_denied_alert_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location Disabled"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación desactivada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Géolocalisation désactivée"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geolocalizzazione disattivata"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localização desativada"
+          }
+        }
+      }
+    },
+    "location_denied_cta" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Directions unavailable"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinerario no disponible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinéraire indisponible"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinerario non disponibile"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinerário indisponível"
+          }
+        }
+      }
+    },
+    "location_denied_open_settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ajustes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir les réglages"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri impostazioni"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir configurações"
           }
         }
       }

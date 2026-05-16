@@ -48,7 +48,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                 self?.isLoading = false
                 
                 if let error = error {
-                    self?.errorMessage = String(format: String(localized: "error_network"), error.localizedDescription)
+                    self?.errorMessage = String(localized: "error_network")
                     return
                 }
 
@@ -62,7 +62,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                     self?.stations = decodedResponse.features.map { $0.properties }
                     self?.lastUpdated = Date()
                 } catch {
-                    self?.errorMessage = String(format: String(localized: "error_decoding"), error.localizedDescription)
+                    self?.errorMessage = String(localized: "error_decoding")
                 }
             }
         }.resume()
