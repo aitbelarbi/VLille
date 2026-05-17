@@ -15,6 +15,7 @@ struct StationCluster: Identifiable {
 
     var isCluster: Bool { stations.count > 1 }
     var totalBikes: Int { stations.reduce(0) { $0 + $1.bikesAvailable } }
+    var totalDocks: Int { stations.reduce(0) { $0 + $1.docksAvailable } }
 
     var markerColor: Color {
         let hasOperational = stations.contains { $0.isOperational }
