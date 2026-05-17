@@ -9,7 +9,7 @@ import MapKit
 import SwiftUI
 
 struct StationDetailView: View {
-    let station: VLilleStation
+    let station: BikeStation
     let isCalculatingRoute: Bool
     let onRouteRequest: (() -> Void)?
     @Environment(FavoritesStore.self) var favoritesStore
@@ -18,15 +18,15 @@ struct StationDetailView: View {
     @State private var showMapAppPicker = false
     @State private var showLocationDeniedAlert = false
 
-    init(station: VLilleStation, isCalculatingRoute: Bool = false, onRouteRequest: (() -> Void)? = nil) {
+    init(station: BikeStation, isCalculatingRoute: Bool = false, onRouteRequest: (() -> Void)? = nil) {
         self.station = station
         self.isCalculatingRoute = isCalculatingRoute
         self.onRouteRequest = onRouteRequest
     }
 
     var statusColor: Color {
-        guard station.etat == "EN SERVICE" else { return .red }
-        return station.etatConnexion == "CONNECTÉ" ? .green : .orange
+        guard station.isOperational else { return .red }
+        return station.bikesAvailable > 0 ? .green : .orange
     }
 
     var availableMapApps: [(name: String, action: () -> Void)] {
@@ -47,12 +47,12 @@ struct StationDetailView: View {
         VStack(alignment: .leading, spacing: 20) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(station.nom)
+                    Text(station.name)
                         .font(.title2.bold())
-                    Text(station.adresse)
+                    Text(station.address)
                         .foregroundStyle(.secondary)
-                    if let commune = station.commune {
-                        Text(commune)
+                    if let district = station.district {
+                        Text(district)
                             .foregroundStyle(.secondary)
                             .font(.footnote)
                     }
@@ -68,9 +68,9 @@ struct StationDetailView: View {
             }
 
             HStack(spacing: 0) {
-                StatBadge(value: station.nbVelosDispo, label: "station_bikes", icon: "bicycle", color: .green)
+                StatBadge(value: station.bikesAvailable, label: "station_bikes", icon: "bicycle", color: .green)
                 Divider().frame(height: 50)
-                StatBadge(value: station.nbPlacesDispo, label: "station_spots", icon: "parkingsign", color: .blue)
+                StatBadge(value: station.docksAvailable, label: "station_spots", icon: "parkingsign", color: .blue)
             }
             .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
 
@@ -78,12 +78,14 @@ struct StationDetailView: View {
                 Circle()
                     .fill(statusColor)
                     .frame(width: 10, height: 10)
-                Text(station.etat)
+                Text(station.isOperational ? LocalizedStringKey("station_status_operational") : LocalizedStringKey("station_status_closed"))
                     .font(.footnote)
                 Spacer()
-                Text(station.type)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if let type = station.stationType {
+                    Text(type)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             if locationManager.userLocation != nil, let onRouteRequest {
@@ -158,22 +160,22 @@ struct StationDetailView: View {
     }
 
     private func openInAppleMaps() {
-        let item = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: station.y, longitude: station.x)))
-        item.name = station.nom
+        let item = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude)))
+        item.name = station.name
         item.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeCycling])
     }
 
     private func openInGoogleMaps() {
-        openURL(URL(string: "comgooglemaps://?saddr=&daddr=\(station.y),\(station.x)&directionsmode=bicycling")!)
+        openURL(URL(string: "comgooglemaps://?saddr=&daddr=\(station.latitude),\(station.longitude)&directionsmode=bicycling")!)
     }
 
     private func openInWaze() {
-        openURL(URL(string: "waze://?ll=\(station.y),\(station.x)&navigate=yes")!)
+        openURL(URL(string: "waze://?ll=\(station.latitude),\(station.longitude)&navigate=yes")!)
     }
 
     private func openInCitymapper() {
-        let name = station.nom.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        openURL(URL(string: "citymapper://directions?endcoord=\(station.y),\(station.x)&endname=\(name)")!)
+        let name = station.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        openURL(URL(string: "citymapper://directions?endcoord=\(station.latitude),\(station.longitude)&endname=\(name)")!)
     }
 }
 

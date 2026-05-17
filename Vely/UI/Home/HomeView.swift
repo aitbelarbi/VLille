@@ -5,23 +5,24 @@ struct MapView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
     @Environment(LocationManager.self) var locationManager
+    @Environment(CityStore.self) var cityStore
     @Binding var cameraPosition: MapCameraPosition
-    @State private var selectedStation: VLilleStation?
+    @State private var selectedStation: BikeStation?
     @State private var currentRoute: MKRoute?
     @State private var isCalculatingRoute = false
     @State private var hascenteredOnUser = false
     @State private var visibleRegion: MKCoordinateRegion?
-    
+    @State private var showSettings = false
+
     enum MapType: String, CaseIterable, Identifiable {
         case standard = "map_type_standard"
         case satellite = "map_type_satellite"
         case hybride = "map_type_hybrid"
         case `3d` = "map_type_3d"
-        
-        var localizedTitle: LocalizedStringKey { LocalizedStringKey(rawValue) }
 
+        var localizedTitle: LocalizedStringKey { LocalizedStringKey(rawValue) }
         var id: String { self.rawValue }
-        
+
         var icon: String {
             switch self {
             case .standard: return "map"
@@ -31,33 +32,32 @@ struct MapView: View {
             }
         }
     }
-    
-    // 2. AJOUT : L'état pour mémoriser le choix de l'utilisateur
+
     @State private var selectedMapType: MapType = .standard
     @State private var showOnlyAvailable = false
     @State private var showRefreshToast = false
 
-    var displayedStations: [VLilleStation] {
-        showOnlyAvailable ? viewModel.stations.filter { $0.nbVelosDispo > 0 } : viewModel.stations
+    var displayedStations: [BikeStation] {
+        showOnlyAvailable ? viewModel.stations.filter { $0.bikesAvailable > 0 } : viewModel.stations
     }
 
     var displayedClusters: [StationCluster] {
         let span = visibleRegion?.span ?? MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         guard span.latitudeDelta > 0.015 else {
             return displayedStations.map {
-                StationCluster(id: "s_\($0.id)", coordinate: CLLocationCoordinate2D(latitude: $0.y, longitude: $0.x), stations: [$0])
+                StationCluster(id: "s_\($0.id)", coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), stations: [$0])
             }
         }
         let cellSize = span.latitudeDelta / 6
-        var groups: [String: [VLilleStation]] = [:]
+        var groups: [String: [BikeStation]] = [:]
         for station in displayedStations {
-            let row = Int(floor(station.y / cellSize))
-            let col = Int(floor(station.x / cellSize))
+            let row = Int(floor(station.latitude / cellSize))
+            let col = Int(floor(station.longitude / cellSize))
             groups["\(row)_\(col)", default: []].append(station)
         }
         return groups.map { key, group in
-            let avgLat = group.reduce(0.0) { $0 + $1.y } / Double(group.count)
-            let avgLon = group.reduce(0.0) { $0 + $1.x } / Double(group.count)
+            let avgLat = group.reduce(0.0) { $0 + $1.latitude } / Double(group.count)
+            let avgLon = group.reduce(0.0) { $0 + $1.longitude } / Double(group.count)
             return StationCluster(id: key, coordinate: CLLocationCoordinate2D(latitude: avgLat, longitude: avgLon), stations: group)
         }
     }
@@ -67,7 +67,6 @@ struct MapView: View {
             ZStack {
                 Map(position: $cameraPosition) {
                     UserAnnotation()
-
                     ForEach(displayedClusters) { cluster in
                         Annotation("", coordinate: cluster.coordinate) {
                             ClusterMarkerView(cluster: cluster, favoritesStore: favoritesStore) {
@@ -75,7 +74,6 @@ struct MapView: View {
                             }
                         }
                     }
-
                     if let route = currentRoute {
                         MapPolyline(route.polyline)
                             .stroke(.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
@@ -104,22 +102,18 @@ struct MapView: View {
                             .padding(.horizontal, 16)
                             .padding(.vertical, 10)
                             .background(
-                                showOnlyAvailable
-                                    ? AnyShapeStyle(Color.indigo)
-                                    : AnyShapeStyle(.regularMaterial),
+                                showOnlyAvailable ? AnyShapeStyle(Color.indigo) : AnyShapeStyle(.regularMaterial),
                                 in: Capsule()
                             )
                             .foregroundStyle(showOnlyAvailable ? .white : .primary)
                             .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 3)
                         }
                         .scaleEffect(showOnlyAvailable ? 1.03 : 1.0)
-
                         Spacer()
                     }
                     .padding(.horizontal, 12)
                     .padding(.top, 8)
 
-                    // Toast refresh
                     if showRefreshToast {
                         HStack(spacing: 6) {
                             Image(systemName: "arrow.clockwise.circle.fill")
@@ -133,7 +127,6 @@ struct MapView: View {
                         .shadow(color: .black.opacity(0.1), radius: 4)
                         .transition(.move(edge: .top).combined(with: .opacity))
                     }
-
                     Spacer()
                 }
                 .onChange(of: viewModel.lastUpdated) {
@@ -145,6 +138,7 @@ struct MapView: View {
                     }
                 }
 
+                // Right controls
                 VStack {
                     Spacer()
                     VStack(spacing: 8) {
@@ -163,8 +157,7 @@ struct MapView: View {
                         .background(.regularMaterial)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
-                        
-                        // Tes boutons existants (Centrage)
+
                         Button { centerOnUser() } label: {
                             Image(systemName: "location.fill")
                                 .font(.system(size: 16, weight: .semibold))
@@ -177,7 +170,6 @@ struct MapView: View {
                         .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
                         .disabled(locationManager.userLocation == nil)
 
-                        // Zoom +/-
                         VStack(spacing: 0) {
                             Button { zoom(in: true) } label: {
                                 Image(systemName: "plus")
@@ -202,13 +194,11 @@ struct MapView: View {
                     .padding(.bottom, 40)
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
-                
+
                 if let error = viewModel.errorMessage {
                     VStack {
                         Spacer()
-                        ErrorView(message: error) {
-                            viewModel.dismissError()
-                        }
+                        ErrorView(message: error) { viewModel.dismissError() }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 }
@@ -224,6 +214,14 @@ struct MapView: View {
             }
             .navigationTitle("home_title")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { showSettings = true } label: {
+                        Image(systemName: "gearshape.fill")
+                            .foregroundStyle(.primary)
+                    }
+                }
+            }
             .sheet(item: $selectedStation) { station in
                 StationDetailView(station: station, isCalculatingRoute: isCalculatingRoute) {
                     selectedStation = nil
@@ -231,6 +229,14 @@ struct MapView: View {
                 }
                 .presentationDetents([.height(340)])
                 .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .onDisappear {
+                        if cityStore.selectedCity.id != viewModel.currentCity.id {
+                            viewModel.switchCity(to: cityStore.selectedCity)
+                        }
+                    }
             }
             .onAppear {
                 locationManager.requestLocationPermission()
@@ -250,8 +256,8 @@ struct MapView: View {
         if cluster.stations.count == 1 {
             selectedStation = cluster.stations[0]
         } else {
-            let lats = cluster.stations.map { $0.y }
-            let lons = cluster.stations.map { $0.x }
+            let lats = cluster.stations.map { $0.latitude }
+            let lons = cluster.stations.map { $0.longitude }
             guard let minLat = lats.min(), let maxLat = lats.max(),
                   let minLon = lons.min(), let maxLon = lons.max() else { return }
             withAnimation {
@@ -266,7 +272,7 @@ struct MapView: View {
         }
     }
 
-    private func calculateRoute(to station: VLilleStation) {
+    private func calculateRoute(to station: BikeStation) {
         guard let userLocation = locationManager.userLocation else { return }
         isCalculatingRoute = true
         currentRoute = nil
@@ -274,7 +280,7 @@ struct MapView: View {
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: userLocation.coordinate))
         request.destination = MKMapItem(placemark: MKPlacemark(
-            coordinate: CLLocationCoordinate2D(latitude: station.y, longitude: station.x)
+            coordinate: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude)
         ))
         request.transportType = .walking
 
@@ -308,8 +314,6 @@ struct MapView: View {
     }
 
     private func zoom(in zoomIn: Bool) {
-        // visibleRegion est mis à jour par onMapCameraChange à chaque mouvement,
-        // donc fonctionne même après un pan/pinch manuel
         guard let region = visibleRegion ?? cameraPosition.region else { return }
         let factor = zoomIn ? 0.5 : 2.0
         cameraPosition = .region(MKCoordinateRegion(
@@ -320,37 +324,30 @@ struct MapView: View {
             )
         ))
     }
-    
+
     private var currentMapStyle: MapStyle {
         switch selectedMapType {
-        case .standard:
-            return .standard(elevation: .flat, showsTraffic: false)
-        case .satellite:
-            return .imagery(elevation: .flat)
-        case .hybride:
-            return .hybrid(elevation: .flat, showsTraffic: false)
-        case .`3d`:
-            return .standard(elevation: .realistic, showsTraffic: false)
+        case .standard:  return .standard(elevation: .flat, showsTraffic: false)
+        case .satellite: return .imagery(elevation: .flat)
+        case .hybride:   return .hybrid(elevation: .flat, showsTraffic: false)
+        case .`3d`:      return .standard(elevation: .realistic, showsTraffic: false)
         }
     }
 }
-
 
 // MARK: - Clustering
 
 struct StationCluster: Identifiable {
     let id: String
     let coordinate: CLLocationCoordinate2D
-    let stations: [VLilleStation]
+    let stations: [BikeStation]
 
     var isCluster: Bool { stations.count > 1 }
-    var totalBikes: Int { stations.reduce(0) { $0 + $1.nbVelosDispo } }
+    var totalBikes: Int { stations.reduce(0) { $0 + $1.bikesAvailable } }
 
     var markerColor: Color {
-        guard stations.allSatisfy({ $0.etat == "EN SERVICE" }) == false
-                ? stations.contains(where: { $0.etat == "EN SERVICE" })
-                : true
-        else { return .red }
+        let hasOperational = stations.contains { $0.isOperational }
+        guard hasOperational else { return .red }
         return totalBikes > 0 ? .green : .orange
     }
 }
@@ -386,15 +383,15 @@ struct ClusterMarkerView: View {
     }
 }
 
-// MARK: - Marqueur sur la carte
+// MARK: - Marqueur
 
 struct StationMarkerView: View {
-    let station: VLilleStation
+    let station: BikeStation
     let isFavorite: Bool
 
     var markerColor: Color {
-        guard station.etat == "EN SERVICE" else { return .red }
-        return station.nbVelosDispo > 0 ? .green : .orange
+        guard station.isOperational else { return .red }
+        return station.bikesAvailable > 0 ? .green : .orange
     }
 
     var body: some View {
@@ -404,7 +401,7 @@ struct StationMarkerView: View {
                     .fill(markerColor)
                     .frame(width: 32, height: 32)
                     .shadow(radius: 2)
-                Text("\(station.nbVelosDispo)")
+                Text("\(station.bikesAvailable)")
                     .font(.caption.bold())
                     .foregroundStyle(.white)
             }
@@ -422,4 +419,5 @@ struct StationMarkerView: View {
     MainTabView()
         .environment(FavoritesStore())
         .environment(LocationManager())
+        .environment(CityStore())
 }

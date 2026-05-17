@@ -9,6 +9,7 @@ import MapKit
 struct SearchView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(CityStore.self) var cityStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
 
@@ -16,13 +17,13 @@ struct SearchView: View {
     @State private var localSearchResults: [MKMapItem] = []
     @State private var isSearchingPlaces = false
 
-    var filteredStations: [VLilleStation] {
+    var filteredStations: [BikeStation] {
         guard !query.isEmpty else { return [] }
         let q = query.lowercased()
         return viewModel.stations.filter {
-            $0.nom.lowercased().contains(q) ||
-            $0.adresse.lowercased().contains(q) ||
-            ($0.commune?.lowercased().contains(q) ?? false)
+            $0.name.lowercased().contains(q) ||
+            $0.address.lowercased().contains(q) ||
+            ($0.district?.lowercased().contains(q) ?? false)
         }
     }
 
@@ -89,23 +90,21 @@ struct SearchView: View {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = text
         request.region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 50.6292, longitude: 3.0573),
+            center: cityStore.selectedCity.coordinate,
             span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
         )
         Task {
             let results = try? await MKLocalSearch(request: request).start()
             await MainActor.run {
-                localSearchResults = results?.mapItems.filter { item in
-                    item.placemark.countryCode == "FR"
-                } ?? []
+                localSearchResults = results?.mapItems ?? []
                 isSearchingPlaces = false
             }
         }
     }
 
-    private func goToStation(_ station: VLilleStation) {
+    private func goToStation(_ station: BikeStation) {
         cameraPosition = .region(MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: station.y, longitude: station.x),
+            center: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude),
             span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
         ))
         selectedTab = 0

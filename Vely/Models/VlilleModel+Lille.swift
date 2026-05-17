@@ -5,7 +5,8 @@
 //  Created by Mohamed Amine AIT BELARBI on 13/02/2025.
 //
 
-// Réponse GeoJSON FeatureCollection
+// MARK: - VLille (Lille)
+
 struct VLilleFeatureCollection: Codable {
     let features: [VLilleFeature]
 }
@@ -14,7 +15,6 @@ struct VLilleFeature: Codable {
     let properties: VLilleStation
 }
 
-// Modèle de données pour une station VLille
 struct VLilleStation: Codable, Identifiable, Hashable {
     var id: Int { identifiantStation }
 
@@ -39,4 +39,20 @@ struct VLilleStation: Codable, Identifiable, Hashable {
     let x: Double
     let y: Double
     let dateModification: String
+
+    func toBikeStation() -> BikeStation {
+        BikeStation(
+            id: "lille_\(identifiantStation)",
+            name: nom,
+            address: adresse,
+            district: commune,
+            latitude: y,
+            longitude: x,
+            bikesAvailable: nbVelosDispo,
+            docksAvailable: nbPlacesDispo,
+            isOperational: etat == "EN SERVICE",
+            stationType: type,
+            cityId: "lille"
+        )
+    }
 }

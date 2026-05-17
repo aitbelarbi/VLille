@@ -13,9 +13,9 @@ struct FavoritesView: View {
     @Environment(FavoritesStore.self) var favoritesStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
-    @State private var selectedStation: VLilleStation?
+    @State private var selectedStation: BikeStation?
 
-    var favoriteStations: [VLilleStation] {
+    var favoriteStations: [BikeStation] {
         viewModel.stations.filter { favoritesStore.isFavorite($0) }
     }
 
@@ -48,10 +48,10 @@ struct FavoritesView: View {
         }
     }
 
-    private func goToStation(_ station: VLilleStation) {
+    private func goToStation(_ station: BikeStation) {
         cameraPosition = .region(
             MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: station.y, longitude: station.x),
+                center: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude),
                 span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
             )
         )
@@ -60,11 +60,11 @@ struct FavoritesView: View {
 }
 
 struct StationRowView: View {
-    let station: VLilleStation
+    let station: BikeStation
 
     var statusColor: Color {
-        guard station.etat == "EN SERVICE" else { return .red }
-        return station.nbVelosDispo > 0 ? .green : .orange
+        guard station.isOperational else { return .red }
+        return station.bikesAvailable > 0 ? .green : .orange
     }
 
     var body: some View {
@@ -73,14 +73,14 @@ struct StationRowView: View {
                 Circle()
                     .fill(statusColor)
                     .frame(width: 40, height: 40)
-                Text("\(station.nbVelosDispo)")
+                Text("\(station.bikesAvailable)")
                     .font(.callout.bold())
                     .foregroundStyle(.white)
             }
             VStack(alignment: .leading, spacing: 2) {
-                Text(station.nom)
+                Text(station.name)
                     .font(.headline)
-                Text(station.adresse)
+                Text(station.address)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -89,15 +89,15 @@ struct StationRowView: View {
                 VStack(spacing: 2) {
                     Image(systemName: "bicycle")
                         .font(.subheadline)
-                    Text("\(station.nbVelosDispo)")
+                    Text("\(station.bikesAvailable)")
                         .font(.caption.bold())
                 }
                 .foregroundStyle(.green)
-                
+
                 VStack(spacing: 2) {
                     Image(systemName: "parkingsign")
                         .font(.subheadline)
-                    Text("\(station.nbPlacesDispo)")
+                    Text("\(station.docksAvailable)")
                         .font(.caption.bold())
                 }
                 .foregroundStyle(.blue)
