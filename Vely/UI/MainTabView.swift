@@ -40,7 +40,7 @@ struct MainTabView: View {
                     center: cityStore.selectedCity.coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 ))
-                viewModel.switchCity(to: cityStore.selectedCity)
+                viewModel.currentCity = cityStore.selectedCity
                 await viewModel.startAutoRefresh()
             }
             .onChange(of: cityStore.selectedCity) { _, newCity in

@@ -20,6 +20,7 @@ class HomeViewModel {
     }
 
     func startAutoRefresh() async {
+        await loadStations()
         while !Task.isCancelled {
             try? await Task.sleep(for: .seconds(30))
             guard !Task.isCancelled else { break }
