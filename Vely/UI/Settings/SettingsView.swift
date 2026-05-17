@@ -39,7 +39,7 @@ struct SettingsView: View {
                         HStack {
                             Label(LocalizedStringKey("settings_section_city"), systemImage: "mappin.circle.fill")
                             Spacer()
-                            Text("\(cityStore.selectedCity.countryFlag) \(cityStore.selectedCity.name)")
+                            Text("\(cityStore.selectedCity.countryFlag) \(cityStore.selectedCity.localizedName)")
                                 .foregroundStyle(.secondary)
                         }
                     }

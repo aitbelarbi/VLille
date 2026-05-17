@@ -15,6 +15,7 @@ struct CityPickerView: View {
     var filteredCities: [City] {
         guard !searchText.isEmpty else { return City.all }
         return City.all.filter {
+            $0.localizedName.localizedCaseInsensitiveContains(searchText) ||
             $0.name.localizedCaseInsensitiveContains(searchText) ||
             $0.serviceName.localizedCaseInsensitiveContains(searchText)
         }
@@ -30,7 +31,7 @@ struct CityPickerView: View {
                     Text(city.countryFlag)
                         .font(.title3)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(city.name)
+                        Text(city.localizedName)
                             .foregroundStyle(.primary)
                         Text(city.serviceName)
                             .font(.caption)

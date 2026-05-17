@@ -80,7 +80,7 @@ struct OnboardingView: View {
                                             Button {
                                                 withAnimation(.spring(response: 0.3)) { selectedCity = city }
                                             } label: {
-                                                Text("\(city.countryFlag) \(city.name)")
+                                                Text("\(city.countryFlag) \(city.localizedName)")
                                                     .font(.subheadline.weight(.medium))
                                                     .padding(.horizontal, 14)
                                                     .padding(.vertical, 7)
@@ -110,7 +110,7 @@ struct OnboardingView: View {
                                         Text(city.countryFlag)
                                             .font(.title2)
                                         VStack(alignment: .leading, spacing: 2) {
-                                            Text(city.name)
+                                            Text(city.localizedName)
                                                 .font(.headline)
                                                 .foregroundStyle(.primary)
                                             Text(city.serviceName)
