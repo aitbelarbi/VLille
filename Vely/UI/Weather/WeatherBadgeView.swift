@@ -19,7 +19,7 @@ struct WeatherBadgeView: View {
                         Text(current.temperature.formatted(.measurement(width: .abbreviated, usage: .weather)))
                             .font(.subheadline.weight(.semibold))
                     }
-                } else {g
+                } else {
                     Image(systemName: "cloud.sun.fill")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(.secondary)

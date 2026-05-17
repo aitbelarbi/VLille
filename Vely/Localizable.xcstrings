@@ -1,2369 +1,2380 @@
 {
-  "sourceLanguage": "fr",
-  "strings": {
-    "%@ %@": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@ %2$@"
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "%@ %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
           }
         }
       }
     },
-    "%lld": {},
-    "🌍": {},
-    "action_open_with": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open with…"
+    "%lld" : {
+
+    },
+    "🌍" : {
+
+    },
+    "action_open_with" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open with…"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir con…"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir con…"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvrir avec…"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir avec…"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apri con…"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri con…"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir com…"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir com…"
           }
         }
       }
+    },
+    "Chargement des villes..." : {
+
     },
-    "Chargement des villes...": {},
-    "city_bruxelles": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Brussels"
+    "city_bruxelles" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brussels"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bruselas"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruselas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bruxelles"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruxelles"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bruxelles"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruxelles"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bruxelas"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruxelas"
           }
         }
       }
     },
-    "city_seville": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seville"
+    "city_seville" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seville"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sevilla"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sevilla"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Séville"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séville"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Siviglia"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siviglia"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sevilha"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sevilha"
           }
         }
       }
     },
-    "city_valence_es": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Valencia"
+    "city_valence_es" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valencia"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Valencia"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valencia"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Valence"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valence"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Valencia"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valencia"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Valência"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valência"
           }
         }
       }
     },
-    "cluster_stations_count": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld stations"
+    "cluster_stations_count" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld stations"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld estaciones"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld estaciones"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld stations"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld stations"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld stazioni"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld stazioni"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld estações"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld estações"
           }
         }
       }
     },
-    "common_cancel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+    "common_cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancelar"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Annuler"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Annulla"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancelar"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         }
       }
     },
-    "common_done": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
+    "common_done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listo"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terminé"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fine"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fine"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Concluído"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluído"
           }
         }
       }
     },
-    "common_loading": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Loading…"
+    "common_loading" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading…"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cargando…"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargando…"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chargement…"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chargement…"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Caricamento…"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caricamento…"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carregando…"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carregando…"
           }
         }
       }
     },
-    "error_data_unavailable": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data temporarily unavailable. Please try again later."
+    "error_data_unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data temporarily unavailable. Please try again later."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datos temporalmente no disponibles. Por favor, inténtelo de nuevo más tarde."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos temporalmente no disponibles. Por favor, inténtelo de nuevo más tarde."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Données momentanément indisponibles. Réessayez plus tard."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données momentanément indisponibles. Réessayez plus tard."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dati temporaneamente non disponibili. Riprova più tardi."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dati temporaneamente non disponibili. Riprova più tardi."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dados temporariamente indisponíveis. Por favor, tente novamente mais tarde."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados temporariamente indisponíveis. Por favor, tente novamente mais tarde."
           }
         }
       }
     },
-    "error_decoding": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Error processing data. Please try again."
+    "error_decoding" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error processing data. Please try again."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Error al procesar los datos. Por favor, inténtelo de nuevo."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al procesar los datos. Por favor, inténtelo de nuevo."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erreur lors du traitement des données. Réessayez."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur lors du traitement des données. Réessayez."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Errore nell'elaborazione dei dati. Riprova."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Errore nell'elaborazione dei dati. Riprova."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erro ao processar os dados. Por favor, tente novamente."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro ao processar os dados. Por favor, tente novamente."
           }
         }
       }
     },
-    "error_invalid_url": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Invalid link. Please contact support if this persists."
+    "error_invalid_url" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid link. Please contact support if this persists."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enlace inválido. Contacte con el soporte si el problema persiste."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enlace inválido. Contacte con el soporte si el problema persiste."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lien invalide. Contactez le support si le problème persiste."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lien invalide. Contactez le support si le problème persiste."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Link non valido. Contatta il supporto se il problema persiste."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link non valido. Contatta il supporto se il problema persiste."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Link inválido. Contacte o suporte se o problema persistir."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link inválido. Contacte o suporte se o problema persistir."
           }
         }
       }
     },
-    "error_network": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unable to connect. Check your internet connection and try again."
+    "error_network" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to connect. Check your internet connection and try again."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se puede conectar. Compruebe su conexión a Internet y vuelva a intentarlo."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede conectar. Compruebe su conexión a Internet y vuelva a intentarlo."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impossible de se connecter. Vérifiez votre connexion Internet et réessayez."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de se connecter. Vérifiez votre connexion Internet et réessayez."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impossibile connettersi. Verifica la tua connessione Internet e riprova."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile connettersi. Verifica la tua connessione Internet e riprova."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não foi possível conectar. Verifique sua conexão com a Internet e tente novamente."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível conectar. Verifique sua conexão com a Internet e tente novamente."
           }
         }
       }
     },
-    "favorites_empty_hint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add stations as favorites from the map."
+    "favorites_empty_hint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add stations as favorites from the map."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añade estaciones a favoritos desde el mapa."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade estaciones a favoritos desde el mapa."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajoutez des stations en favoris depuis la carte."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez des stations en favoris depuis la carte."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungi stazioni ai preferiti dalla mappa."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi stazioni ai preferiti dalla mappa."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adicione estações aos favoritos no mapa."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicione estações aos favoritos no mapa."
           }
         }
       }
     },
-    "favorites_empty_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Favorites"
+    "favorites_empty_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Favorites"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin favoritos"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin favoritos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun favori"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun favori"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nessun preferito"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun preferito"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sem favoritos"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem favoritos"
           }
         }
       }
     },
-    "filter_all_stations": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All stations"
+    "filter_all_stations" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All stations"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todas las estaciones"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las estaciones"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toutes les stations"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les stations"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tutte le stazioni"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutte le stazioni"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todas as estações"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as estações"
           }
         }
       }
     },
-    "filter_available_bikes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Available bikes"
+    "filter_available_bikes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Available bikes"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bicicletas disponibles"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicicletas disponibles"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vélos disponibles"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vélos disponibles"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Biciclette disponibili"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biciclette disponibili"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bicicletas disponíveis"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicicletas disponíveis"
           }
         }
       }
     },
-    "home_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bike Stations"
+    "home_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bike Stations"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estaciones de bicicleta"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estaciones de bicicleta"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stations vélo"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stations vélo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stazioni bici"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stazioni bici"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estações de bicicleta"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estações de bicicleta"
           }
         }
       }
     },
-    "location_denied_alert_message": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "To get directions to a station, enable location access in your app settings."
+    "location_denied_alert_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To get directions to a station, enable location access in your app settings."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Para obtener indicaciones a una estación, activa el acceso a la ubicación en los ajustes de la app."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para obtener indicaciones a una estación, activa el acceso a la ubicación en los ajustes de la app."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pour calculer un itinéraire vers une station, activez la géolocalisation dans les réglages de l'app."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour calculer un itinéraire vers une station, activez la géolocalisation dans les réglages de l'app."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Per ottenere indicazioni verso una stazione, attiva la geolocalizzazione nelle impostazioni dell'app."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per ottenere indicazioni verso una stazione, attiva la geolocalizzazione nelle impostazioni dell'app."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Para obter direções para uma estação, ative a geolocalização nas configurações do app."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para obter direções para uma estação, ative a geolocalização nas configurações do app."
           }
         }
       }
     },
-    "location_denied_alert_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location Disabled"
+    "location_denied_alert_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location Disabled"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ubicación desactivada"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicación desactivada"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Géolocalisation désactivée"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Géolocalisation désactivée"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geolocalizzazione disattivata"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geolocalizzazione disattivata"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Localização desativada"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localização desativada"
           }
         }
       }
     },
-    "location_denied_cta": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Directions unavailable"
+    "location_denied_cta" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Directions unavailable"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Itinerario no disponible"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinerario no disponible"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Itinéraire indisponible"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinéraire indisponible"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Itinerario non disponibile"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinerario non disponibile"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Itinerário indisponível"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itinerário indisponível"
           }
         }
       }
     },
-    "location_denied_open_settings": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open Settings"
+    "location_denied_open_settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir ajustes"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ajustes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ouvrir les réglages"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir les réglages"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apri impostazioni"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri impostazioni"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir configurações"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir configurações"
           }
         }
       }
     },
-    "map_type_3d": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3D Realistic"
+    "mail_fallback_close" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3D Realista"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3D Réaliste"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3D Realistico"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiudi"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3D Realista"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
           }
         }
       }
     },
-    "map_type_hybrid": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hybrid"
+    "mail_fallback_message" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact us directly at"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Híbrido"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contáctanos directamente en"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hybride"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacte-nous directement à"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ibrido"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contattaci direttamente a"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Híbrido"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacta-nos diretamente em"
           }
         }
       }
     },
-    "map_type_picker_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Map Type"
+    "mail_fallback_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No mail account configured"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipo de mapa"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay cuenta de correo configurada"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type de carte"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun compte mail configuré"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipo di mappa"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun account mail configurato"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipo de mapa"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma conta de e-mail configurada"
           }
         }
       }
     },
-    "map_type_satellite": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Satellite"
+    "mail_feedback_subject" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[User Feedback] Suggestions for Vely"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Satélite"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Opinión de usuario] Sugerencias para Vely"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Satellite"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Retour Utilisateur] Suggestions pour Vely"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Satellite"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Feedback Utente] Suggerimenti per Vely"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Satélite"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Feedback do Utilizador] Sugestões para Vely"
           }
         }
       }
     },
-    "map_type_standard": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standard"
+    "map_type_3d" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D Realistic"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estándar"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D Realista"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standard"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D Réaliste"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standard"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D Realistico"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Padrão"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D Realista"
           }
         }
       }
     },
-    "onboarding_confirm": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Get started"
+    "map_type_hybrid" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hybrid"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Empezar"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Híbrido"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Commencer"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hybride"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inizia"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ibrido"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Começar"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Híbrido"
           }
         }
       }
     },
-    "onboarding_detect_city": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detect my city"
+    "map_type_picker_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map Type"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detectar mi ciudad"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de mapa"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Détecter ma ville"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type de carte"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rileva la mia città"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo di mappa"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detectar minha cidade"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de mapa"
           }
         }
       }
     },
-    "onboarding_search_placeholder": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search for a city..."
+    "map_type_satellite" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satellite"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buscar una ciudad..."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satélite"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rechercher une ville..."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satellite"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca una città..."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satellite"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pesquisar uma cidade..."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satélite"
           }
         }
       }
     },
-    "onboarding_subtitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Find available bikes near you in real time"
+    "map_type_standard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encuentra bicicletas disponibles cerca en tiempo real"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estándar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trouvez des vélos disponibles près de vous en temps réel"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trova biciclette disponibili vicino a te in tempo reale"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encontre bicicletas disponíveis perto de você em tempo real"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Padrão"
           }
         }
       }
     },
-    "onboarding_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose your city"
+    "onboarding_confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get started"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige tu ciudad"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisissez votre ville"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli la tua città"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escolha sua cidade"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Começar"
           }
         }
       }
     },
-    "routing_cycling": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cycle"
+    "onboarding_detect_city" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detect my city"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En bicicleta"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detectar mi ciudad"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À vélo"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Détecter ma ville"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In bici"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rileva la mia città"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "De bicicleta"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detectar minha cidade"
           }
         }
       }
     },
-    "routing_walking": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Walk"
+    "onboarding_search_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a city..."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A pie"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar una ciudad..."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À pied"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher une ville..."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A piedi"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca una città..."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A pé"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar uma cidade..."
           }
         }
       }
     },
-    "search_empty_hint": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search for a bike station, street, or place."
+    "onboarding_subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find available bikes near you in real time"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Busca una estación, calle o lugar."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encuentra bicicletas disponibles cerca en tiempo real"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cherchez une station vélo, une rue ou un lieu."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trouvez des vélos disponibles près de vous en temps réel"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca una stazione bici, una via o un luogo."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trova biciclette disponibili vicino a te in tempo reale"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pesquise uma estação, rua ou lugar."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encontre bicicletas disponíveis perto de você em tempo real"
           }
         }
       }
     },
-    "search_empty_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search"
+    "onboarding_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose your city"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buscar"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige tu ciudad"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rechercher"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez votre ville"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli la tua città"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pesquisar"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha sua cidade"
           }
         }
       }
     },
-    "search_placeholder": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Station, street, place…"
+    "rating_cta_negative" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meh, I have suggestions / it bugs 💬"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estación, calle, lugar…"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más o menos, tengo sugerencias / hay errores 💬"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Station, rue, lieu…"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bof, j'ai des suggestions / ça bug 💬"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stazione, via, luogo…"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Così così, ho suggerimenti / ci sono bug 💬"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estação, rua, lugar…"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais ou menos, tenho sugestões / tem bugs 💬"
           }
         }
       }
     },
-    "search_places_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Places & Addresses"
+    "rating_cta_positive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes, I love it! 🚲"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lugares y direcciones"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Sí, me encanta! 🚲"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lieux et adresses"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oui, j'adore ! 🚲"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Luoghi e indirizzi"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sì, la adoro! 🚲"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lugares e endereços"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sim, adoro! 🚲"
           }
         }
       }
     },
-    "settings_lang_system": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "System default"
+    "rating_subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your feedback helps us improve the app for everyone."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Por defecto del sistema"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu opinión nos ayuda a mejorar la app para todos."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Langue du système"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ton avis nous aide à améliorer l'app pour tout le monde."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lingua di sistema"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo feedback ci aiuta a migliorare l'app per tutti."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Idioma do sistema"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O teu feedback ajuda-nos a melhorar a app para todos."
           }
         }
       }
     },
-    "settings_section_about": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "About"
+    "rating_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you enjoy Vely?"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acerca de"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Disfrutas de Vely?"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À propos"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu apprécies Vely ?"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Informazioni"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ti piace Vely?"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sobre"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gostas da Vely?"
           }
         }
       }
     },
-    "settings_section_appearance": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appearance"
+    "routing_cycling" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cycle"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apariencia"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En bicicleta"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apparence"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À vélo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aspetto"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In bici"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aparência"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De bicicleta"
           }
         }
       }
     },
-    "settings_section_city": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "City"
+    "routing_walking" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Walk"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ciudad"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A pie"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ville"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À pied"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Città"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A piedi"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cidade"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A pé"
           }
         }
       }
     },
-    "settings_section_language": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Language"
+    "search_empty_hint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a bike station, street, or place."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Idioma"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca una estación, calle o lugar."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Langue"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cherchez une station vélo, une rue ou un lieu."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lingua"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca una stazione bici, una via o un luogo."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Idioma"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquise uma estação, rua ou lugar."
           }
         }
       }
     },
-    "settings_theme_auto": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto"
+    "search_empty_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar"
           }
         }
       }
     },
-    "settings_theme_dark": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dark"
+    "search_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station, street, place…"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oscuro"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estación, calle, lugar…"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sombre"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Station, rue, lieu…"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scuro"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stazione, via, luogo…"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Escuro"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estação, rua, lugar…"
           }
         }
       }
     },
-    "settings_theme_light": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Light"
+    "search_places_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places & Addresses"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Claro"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lugares y direcciones"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Clair"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieux et adresses"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chiaro"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luoghi e indirizzi"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Claro"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lugares e endereços"
           }
         }
       }
     },
-    "settings_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "settings_lang_system" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System default"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajustes"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por defecto del sistema"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paramètres"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue du système"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Impostazioni"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingua di sistema"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Configurações"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma do sistema"
           }
         }
       }
     },
-    "settings_version": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version"
+    "settings_section_about" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Versión"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acerca de"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À propos"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Versione"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informazioni"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Versão"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre"
           }
         }
       }
     },
-    "station_bikes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bikes"
+    "settings_section_appearance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bicis"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apariencia"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vélos"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apparence"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bici"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspetto"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bicicletas"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aparência"
           }
         }
       }
     },
-    "station_spots": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Slots"
+    "settings_section_city" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plazas"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ciudad"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Places"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ville"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Posti"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Città"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vagas"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cidade"
           }
         }
       }
     },
-    "station_status_closed": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Closed"
+    "settings_section_language" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerrado"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hors service"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chiuso"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingua"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fechado"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
           }
         }
       }
     },
-    "station_status_operational": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In service"
+    "settings_theme_auto" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En servicio"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En service"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In servizio"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Em serviço"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto"
           }
         }
       }
     },
-    "tab_favorites": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favorites"
+    "settings_theme_dark" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favoritos"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscuro"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favoris"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sombre"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferiti"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scuro"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Favoritos"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escuro"
           }
         }
       }
     },
-    "tab_map": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Map"
+    "settings_theme_light" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mapa"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carte"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clair"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mappa"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiaro"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mapa"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
           }
         }
       }
     },
-    "tab_search": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search"
+    "settings_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buscar"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recherche"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pesquisar"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurações"
           }
         }
       }
     },
-    "toast_data_updated": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data updated"
+    "settings_version" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datos actualizados"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Données mises à jour"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dati aggiornati"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dados atualizados"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão"
           }
         }
       }
     },
-    "rating_cta_negative": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meh, I have suggestions / it bugs 💬"
+    "station_bikes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bikes"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Más o menos, tengo sugerencias / hay errores 💬"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicis"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bof, j'ai des suggestions / ça bug 💬"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vélos"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Così così, ho suggerimenti / ci sono bug 💬"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bici"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mais ou menos, tenho sugestões / tem bugs 💬"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bicicletas"
           }
         }
       }
     },
-    "rating_cta_positive": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yes, I love it! 🚲"
+    "station_spots" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slots"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¡Sí, me encanta! 🚲"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plazas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oui, j'adore ! 🚲"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Places"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sì, la adoro! 🚲"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posti"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sim, adoro! 🚲"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vagas"
           }
         }
       }
     },
-    "rating_subtitle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your feedback helps us improve the app for everyone."
+    "station_status_closed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closed"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu opinión nos ayuda a mejorar la app para todos."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrado"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ton avis nous aide à améliorer l'app pour tout le monde."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hors service"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Il tuo feedback ci aiuta a migliorare l'app per tutti."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiuso"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O teu feedback ajuda-nos a melhorar a app para todos."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechado"
           }
         }
       }
     },
-    "rating_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do you enjoy Vely?"
+    "station_status_operational" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In service"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Disfrutas de Vely?"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En servicio"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu apprécies Vely ?"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En service"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ti piace Vely?"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In servizio"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gostas da Vely?"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em serviço"
           }
         }
       }
     },
-    "mail_fallback_title": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No mail account configured"
+    "tab_favorites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No hay cuenta de correo configurada"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun compte mail configuré"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoris"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nessun account mail configurato"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferiti"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nenhuma conta de e-mail configurada"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
           }
         }
       }
     },
-    "mail_fallback_message": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contact us directly at"
+    "tab_map" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contáctanos directamente en"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapa"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contacte-nous directement à"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carte"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contattaci direttamente a"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappa"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contacta-nos diretamente em"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapa"
           }
         }
       }
     },
-    "mail_fallback_close": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close"
+    "tab_search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerrar"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fermer"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recherche"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chiudi"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fechar"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar"
           }
         }
       }
     },
-    "mail_feedback_subject": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "[User Feedback] Suggestions for Vely"
+    "toast_data_updated" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data updated"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "[Opinión de usuario] Sugerencias para Vely"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos actualizados"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "[Retour Utilisateur] Suggestions pour Vely"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données mises à jour"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "[Feedback Utente] Suggerimenti per Vely"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dati aggiornati"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "[Feedback do Utilizador] Sugestões para Vely"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados atualizados"
           }
         }
       }
     },
-    "weather_hourly_forecast": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hourly Forecast"
+    "weather_data_source" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weather data"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Previsión por horas"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos meteorológicos"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prévisions par heure"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données météo"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Previsioni orarie"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dati meteo"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Previsão horária"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados meteorológicos"
           }
         }
       }
     },
-    "weather_feels_like": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Feels like"
+    "weather_feels_like" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feels like"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sensación"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensación"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ressenti"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ressenti"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Percepito"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Percepito"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sensação"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sensação"
           }
         }
       }
     },
-    "weather_wind": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wind"
+    "weather_hourly_forecast" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hourly Forecast"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Viento"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previsión por horas"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vent"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prévisions par heure"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vento"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previsioni orarie"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vento"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Previsão horária"
           }
         }
       }
     },
-    "weather_precipitation": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rain"
+    "weather_precipitation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rain"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lluvia"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lluvia"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pluie"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pluie"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pioggia"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pioggia"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chuva"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chuva"
           }
         }
       }
     },
-    "weather_unavailable": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weather unavailable"
+    "weather_unavailable" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weather unavailable"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tiempo no disponible"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiempo no disponible"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Météo indisponible"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Météo indisponible"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meteo non disponibile"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteo non disponibile"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meteorologia indisponível"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteorologia indisponível"
           }
         }
       }
     },
-    "weather_data_source": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weather data"
+    "weather_wind" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wind"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datos meteorológicos"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viento"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Données météo"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vent"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dati meteo"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vento"
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dados meteorológicos"
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vento"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }
