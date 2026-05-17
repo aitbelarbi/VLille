@@ -35,9 +35,6 @@ struct ClusterMarkerView: View {
                                 .font(.system(size: 9, weight: .medium))
                         }
                         .foregroundStyle(.white.opacity(0.85))
-                        Text(String(format: String(localized: "cluster_stations_count"), Int64(cluster.stations.count)))
-                            .font(.system(size: 6))
-                            .foregroundStyle(.white.opacity(0.7))
                     }
                 }
             } else {
