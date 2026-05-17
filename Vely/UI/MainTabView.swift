@@ -35,6 +35,10 @@ struct MainTabView: View {
                 }
             }
             .task {
+                cameraPosition = .region(MKCoordinateRegion(
+                    center: cityStore.selectedCity.coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                ))
                 viewModel.switchCity(to: cityStore.selectedCity)
                 await viewModel.startAutoRefresh()
             }

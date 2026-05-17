@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "fr",
   "strings" : {
+    "%@ %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
     "%lld" : {
 
     },
@@ -855,6 +865,40 @@
         }
       }
     },
+    "onboarding_search_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a city..."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar una ciudad..."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher une ville..."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca una città..."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar uma cidade..."
+          }
+        }
+      }
+    },
     "onboarding_subtitle" : {
       "localizations" : {
         "en" : {
@@ -922,6 +966,9 @@
           }
         }
       }
+    },
+    "Populaires" : {
+
     },
     "routing_cycling" : {
       "localizations" : {

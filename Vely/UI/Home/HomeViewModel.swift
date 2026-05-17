@@ -18,10 +18,6 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
 
     @ObservationIgnored private var session: URLSession?
 
-    private let vlilleURL = "https://data.lillemetropole.fr/geoserver/ogc/features/v1/collections/dsp_ilevia:vlille_temps_reel/items"
-    private let velibInfoURL = "https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_information.json"
-    private let velibStatusURL = "https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_status.json"
-
     func switchCity(to city: City) {
         currentCity = city
         stations = []
@@ -41,8 +37,15 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     func fetchStations() {
         isLoading = true
         switch currentCity.provider {
-        case .vlille: fetchVLilleStations()
-        case .velib:  fetchVelibStations()
+        case .vlille:
+            fetchVLilleStations()
+        case .velib, .jcdecaux:
+            guard let infoURL = currentCity.provider.infoURL,
+                  let statusURL = currentCity.provider.statusURL else {
+                isLoading = false
+                return
+            }
+            fetchGBFSStations(infoURL: infoURL, statusURL: statusURL)
         }
     }
 
@@ -51,7 +54,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     // MARK: - Lille (GeoJSON + TLS delegate)
 
     private func fetchVLilleStations() {
-        guard let url = URL(string: vlilleURL) else {
+        guard let url = currentCity.provider.statusURL else {
             errorMessage = String(localized: "error_invalid_url")
             isLoading = false
             return
@@ -81,39 +84,38 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
         }.resume()
     }
 
-    // MARK: - Vélib Paris (GBFS, two concurrent endpoints)
+    // MARK: - Generic GBFS (Vélib Paris + JCDecaux CycloCity)
 
-    private func fetchVelibStations() {
-        guard let infoURL = URL(string: velibInfoURL),
-              let statusURL = URL(string: velibStatusURL) else {
-            errorMessage = String(localized: "error_invalid_url")
-            isLoading = false
-            return
+    private func fetchGBFSStations(infoURL: URL, statusURL: URL) {
+        if session == nil {
+            session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         }
-        Task {
+        guard let session else { return }
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                async let infoReq = URLSession.shared.data(from: infoURL)
-                async let statusReq = URLSession.shared.data(from: statusURL)
-                let (infoData, _) = try await infoReq
+                async let infoReq   = session.data(from: infoURL)
+                async let statusReq = session.data(from: statusURL)
+                let (infoData, _)   = try await infoReq
                 let (statusData, _) = try await statusReq
-
-                let infoResp = try JSONDecoder().decode(VelibInfoResponse.self, from: infoData)
-                let statusResp = try JSONDecoder().decode(VelibStatusResponse.self, from: statusData)
-
-                let statusMap = Dictionary(uniqueKeysWithValues: statusResp.data.stations.map { ($0.stationId, $0) })
-                let stations = infoResp.data.stations.compactMap { info -> BikeStation? in
+                let infoResp   = try JSONDecoder().decode(GBFSInfoResponse.self,   from: infoData)
+                let statusResp = try JSONDecoder().decode(GBFSStatusResponse.self, from: statusData)
+                let statusMap  = Dictionary(uniqueKeysWithValues: statusResp.data.stations.map { ($0.stationId, $0) })
+                let cityId     = currentCity.id
+                let stations   = infoResp.data.stations.compactMap { info -> BikeStation? in
                     guard let status = statusMap[info.stationId] else { return nil }
-                    return status.toBikeStation(info: info)
+                    return status.toBikeStation(info: info, cityId: cityId)
                 }
-                await MainActor.run { [weak self] in
-                    self?.isLoading = false
-                    self?.stations = stations
-                    self?.lastUpdated = Date()
+                await MainActor.run {
+                    self.isLoading   = false
+                    self.stations    = stations
+                    self.lastUpdated = Date()
                 }
             } catch {
-                await MainActor.run { [weak self] in
-                    self?.isLoading = false
-                    self?.errorMessage = String(localized: "error_network")
+                print("❌ [GBFS] \(currentCity.name) — \(error)")
+                await MainActor.run {
+                    self.isLoading    = false
+                    self.errorMessage = String(localized: "error_network")
                 }
             }
         }
