@@ -8,7 +8,10 @@ struct MailComposeView: UIViewControllerRepresentable {
 
     func makeCoordinator() -> Coordinator { Coordinator(onDismiss: onDismiss) }
 
-    func makeUIViewController(context: Context) -> MFMailComposeViewController {
+    func makeUIViewController(context: Context) -> UIViewController {
+        guard MFMailComposeViewController.canSendMail() else {
+            return UIViewController()
+        }
         let vc = MFMailComposeViewController()
         vc.setToRecipients([recipient])
         vc.setSubject(subject)
@@ -16,7 +19,7 @@ struct MailComposeView: UIViewControllerRepresentable {
         return vc
     }
 
-    func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         let onDismiss: () -> Void
