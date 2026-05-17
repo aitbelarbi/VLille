@@ -22,6 +22,7 @@ class HomeViewModel {
         cityStore.selectCity(city)
         stations = []
         errorMessage = nil
+        Task { await loadStations() }
     }
 
     func startAutoRefresh() async {

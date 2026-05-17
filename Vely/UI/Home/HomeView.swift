@@ -232,11 +232,6 @@ struct MapView: View {
             }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
-                    .onDisappear {
-                        if cityStore.selectedCity.id != viewModel.currentCity.id {
-                            viewModel.switchCity(to: cityStore.selectedCity)
-                        }
-                    }
             }
             .onAppear {
                 locationManager.requestLocationPermission()
