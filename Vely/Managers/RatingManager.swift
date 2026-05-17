@@ -20,6 +20,9 @@ final class RatingManager {
 
     func recordLaunch() {
         launchCount += 1
+        if launchCount >= 5, !hasCompleted {
+            shouldShowPrompt = true
+        }
     }
 
     func recordFavoriteAdded() {
