@@ -268,6 +268,11 @@ struct MapView: View {
             .onAppear {
                 locationManager.requestLocationPermission()
             }
+            .onChange(of: viewModel.pendingStationToShow) { _, station in
+                guard let station else { return }
+                selectedStation = station
+                viewModel.pendingStationToShow = nil
+            }
             .onChange(of: locationManager.userLocation) { _, location in
                 guard let location, !hascenteredOnUser else { return }
                 hascenteredOnUser = true

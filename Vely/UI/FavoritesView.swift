@@ -34,6 +34,7 @@ struct FavoritesView: View {
                             goToStation(station)
                         } label: {
                             StationRowView(station: station)
+                                .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                     }
@@ -55,6 +56,7 @@ struct FavoritesView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
             )
         )
+        viewModel.pendingStationToShow = station
         selectedTab = 0
     }
 }
