@@ -17,8 +17,12 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     var currentCity: City = .lille
 
     @ObservationIgnored private var session: URLSession?
+    @ObservationIgnored private var currentRequestId: UUID = UUID()
+    @ObservationIgnored private var autoRefreshTask: Task<Void, Never>?
 
     func switchCity(to city: City) {
+        currentRequestId = UUID()
+        autoRefreshTask?.cancel()
         currentCity = city
         stations = []
         errorMessage = nil
@@ -26,12 +30,16 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     }
 
     func startAutoRefresh() async {
-        fetchStations()
-        while !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(30))
-            guard !Task.isCancelled else { break }
+        autoRefreshTask?.cancel()
+        autoRefreshTask = Task {
             fetchStations()
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(30))
+                guard !Task.isCancelled else { break }
+                fetchStations()
+            }
         }
+        await autoRefreshTask?.value
     }
 
     func fetchStations() {
@@ -60,6 +68,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     // MARK: - Lille (GeoJSON + TLS delegate)
 
     private func fetchVLilleStations() {
+        let requestId = currentRequestId
         guard let url = currentCity.provider.statusURL else {
             errorMessage = String(localized: "error_invalid_url")
             isLoading = false
@@ -70,21 +79,22 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
         }
         session?.dataTask(with: url) { [weak self] data, _, error in
             DispatchQueue.main.async {
-                self?.isLoading = false
+                guard let self, self.currentRequestId == requestId else { return }
+                self.isLoading = false
                 if error != nil {
-                    self?.errorMessage = String(localized: "error_network")
+                    self.errorMessage = String(localized: "error_network")
                     return
                 }
                 guard let data else {
-                    self?.errorMessage = String(localized: "error_data_unavailable")
+                    self.errorMessage = String(localized: "error_data_unavailable")
                     return
                 }
                 do {
                     let resp = try JSONDecoder().decode(VLilleFeatureCollection.self, from: data)
-                    self?.stations = resp.features.map { $0.properties.toBikeStation() }
-                    self?.lastUpdated = Date()
+                    self.stations = resp.features.map { $0.properties.toBikeStation() }
+                    self.lastUpdated = Date()
                 } catch {
-                    self?.errorMessage = String(localized: "error_decoding")
+                    self.errorMessage = String(localized: "error_decoding")
                 }
             }
         }.resume()
@@ -93,17 +103,20 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     // MARK: - Generic GBFS (Vélib Paris + JCDecaux CycloCity)
 
     private func fetchGBFSStations(infoURL: URL, statusURL: URL) {
+        let requestId = currentRequestId
+        
         if session == nil {
             session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         }
         guard let session else { return }
         Task { [weak self] in
-            guard let self else { return }
+            guard let self, self.currentRequestId == requestId else { return }
             do {
                 async let infoReq   = session.data(from: infoURL)
                 async let statusReq = session.data(from: statusURL)
                 let (infoData, _)   = try await infoReq
                 let (statusData, _) = try await statusReq
+                guard self.currentRequestId == requestId else { return }
                 let infoResp   = try JSONDecoder().decode(GBFSInfoResponse.self,   from: infoData)
                 let statusResp = try JSONDecoder().decode(GBFSStatusResponse.self, from: statusData)
                 let statusMap  = Dictionary(uniqueKeysWithValues: statusResp.data.stations.map { ($0.stationId, $0) })
@@ -112,14 +125,15 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                     guard let status = statusMap[info.stationId] else { return nil }
                     return status.toBikeStation(info: info, cityId: cityId)
                 }
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentRequestId == requestId else { return }
                     self.isLoading   = false
                     self.stations    = stations
                     self.lastUpdated = Date()
                 }
             } catch {
-                print("❌ [GBFS] \(currentCity.name) — \(error)")
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentRequestId == requestId else { return }
                     self.isLoading    = false
                     self.errorMessage = String(localized: "error_network")
                 }
@@ -130,25 +144,29 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     // MARK: - CityBike
 
     private func fetchCitybikeStations(url: URL) {
+        let requestId = currentRequestId
+        
         if session == nil {
             session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         }
         guard let session else { return }
         Task { [weak self] in
-            guard let self else { return }
+            guard let self, self.currentRequestId == requestId else { return }
             do {
                 let (data, _) = try await session.data(from: url)
+                guard self.currentRequestId == requestId else { return }
                 let response = try JSONDecoder().decode(CitybikeStationResponse.self, from: data)
                 let cityId = currentCity.id
                 let stations = response.network.stations.map { $0.toBikeStation(cityId: cityId) }
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentRequestId == requestId else { return }
                     self.isLoading = false
                     self.stations = stations
                     self.lastUpdated = Date()
                 }
             } catch {
-                print("❌ [CityBike] \(currentCity.name) — \(error)")
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self, self.currentRequestId == requestId else { return }
                     self.isLoading = false
                     self.errorMessage = String(localized: "error_network")
                 }
