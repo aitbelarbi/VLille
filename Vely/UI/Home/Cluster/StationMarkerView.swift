@@ -28,7 +28,7 @@ struct StationMarkerView: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .foregroundStyle(.white)
-                .background(markerColor)
+                .background(markerColor.opacity(0.80))
 
                 Rectangle()
                     .fill(.white.opacity(0.3))
@@ -43,7 +43,7 @@ struct StationMarkerView: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .foregroundStyle(.white)
-                .background(markerColor.opacity(0.75))
+                .background(markerColor.opacity(0.80))
             }
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.25), radius: 3, x: 0, y: 2)

@@ -30,9 +30,9 @@ struct ClusterMarkerView: View {
                         .foregroundStyle(.white)
                         HStack(spacing: 2) {
                             Image(systemName: "parkingsign")
-                                .font(.system(size: 7, weight: .medium))
+                                .font(.system(size: 8, weight: .bold))
                             Text("\(cluster.totalDocks)")
-                                .font(.system(size: 9, weight: .medium))
+                                .font(.system(size: 12, weight: .bold))
                         }
                         .foregroundStyle(.white.opacity(0.85))
                     }
