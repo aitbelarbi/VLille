@@ -19,6 +19,14 @@ struct SettingsView: View {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     }
 
+    var preferredColorScheme: ColorScheme? {
+        switch colorSchemePreference {
+        case "light": return .light
+        case "dark":  return .dark
+        default:      return nil
+        }
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -95,6 +103,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .preferredColorScheme(preferredColorScheme)
     }
 }
 

@@ -90,7 +90,7 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
             isLoading = false
             return
         }
-        Task { [weak self] in
+        Task {
             do {
                 async let infoReq = URLSession.shared.data(from: infoURL)
                 async let statusReq = URLSession.shared.data(from: statusURL)
@@ -105,13 +105,13 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                     guard let status = statusMap[info.stationId] else { return nil }
                     return status.toBikeStation(info: info)
                 }
-                await MainActor.run {
+                await MainActor.run { [weak self] in
                     self?.isLoading = false
                     self?.stations = stations
                     self?.lastUpdated = Date()
                 }
             } catch {
-                await MainActor.run {
+                await MainActor.run { [weak self] in
                     self?.isLoading = false
                     self?.errorMessage = String(localized: "error_network")
                 }
