@@ -5,19 +5,29 @@ struct OnboardingView: View {
     @Environment(CityStore.self) var cityStore
     @State private var selectedCity: City = .lille
     @State private var searchText: String = ""
+    @State private var selectedCountryCode: String? = nil
 
-    private let featuredIds = ["paris", "lyon", "toulouse", "nantes", "bruxelles", "dublin"]
-
-    private var filteredCities: [City] {
-        guard !searchText.isEmpty else { return City.all }
-        let q = searchText.lowercased()
-        return City.all.filter {
-            $0.name.lowercased().contains(q) || $0.serviceName.lowercased().contains(q)
-        }
+    private var availableCountries: [(code: String, name: String, count: Int)] {
+        let grouped = Dictionary(grouping: cityStore.cities, by: \.countryCode)
+        return grouped.map { (code: $0.key, name: Locale.current.localizedString(forRegionCode: $0.key) ?? $0.key, count: $0.value.count) }
+            .sorted { $0.count > $1.count }
     }
 
-    private var featuredCities: [City] {
-        featuredIds.compactMap { id in City.all.first { $0.id == id } }
+    private var filteredCities: [City] {
+        var base = cityStore.cities
+        if let country = selectedCountryCode {
+            base = base.filter { $0.countryCode == country }
+        }
+        if !searchText.isEmpty {
+            let q = searchText.lowercased()
+            base = base.filter {
+                $0.name.lowercased().contains(q) ||
+                $0.localizedName.lowercased().contains(q) ||
+                $0.serviceName.lowercased().contains(q) ||
+                $0.countryName.lowercased().contains(q)
+            }
+        }
+        return base
     }
 
     var body: some View {
@@ -25,7 +35,7 @@ struct OnboardingView: View {
             Rectangle().fill(.ultraThinMaterial).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header — gradient en background, hauteur définie par le contenu
+                // Header
                 VStack(spacing: 10) {
                     Image(systemName: "bicycle.circle.fill")
                         .font(.system(size: 52))
@@ -66,37 +76,40 @@ struct OnboardingView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-                        // Popular chips — only when not searching
+                        // Country chips — only when not searching
                         if searchText.isEmpty {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Populaires")
-                                    .font(.caption.weight(.semibold))
-                                    .foregroundStyle(.secondary)
-                                    .padding(.horizontal, 16)
-
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 8) {
-                                        ForEach(featuredCities) { city in
-                                            Button {
-                                                withAnimation(.spring(response: 0.3)) { selectedCity = city }
-                                            } label: {
-                                                Text("\(city.countryFlag) \(city.localizedName)")
-                                                    .font(.subheadline.weight(.medium))
-                                                    .padding(.horizontal, 14)
-                                                    .padding(.vertical, 7)
-                                                    .background(
-                                                        selectedCity.id == city.id
-                                                            ? AnyShapeStyle(Color.indigo)
-                                                            : AnyShapeStyle(.regularMaterial),
-                                                        in: Capsule()
-                                                    )
-                                                    .foregroundStyle(selectedCity.id == city.id ? .white : .primary)
-                                            }
-                                            .buttonStyle(.plain)
-                                        }
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 8) {
+                                    Button {
+                                        withAnimation(.spring(response: 0.3)) { selectedCountryCode = nil }
+                                    } label: {
+                                        Text("🌍")
+                                            .font(.subheadline.weight(.medium))
+                                            .padding(.horizontal, 14).padding(.vertical, 7)
+                                            .background(selectedCountryCode == nil ? AnyShapeStyle(Color.indigo) : AnyShapeStyle(.regularMaterial), in: Capsule())
+                                            .foregroundStyle(selectedCountryCode == nil ? .white : .primary)
                                     }
-                                    .padding(.horizontal, 16)
+                                    .buttonStyle(.plain)
+
+                                    ForEach(availableCountries, id: \.code) { country in
+                                        Button {
+                                            withAnimation(.spring(response: 0.3)) {
+                                                selectedCountryCode = selectedCountryCode == country.code ? nil : country.code
+                                            }
+                                        } label: {
+                                            Text(country.code.flagEmoji)
+                                                .font(.subheadline.weight(.medium))
+                                                .padding(.horizontal, 14).padding(.vertical, 7)
+                                                .background(
+                                                    selectedCountryCode == country.code ? AnyShapeStyle(Color.indigo) : AnyShapeStyle(.regularMaterial),
+                                                    in: Capsule()
+                                                )
+                                                .foregroundStyle(selectedCountryCode == country.code ? .white : .primary)
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
                                 }
+                                .padding(.horizontal, 16)
                             }
                         }
 
@@ -136,11 +149,20 @@ struct OnboardingView: View {
                                 }
                                 .buttonStyle(.plain)
                             }
+
+                            if cityStore.isLoadingCities {
+                                HStack(spacing: 8) {
+                                    ProgressView()
+                                    Text("Chargement des villes...")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .padding()
+                            }
                         }
                         .background(.background, in: RoundedRectangle(cornerRadius: 14))
                         .padding(.horizontal, 16)
 
-                        // Bottom padding so list clears the CTA button
                         Color.clear.frame(height: 80)
                     }
                     .padding(.top, 8)
@@ -177,7 +199,7 @@ struct OnboardingView: View {
         let manager = CLLocationManager()
         guard manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways,
               let location = manager.location else { return }
-        let nearest = City.all.min {
+        let nearest = cityStore.cities.min {
             location.distance(from: CLLocation(latitude: $0.latitude, longitude: $0.longitude)) <
             location.distance(from: CLLocation(latitude: $1.latitude, longitude: $1.longitude))
         }

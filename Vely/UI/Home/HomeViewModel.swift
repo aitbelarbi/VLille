@@ -46,6 +46,12 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                 return
             }
             fetchGBFSStations(infoURL: infoURL, statusURL: statusURL)
+        case .citybike:
+            guard let statusURL = currentCity.provider.statusURL else {
+                isLoading = false
+                return
+            }
+            fetchCitybikeStations(url: statusURL)
         }
     }
 
@@ -115,6 +121,35 @@ class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                 print("❌ [GBFS] \(currentCity.name) — \(error)")
                 await MainActor.run {
                     self.isLoading    = false
+                    self.errorMessage = String(localized: "error_network")
+                }
+            }
+        }
+    }
+
+    // MARK: - CityBike
+
+    private func fetchCitybikeStations(url: URL) {
+        if session == nil {
+            session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        }
+        guard let session else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let (data, _) = try await session.data(from: url)
+                let response = try JSONDecoder().decode(CitybikeStationResponse.self, from: data)
+                let cityId = currentCity.id
+                let stations = response.network.stations.map { $0.toBikeStation(cityId: cityId) }
+                await MainActor.run {
+                    self.isLoading = false
+                    self.stations = stations
+                    self.lastUpdated = Date()
+                }
+            } catch {
+                print("❌ [CityBike] \(currentCity.name) — \(error)")
+                await MainActor.run {
+                    self.isLoading = false
                     self.errorMessage = String(localized: "error_network")
                 }
             }

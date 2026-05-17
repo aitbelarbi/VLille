@@ -31,6 +31,7 @@ struct VelyApp: App {
                 .environment(cityStore)
                 .preferredColorScheme(preferredColorScheme)
                 .environment(\.locale, appLocale.isEmpty ? .current : Locale(identifier: appLocale))
+                .task { await cityStore.loadCitybikeNetworks() }
         }
     }
 }
