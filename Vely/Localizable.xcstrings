@@ -296,6 +296,7 @@
       }
     },
     "error_data_unavailable" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -330,6 +331,7 @@
       }
     },
     "error_decoding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -364,6 +366,7 @@
       }
     },
     "error_invalid_url" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
