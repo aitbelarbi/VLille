@@ -1,10 +1,13 @@
 import SwiftUI
 import StoreKit
+import MessageUI
 
 struct RatingPromptView: View {
     @Environment(\.requestReview) private var requestReview
     @Environment(\.openURL) private var openURL
     @Environment(RatingManager.self) private var ratingManager
+
+    @State private var showMailComposer = false
 
     var body: some View {
         VStack(spacing: 28) {
@@ -43,7 +46,7 @@ struct RatingPromptView: View {
 
                 Button {
                     ratingManager.userWantsToGiveFeedback()
-                    openFeedbackEmail()
+                    sendFeedback()
                 } label: {
                     Text("rating_cta_negative")
                         .font(.body.weight(.semibold))
@@ -59,17 +62,28 @@ struct RatingPromptView: View {
         .presentationDetents([.height(400)])
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(24)
+        .sheet(isPresented: $showMailComposer) {
+            MailComposeView(
+                recipient: "contact@velyapp.com",
+                subject: "[Retour Utilisateur] Suggestions pour Vely",
+                onDismiss: { showMailComposer = false }
+            )
+            .ignoresSafeArea()
+        }
     }
 
-    private func openFeedbackEmail() {
-        var components = URLComponents()
-        components.scheme = "mailto"
-        components.path = "contact@velyapp.com"
-        components.queryItems = [
-            URLQueryItem(name: "subject", value: "[Retour Utilisateur] Suggestions pour Vely")
-        ]
-        if let url = components.url {
-            openURL(url)
+    private func sendFeedback() {
+        if MFMailComposeViewController.canSendMail() {
+            showMailComposer = true
+        } else {
+            // Fallback : ouvre l'app Mail ou un client tiers
+            var components = URLComponents()
+            components.scheme = "mailto"
+            components.path = "contact@velyapp.com"
+            components.queryItems = [
+                URLQueryItem(name: "subject", value: "[Retour Utilisateur] Suggestions pour Vely")
+            ]
+            if let url = components.url { openURL(url) }
         }
     }
 }
