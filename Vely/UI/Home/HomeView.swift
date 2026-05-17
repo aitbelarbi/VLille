@@ -6,8 +6,10 @@ struct MapView: View {
     @Environment(FavoritesStore.self) var favoritesStore
     @Environment(LocationManager.self) var locationManager
     @Environment(CityStore.self) var cityStore
+    @Environment(WeatherManager.self) var weatherManager
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: BikeStation?
+    @State private var showWeatherDetail = false
     @State private var currentRoute: MKRoute?
     @State private var isCalculatingRoute = false
     @State private var hascenteredOnUser = false
@@ -110,6 +112,9 @@ struct MapView: View {
                         }
                         .scaleEffect(showOnlyAvailable ? 1.03 : 1.0)
                         Spacer()
+                        WeatherBadgeView(weather: weatherManager) {
+                            showWeatherDetail = true
+                        }
                     }
                     .padding(.horizontal, 12)
                     .padding(.top, 8)
@@ -237,6 +242,18 @@ struct MapView: View {
                             viewModel.switchCity(to: cityStore.selectedCity)
                         }
                     }
+            }
+            .sheet(isPresented: $showWeatherDetail) {
+                WeatherDetailView(weather: weatherManager)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            }
+            .task(id: cityStore.selectedCity.id) {
+                await weatherManager.fetch(
+                    latitude: cityStore.selectedCity.latitude,
+                    longitude: cityStore.selectedCity.longitude,
+                    cityId: cityStore.selectedCity.id
+                )
             }
             .onAppear {
                 locationManager.requestLocationPermission()
