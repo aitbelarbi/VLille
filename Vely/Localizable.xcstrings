@@ -159,6 +159,42 @@
         }
       }
     },
+    "ghost_city_title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No stations found" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se encontraron estaciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune station trouvée" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Nessuna stazione trovata" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Nenhuma estação encontrada" } }
+      }
+    },
+    "ghost_city_subtitle" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ doesn't seem to have any stations available. Want to let us know so we can look into it?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%@ no parece tener estaciones disponibles. ¿Quieres avisarnos para que podamos investigarlo?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%@ ne semble pas avoir de stations disponibles. Tu veux nous le signaler pour qu'on puisse investiguer ?" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "%@ non sembra avere stazioni disponibili. Vuoi segnalarcelo così possiamo verificare?" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "%@ não parece ter estações disponíveis. Queres avisar-nos para que possamos verificar?" } }
+      }
+    },
+    "ghost_city_contact" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Contact us" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contactarnos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nous contacter" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Contattaci" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Contactar-nos" } }
+      }
+    },
+    "ghost_city_dismiss" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dismiss" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ignorar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignorer" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Ignora" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Ignorar" } }
+      }
+    },
     "common_cancel" : {
       "localizations" : {
         "en" : {

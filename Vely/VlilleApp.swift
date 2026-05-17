@@ -14,6 +14,7 @@ struct VelyApp: App {
     @State private var cityStore = CityStore()
     @State private var ratingManager = RatingManager()
     @State private var weatherManager = WeatherManager()
+    @State private var ghostCityManager = GhostCityManager()
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
 
@@ -33,6 +34,7 @@ struct VelyApp: App {
                 .environment(cityStore)
                 .environment(ratingManager)
                 .environment(weatherManager)
+                .environment(ghostCityManager)
                 .preferredColorScheme(preferredColorScheme)
                 .environment(\.locale, appLocale.isEmpty ? .current : Locale(identifier: appLocale))
                 .task {
