@@ -11,9 +11,9 @@ import MapKit
 struct FavoritesView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
-    @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
-    @State private var selectedStation: BikeStation?
+    @Binding var selectedTab: Int
+    @Binding var selectedStation: BikeStation?
 
     var favoriteStations: [BikeStation] {
         viewModel.stations.filter { favoritesStore.isFavorite($0) }
@@ -40,11 +40,6 @@ struct FavoritesView: View {
                 }
             }
             .navigationTitle("tab_favorites")
-            .sheet(item: $selectedStation) { station in
-                StationDetailView(station: station)
-                    .presentationDetents([.height(340)])
-                    .presentationDragIndicator(.visible)
-            }
         }
     }
 
@@ -55,6 +50,7 @@ struct FavoritesView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
             )
         )
+        selectedStation = station
         selectedTab = 0
     }
 }

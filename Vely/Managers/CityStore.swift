@@ -70,9 +70,14 @@ class CityStore: NSObject, URLSessionDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
+#if DEBUG
+        // Zscaler corporate proxy intercepts TLS — bypass validation in dev only
         var error: CFError?
         SecTrustEvaluateWithError(trust, &error)
         completionHandler(.useCredential, URLCredential(trust: trust))
+#else
+        completionHandler(.performDefaultHandling, nil)
+#endif
     }
 
     @MainActor

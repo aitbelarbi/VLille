@@ -12,6 +12,7 @@ struct MainTabView: View {
     @State private var viewModel = HomeViewModel()
     @Environment(CityStore.self) var cityStore
     @State private var selectedTab = 0
+    @State private var selectedStation: BikeStation?
     @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 50.6292, longitude: 3.0573),
@@ -23,11 +24,11 @@ struct MainTabView: View {
         ZStack {
             TabView(selection: $selectedTab) {
                 Tab("tab_map", systemImage: "map", value: 0) {
-                    MapView(viewModel: viewModel, cameraPosition: $cameraPosition)
+                    MapView(viewModel: viewModel, cameraPosition: $cameraPosition, selectedStation: $selectedStation)
                 }
                 if selectedTab != 2 {
                     Tab("tab_favorites", systemImage: "star", value: 1) {
-                        FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
+                        FavoritesView(viewModel: viewModel, cameraPosition: $cameraPosition, selectedTab: $selectedTab, selectedStation: $selectedStation)
                     }
                 }
                 Tab("tab_search", systemImage: "magnifyingglass", value: 2, role: .search) {

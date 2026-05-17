@@ -3,6 +3,7 @@ import CoreLocation
 
 struct OnboardingView: View {
     @Environment(CityStore.self) var cityStore
+    @Environment(LocationManager.self) var locationManager
     @State private var selectedCity: City = .lille
     @State private var searchText: String = ""
     @State private var selectedCountryCode: String? = nil
@@ -153,7 +154,7 @@ struct OnboardingView: View {
                             if cityStore.isLoadingCities {
                                 HStack(spacing: 8) {
                                     ProgressView()
-                                    Text("Chargement des villes...")
+                                    Text("onboarding_loading_cities")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -196,9 +197,8 @@ struct OnboardingView: View {
     }
 
     private func autoSelectNearestCity() async {
-        let manager = CLLocationManager()
-        guard manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways,
-              let location = manager.location else { return }
+        guard locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .authorizedAlways,
+              let location = locationManager.userLocation else { return }
         let nearest = cityStore.cities.min {
             location.distance(from: CLLocation(latitude: $0.latitude, longitude: $0.longitude)) <
             location.distance(from: CLLocation(latitude: $1.latitude, longitude: $1.longitude))
@@ -213,5 +213,6 @@ struct OnboardingView: View {
 #Preview {
     OnboardingView()
         .environment(CityStore())
+        .environment(LocationManager())
 }
 

@@ -1,179 +1,42 @@
-//
-//  HomeViewModel.swift
-//  Vlille
-//
-//  Created by Mohamed Amine AIT BELARBI on 13/02/2025.
-//
-
 import Foundation
 import Observation
 
 @Observable
-class HomeViewModel: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
+@MainActor
+class HomeViewModel {
     var stations: [BikeStation] = []
     var isLoading = false
     var errorMessage: String?
     var lastUpdated: Date?
     var currentCity: City = .lille
 
-    @ObservationIgnored private var session: URLSession?
+    private let repository = StationRepository()
 
     func switchCity(to city: City) {
         currentCity = city
         stations = []
         errorMessage = nil
-        fetchStations()
+        Task { await loadStations() }
     }
 
     func startAutoRefresh() async {
-        fetchStations()
         while !Task.isCancelled {
             try? await Task.sleep(for: .seconds(30))
             guard !Task.isCancelled else { break }
-            fetchStations()
-        }
-    }
-
-    func fetchStations() {
-        isLoading = true
-        switch currentCity.provider {
-        case .vlille:
-            fetchVLilleStations()
-        case .velib, .jcdecaux:
-            guard let infoURL = currentCity.provider.infoURL,
-                  let statusURL = currentCity.provider.statusURL else {
-                isLoading = false
-                return
-            }
-            fetchGBFSStations(infoURL: infoURL, statusURL: statusURL)
-        case .citybike:
-            guard let statusURL = currentCity.provider.statusURL else {
-                isLoading = false
-                return
-            }
-            fetchCitybikeStations(url: statusURL)
+            await loadStations()
         }
     }
 
     func dismissError() { errorMessage = nil }
 
-    // MARK: - Lille (GeoJSON + TLS delegate)
-
-    private func fetchVLilleStations() {
-        guard let url = currentCity.provider.statusURL else {
-            errorMessage = String(localized: "error_invalid_url")
-            isLoading = false
-            return
+    private func loadStations() async {
+        isLoading = true
+        do {
+            stations = try await repository.fetch(city: currentCity)
+            lastUpdated = Date()
+        } catch {
+            errorMessage = String(localized: "error_network")
         }
-        if session == nil {
-            session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        }
-        session?.dataTask(with: url) { [weak self] data, _, error in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                if error != nil {
-                    self?.errorMessage = String(localized: "error_network")
-                    return
-                }
-                guard let data else {
-                    self?.errorMessage = String(localized: "error_data_unavailable")
-                    return
-                }
-                do {
-                    let resp = try JSONDecoder().decode(VLilleFeatureCollection.self, from: data)
-                    self?.stations = resp.features.map { $0.properties.toBikeStation() }
-                    self?.lastUpdated = Date()
-                } catch {
-                    self?.errorMessage = String(localized: "error_decoding")
-                }
-            }
-        }.resume()
-    }
-
-    // MARK: - Generic GBFS (Vélib Paris + JCDecaux CycloCity)
-
-    private func fetchGBFSStations(infoURL: URL, statusURL: URL) {
-        if session == nil {
-            session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        }
-        guard let session else { return }
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                async let infoReq   = session.data(from: infoURL)
-                async let statusReq = session.data(from: statusURL)
-                let (infoData, _)   = try await infoReq
-                let (statusData, _) = try await statusReq
-                let infoResp   = try JSONDecoder().decode(GBFSInfoResponse.self,   from: infoData)
-                let statusResp = try JSONDecoder().decode(GBFSStatusResponse.self, from: statusData)
-                let statusMap  = Dictionary(uniqueKeysWithValues: statusResp.data.stations.map { ($0.stationId, $0) })
-                let cityId     = currentCity.id
-                let stations   = infoResp.data.stations.compactMap { info -> BikeStation? in
-                    guard let status = statusMap[info.stationId] else { return nil }
-                    return status.toBikeStation(info: info, cityId: cityId)
-                }
-                await MainActor.run {
-                    self.isLoading   = false
-                    self.stations    = stations
-                    self.lastUpdated = Date()
-                }
-            } catch {
-                print("❌ [GBFS] \(currentCity.name) — \(error)")
-                await MainActor.run {
-                    self.isLoading    = false
-                    self.errorMessage = String(localized: "error_network")
-                }
-            }
-        }
-    }
-
-    // MARK: - CityBike
-
-    private func fetchCitybikeStations(url: URL) {
-        if session == nil {
-            session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        }
-        guard let session else { return }
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let (data, _) = try await session.data(from: url)
-                let response = try JSONDecoder().decode(CitybikeStationResponse.self, from: data)
-                let cityId = currentCity.id
-                let stations = response.network.stations.map { $0.toBikeStation(cityId: cityId) }
-                await MainActor.run {
-                    self.isLoading = false
-                    self.stations = stations
-                    self.lastUpdated = Date()
-                }
-            } catch {
-                print("❌ [CityBike] \(currentCity.name) — \(error)")
-                await MainActor.run {
-                    self.isLoading = false
-                    self.errorMessage = String(localized: "error_network")
-                }
-            }
-        }
-    }
-
-    // MARK: - URLSessionDelegate (TLS bypass for Lille / corporate proxy)
-
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        handleChallenge(challenge, completionHandler: completionHandler)
-    }
-
-    func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        handleChallenge(challenge, completionHandler: completionHandler)
-    }
-
-    private func handleChallenge(_ challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-              let trust = challenge.protectionSpace.serverTrust else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        var error: CFError?
-        SecTrustEvaluateWithError(trust, &error)
-        completionHandler(.useCredential, URLCredential(trust: trust))
+        isLoading = false
     }
 }

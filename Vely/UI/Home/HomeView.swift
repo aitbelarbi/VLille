@@ -7,7 +7,7 @@ struct MapView: View {
     @Environment(LocationManager.self) var locationManager
     @Environment(CityStore.self) var cityStore
     @Binding var cameraPosition: MapCameraPosition
-    @State private var selectedStation: BikeStation?
+    @Binding var selectedStation: BikeStation?
     @State private var currentRoute: MKRoute?
     @State private var isCalculatingRoute = false
     @State private var hascenteredOnUser = false
