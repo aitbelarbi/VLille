@@ -1895,5 +1895,141 @@
       }
     }
   },
+  "rating_cta_negative" : {
+    "localizations" : {
+      "en" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Meh, I have suggestions / it bugs 💬"
+        }
+      },
+      "es" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Más o menos, tengo sugerencias / hay errores 💬"
+        }
+      },
+      "fr" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Bof, j'ai des suggestions / ça bug 💬"
+        }
+      },
+      "it" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Così così, ho suggerimenti / ci sono bug 💬"
+        }
+      },
+      "pt" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Mais ou menos, tenho sugestões / tem bugs 💬"
+        }
+      }
+    }
+  },
+  "rating_cta_positive" : {
+    "localizations" : {
+      "en" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Yes, I love it! 🚲"
+        }
+      },
+      "es" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "¡Sí, me encanta! 🚲"
+        }
+      },
+      "fr" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Oui, j'adore ! 🚲"
+        }
+      },
+      "it" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Sì, la adoro! 🚲"
+        }
+      },
+      "pt" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Sim, adoro! 🚲"
+        }
+      }
+    }
+  },
+  "rating_subtitle" : {
+    "localizations" : {
+      "en" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Your feedback helps us improve the app for everyone."
+        }
+      },
+      "es" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Tu opinión nos ayuda a mejorar la app para todos."
+        }
+      },
+      "fr" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Ton avis nous aide à améliorer l'app pour tout le monde."
+        }
+      },
+      "it" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Il tuo feedback ci aiuta a migliorare l'app per tutti."
+        }
+      },
+      "pt" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "O teu feedback ajuda-nos a melhorar a app para todos."
+        }
+      }
+    }
+  },
+  "rating_title" : {
+    "localizations" : {
+      "en" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Do you enjoy Vely?"
+        }
+      },
+      "es" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "¿Disfrutas de Vely?"
+        }
+      },
+      "fr" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Tu apprécies Vely ?"
+        }
+      },
+      "it" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Ti piace Vely?"
+        }
+      },
+      "pt" : {
+        "stringUnit" : {
+          "state" : "translated",
+          "value" : "Gostas da Vely?"
+        }
+      }
+    }
+  },
   "version" : "1.0"
 }

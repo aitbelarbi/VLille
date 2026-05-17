@@ -11,6 +11,7 @@ import MapKit
 struct MainTabView: View {
     @State private var viewModel = HomeViewModel()
     @Environment(CityStore.self) var cityStore
+    @Environment(RatingManager.self) var ratingManager
     @State private var selectedTab = 0
     @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
@@ -58,5 +59,11 @@ struct MainTabView: View {
             }
         }
         .animation(.easeInOut, value: cityStore.hasCompletedOnboarding)
+        .sheet(isPresented: Binding(
+            get: { ratingManager.shouldShowPrompt },
+            set: { if !$0 { ratingManager.dismissWithoutAction() } }
+        )) {
+            RatingPromptView()
+        }
     }
 }

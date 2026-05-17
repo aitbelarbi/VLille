@@ -14,6 +14,7 @@ struct StationDetailView: View {
     let onRouteRequest: (() -> Void)?
     @Environment(FavoritesStore.self) var favoritesStore
     @Environment(LocationManager.self) var locationManager
+    @Environment(RatingManager.self) var ratingManager
     @Environment(\.openURL) private var openURL
     @State private var showMapAppPicker = false
     @State private var showLocationDeniedAlert = false
@@ -59,7 +60,9 @@ struct StationDetailView: View {
                 }
                 Spacer()
                 Button {
-                    favoritesStore.toggle(station)
+                    if favoritesStore.toggle(station) {
+                        ratingManager.recordFavoriteAdded()
+                    }
                 } label: {
                     Image(systemName: favoritesStore.isFavorite(station) ? "star.fill" : "star")
                         .font(.title2)

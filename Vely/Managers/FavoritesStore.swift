@@ -20,12 +20,15 @@ class FavoritesStore {
         favoriteIDs.contains(station.id)
     }
 
-    func toggle(_ station: BikeStation) {
-        if favoriteIDs.contains(station.id) {
-            favoriteIDs.remove(station.id)
-        } else {
+    @discardableResult
+    func toggle(_ station: BikeStation) -> Bool {
+        let wasAdded = !favoriteIDs.contains(station.id)
+        if wasAdded {
             favoriteIDs.insert(station.id)
+        } else {
+            favoriteIDs.remove(station.id)
         }
         UserDefaults.standard.set(Array(favoriteIDs), forKey: key)
+        return wasAdded
     }
 }
