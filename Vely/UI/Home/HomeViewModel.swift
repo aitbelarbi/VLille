@@ -8,15 +8,20 @@ class HomeViewModel {
     var isLoading = false
     var errorMessage: String?
     var lastUpdated: Date?
-    var currentCity: City = .lille
 
+    private let cityStore: CityStore
     private let repository = StationRepository()
 
+    var currentCity: City { cityStore.selectedCity }
+
+    init(cityStore: CityStore) {
+        self.cityStore = cityStore
+    }
+
     func switchCity(to city: City) {
-        currentCity = city
+        cityStore.selectCity(city)
         stations = []
         errorMessage = nil
-        Task { await loadStations() }
     }
 
     func startAutoRefresh() async {

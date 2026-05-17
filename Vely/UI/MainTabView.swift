@@ -9,8 +9,12 @@ import SwiftUI
 import MapKit
 
 struct MainTabView: View {
-    @State private var viewModel = HomeViewModel()
+    @State private var viewModel: HomeViewModel
     @Environment(CityStore.self) var cityStore
+
+    init(viewModel: HomeViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
     @State private var selectedTab = 0
     @State private var selectedStation: BikeStation?
     @State private var cameraPosition: MapCameraPosition = .region(
@@ -40,7 +44,6 @@ struct MainTabView: View {
                     center: cityStore.selectedCity.coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 ))
-                viewModel.currentCity = cityStore.selectedCity
                 await viewModel.startAutoRefresh()
             }
             .onChange(of: cityStore.selectedCity) { _, newCity in

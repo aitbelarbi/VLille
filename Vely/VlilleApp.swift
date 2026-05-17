@@ -11,9 +11,16 @@ import SwiftUI
 struct VelyApp: App {
     @State private var favoritesStore = FavoritesStore()
     @State private var locationManager = LocationManager()
-    @State private var cityStore = CityStore()
+    @State private var cityStore: CityStore
+    @State private var homeViewModel: HomeViewModel
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
+
+    init() {
+        let cs = CityStore()
+        _cityStore = State(initialValue: cs)
+        _homeViewModel = State(initialValue: HomeViewModel(cityStore: cs))
+    }
 
     var preferredColorScheme: ColorScheme? {
         switch colorSchemePreference {
@@ -25,7 +32,7 @@ struct VelyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            MainTabView(viewModel: homeViewModel)
                 .environment(favoritesStore)
                 .environment(locationManager)
                 .environment(cityStore)
