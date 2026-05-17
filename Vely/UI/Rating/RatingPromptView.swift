@@ -60,7 +60,8 @@ struct RatingPromptView: View {
         }
         .padding(28)
         .presentationDetents([.height(400)])
-        .presentationDragIndicator(.visible)
+        .presentationDragIndicator(.hidden)
+        .interactiveDismissDisabled(true)
         .presentationCornerRadius(24)
         .sheet(isPresented: $showMailComposer) {
             MailComposeView(
