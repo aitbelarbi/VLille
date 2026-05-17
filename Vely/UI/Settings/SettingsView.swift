@@ -32,20 +32,15 @@ struct SettingsView: View {
             Form {
                 // City
                 Section(LocalizedStringKey("settings_section_city")) {
-                    ForEach(City.all) { city in
-                        Button {
-                            cityStore.selectCity(city)
-                        } label: {
-                            HStack {
-                                Text(city.name)
-                                    .foregroundStyle(.primary)
-                                Spacer()
-                                if cityStore.selectedCity.id == city.id {
-                                    Image(systemName: "checkmark")
-                                        .foregroundStyle(.indigo)
-                                        .fontWeight(.semibold)
-                                }
-                            }
+                    NavigationLink {
+                        CityPickerView()
+                            .environment(cityStore)
+                    } label: {
+                        HStack {
+                            Label(LocalizedStringKey("settings_section_city"), systemImage: "mappin.circle.fill")
+                            Spacer()
+                            Text("\(cityStore.selectedCity.countryFlag) \(cityStore.selectedCity.name)")
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }
