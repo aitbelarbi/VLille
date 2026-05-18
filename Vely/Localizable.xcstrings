@@ -63,6 +63,38 @@
         }
       }
     },
+    "banner_widget_subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Track your favorite stations without opening the app"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivez vos stations favorites sans ouvrir l'app"
+          }
+        }
+      }
+    },
+    "banner_widget_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home Screen Widgets"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgets sur l'écran d'accueil"
+          }
+        }
+      }
+    },
     "Chargement des villes..." : {
 
     },
@@ -476,6 +508,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sem favoritos"
+          }
+        }
+      }
+    },
+    "favorites_widget_section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widget"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widget"
           }
         }
       }
@@ -1331,6 +1379,214 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escolha sua cidade"
+          }
+        }
+      }
+    },
+    "paywall_error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase failed. Please try again."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'achat a échoué. Réessayez."
+          }
+        }
+      }
+    },
+    "paywall_feature_refresh_desc" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh data without opening the app"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données fraîches sans ouvrir l'application"
+          }
+        }
+      }
+    },
+    "paywall_feature_refresh_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic refresh"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mise à jour automatique"
+          }
+        }
+      }
+    },
+    "paywall_feature_stations_desc" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your 2 favorite stations always visible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos 2 stations préférées toujours visibles"
+          }
+        }
+      }
+    },
+    "paywall_feature_stations_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick access to favorites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accès rapide aux favoris"
+          }
+        }
+      }
+    },
+    "paywall_feature_widget_desc" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 stations in real time on your screen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 stations en temps réel sur votre écran"
+          }
+        }
+      }
+    },
+    "paywall_feature_widget_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home screen widgets"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widgets écran d'accueil"
+          }
+        }
+      }
+    },
+    "paywall_month" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "month"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mois"
+          }
+        }
+      }
+    },
+    "paywall_restore" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurer les achats"
+          }
+        }
+      }
+    },
+    "paywall_subscribe %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe · %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'abonner · %@"
+          }
+        }
+      }
+    },
+    "paywall_subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access widgets and stay connected to your favorite stations"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accédez aux widgets et restez connecté à vos stations favorites"
+          }
+        }
+      }
+    },
+    "paywall_terms" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monthly subscription, automatically renewed. Cancel anytime from Settings."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonnement mensuel, renouvelé automatiquement. Annulable à tout moment depuis les réglages."
+          }
+        }
+      }
+    },
+    "paywall_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vely Premium"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vely Premium"
           }
         }
       }
@@ -2287,6 +2543,10 @@
         }
       }
     },
+    "W%lld" : {
+      "comment" : "A badge indicating the current weather warning.",
+      "isCommentAutoGenerated" : true
+    },
     "weather_data_source" : {
       "localizations" : {
         "en" : {
@@ -2488,6 +2748,103 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vento"
+          }
+        }
+      }
+    },
+    "widget_slot_empty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a station"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir une station"
+          }
+        }
+      }
+    },
+    "widget_slot_no_live" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City not active"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ville non active"
+          }
+        }
+      }
+    },
+    "widget_slot_pick_section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My favorites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mes favoris"
+          }
+        }
+      }
+    },
+    "widget_slot_remove" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from widget"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer du widget"
+          }
+        }
+      }
+    },
+    "widget_slot_title %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slot W%lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slot W%lld"
+          }
+        }
+      }
+    },
+    "widget_unlock_cta" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock widgets · Premium"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer les widgets · Premium"
           }
         }
       }

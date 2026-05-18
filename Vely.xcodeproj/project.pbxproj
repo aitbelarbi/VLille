@@ -6,11 +6,64 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		09EA44EE2FBBBBE300E52314 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09EA44ED2FBBBBE300E52314 /* WidgetKit.framework */; };
+		09EA44F02FBBBBE300E52314 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09EA44EF2FBBBBE300E52314 /* SwiftUI.framework */; };
+		09EA45012FBBBBE300E52314 /* VelyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 09EA44EB2FBBBBE200E52314 /* VelyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		09EA44FF2FBBBBE300E52314 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4CEB6C42D5DFE1100968635 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 09EA44EA2FBBBBE200E52314;
+			remoteInfo = VelyWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		09EA45062FBBBBE300E52314 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				09EA45012FBBBBE300E52314 /* VelyWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		09EA44EB2FBBBBE200E52314 /* VelyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VelyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		09EA44ED2FBBBBE300E52314 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		09EA44EF2FBBBBE300E52314 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C4CEB6CC2D5DFE1100968635 /* Vely.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vely.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		09EA45052FBBBBE300E52314 /* Exceptions for "VelyWidget" folder in "VelyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 09EA44EA2FBBBBE200E52314 /* VelyWidgetExtension */;
+		};
+		09EA45082FBBBC6000E52314 /* Exceptions for "Vely" folder in "VelyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Managers/FavoritesStore.swift,
+				Managers/StationRepository.swift,
+				Models/BikeStation.swift,
+				Models/City.swift,
+				Models/CitybikeModel.swift,
+				"Models/VelibModel+Paris.swift",
+				"Models/VlilleModel+Lille.swift",
+			);
+			target = 09EA44EA2FBBBBE200E52314 /* VelyWidgetExtension */;
+		};
 		C4CEB6FF2D5DFE1100968635 /* Exceptions for "Vely" folder in "Vely" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -21,10 +74,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		09EA44F12FBBBBE300E52314 /* VelyWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				09EA45052FBBBBE300E52314 /* Exceptions for "VelyWidget" folder in "VelyWidgetExtension" target */,
+			);
+			path = VelyWidget;
+			sourceTree = "<group>";
+		};
 		C4CEB6CE2D5DFE1100968635 /* Vely */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				C4CEB6FF2D5DFE1100968635 /* Exceptions for "Vely" folder in "Vely" target */,
+				09EA45082FBBBC6000E52314 /* Exceptions for "Vely" folder in "VelyWidgetExtension" target */,
 			);
 			path = Vely;
 			sourceTree = "<group>";
@@ -32,6 +94,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		09EA44E82FBBBBE200E52314 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09EA44F02FBBBBE300E52314 /* SwiftUI.framework in Frameworks */,
+				09EA44EE2FBBBBE300E52314 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C4CEB6C92D5DFE1100968635 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -42,10 +113,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09EA44EC2FBBBBE300E52314 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				09EA44ED2FBBBBE300E52314 /* WidgetKit.framework */,
+				09EA44EF2FBBBBE300E52314 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C4CEB6C32D5DFE1100968635 = {
 			isa = PBXGroup;
 			children = (
 				C4CEB6CE2D5DFE1100968635 /* Vely */,
+				09EA44F12FBBBBE300E52314 /* VelyWidget */,
+				09EA44EC2FBBBBE300E52314 /* Frameworks */,
 				C4CEB6CD2D5DFE1100968635 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				C4CEB6CC2D5DFE1100968635 /* Vely.app */,
+				09EA44EB2FBBBBE200E52314 /* VelyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +144,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		09EA44EA2FBBBBE200E52314 /* VelyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09EA45022FBBBBE300E52314 /* Build configuration list for PBXNativeTarget "VelyWidgetExtension" */;
+			buildPhases = (
+				09EA44E72FBBBBE200E52314 /* Sources */,
+				09EA44E82FBBBBE200E52314 /* Frameworks */,
+				09EA44E92FBBBBE200E52314 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				09EA44F12FBBBBE300E52314 /* VelyWidget */,
+			);
+			name = VelyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = VelyWidgetExtension;
+			productReference = 09EA44EB2FBBBBE200E52314 /* VelyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C4CEB6CB2D5DFE1100968635 /* Vely */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C4CEB6DB2D5DFE1500968635 /* Build configuration list for PBXNativeTarget "Vely" */;
@@ -68,10 +173,12 @@
 				C4CEB6C82D5DFE1100968635 /* Sources */,
 				C4CEB6C92D5DFE1100968635 /* Frameworks */,
 				C4CEB6CA2D5DFE1100968635 /* Resources */,
+				09EA45062FBBBBE300E52314 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				09EA45002FBBBBE300E52314 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C4CEB6CE2D5DFE1100968635 /* Vely */,
@@ -90,9 +197,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					09EA44EA2FBBBBE200E52314 = {
+						CreatedOnToolsVersion = 26.5;
+					};
 					C4CEB6CB2D5DFE1100968635 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -113,11 +223,19 @@
 			projectRoot = "";
 			targets = (
 				C4CEB6CB2D5DFE1100968635 /* Vely */,
+				09EA44EA2FBBBBE200E52314 /* VelyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		09EA44E92FBBBBE200E52314 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C4CEB6CA2D5DFE1100968635 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +246,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		09EA44E72FBBBBE200E52314 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C4CEB6C82D5DFE1100968635 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +262,80 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		09EA45002FBBBBE300E52314 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 09EA44EA2FBBBBE200E52314 /* VelyWidgetExtension */;
+			targetProxy = 09EA44FF2FBBBBE300E52314 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		09EA45032FBBBBE300E52314 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 69N284B548;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VelyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VelyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.insightiq.Vely.VelyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		09EA45042FBBBBE300E52314 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 69N284B548;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VelyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VelyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.insightiq.Vely.VelyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		C4CEB6D92D5DFE1500968635 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -283,6 +481,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.insightiq.Vely;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -323,6 +522,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.insightiq.Vely;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -335,6 +535,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		09EA45022FBBBBE300E52314 /* Build configuration list for PBXNativeTarget "VelyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09EA45032FBBBBE300E52314 /* Debug */,
+				09EA45042FBBBBE300E52314 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C4CEB6C72D5DFE1100968635 /* Build configuration list for PBXProject "Vely" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import WidgetKit
 
 @Observable
 @MainActor
@@ -58,5 +59,6 @@ final class HomeViewModel {
         }
         guard currentRequestId == requestId else { return }
         isLoading = false
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
