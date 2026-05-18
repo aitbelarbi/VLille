@@ -1,34 +1,70 @@
-//
-//  FavoritesStore.swift
-//  Vlille
-//
-
 import Foundation
 import Observation
 
+struct FavoriteEntry: Codable, Identifiable {
+    var id: String { stationId }
+    let stationId: String
+    let cityId: String
+    let stationName: String
+    let stationAddress: String
+}
+
 @Observable
 class FavoritesStore {
-    private(set) var favoriteIDs: Set<String> = []
-    @ObservationIgnored private let key = "favorite_station_ids"
+    private(set) var entries: [String: FavoriteEntry] = [:]
+
+    @ObservationIgnored private let entriesKey = "favorite_entries_v2"
+    @ObservationIgnored private let legacyKey = "favorite_station_ids"
 
     init() {
-        let saved = UserDefaults.standard.array(forKey: key) as? [String] ?? []
-        favoriteIDs = Set(saved)
+        load()
     }
 
     func isFavorite(_ station: BikeStation) -> Bool {
-        favoriteIDs.contains(station.id)
+        entries[station.id] != nil
     }
 
     @discardableResult
     func toggle(_ station: BikeStation) -> Bool {
-        let wasAdded = !favoriteIDs.contains(station.id)
-        if wasAdded {
-            favoriteIDs.insert(station.id)
+        if entries[station.id] != nil {
+            entries.removeValue(forKey: station.id)
+            save()
+            return false
         } else {
-            favoriteIDs.remove(station.id)
+            entries[station.id] = FavoriteEntry(
+                stationId: station.id,
+                cityId: station.cityId,
+                stationName: station.name,
+                stationAddress: station.address
+            )
+            save()
+            return true
         }
-        UserDefaults.standard.set(Array(favoriteIDs), forKey: key)
-        return wasAdded
+    }
+
+    func remove(stationId: String) {
+        entries.removeValue(forKey: stationId)
+        save()
+    }
+
+    private func save() {
+        if let data = try? JSONEncoder().encode(Array(entries.values)) {
+            UserDefaults.standard.set(data, forKey: entriesKey)
+        }
+    }
+
+    private func load() {
+        if let data = UserDefaults.standard.data(forKey: entriesKey),
+           let array = try? JSONDecoder().decode([FavoriteEntry].self, from: data) {
+            entries = Dictionary(uniqueKeysWithValues: array.map { ($0.stationId, $0) })
+            return
+        }
+        // Migration depuis l'ancien format (juste des IDs)
+        let legacyIds = UserDefaults.standard.array(forKey: legacyKey) as? [String] ?? []
+        guard !legacyIds.isEmpty else { return }
+        entries = Dictionary(uniqueKeysWithValues: legacyIds.map { id in
+            (id, FavoriteEntry(stationId: id, cityId: "", stationName: "", stationAddress: ""))
+        })
+        save()
     }
 }

@@ -6,8 +6,11 @@ struct MapView: View {
     @Environment(FavoritesStore.self) var favoritesStore
     @Environment(LocationManager.self) var locationManager
     @Environment(CityStore.self) var cityStore
+    @Environment(WeatherManager.self) var weatherManager
+    @Environment(GhostCityManager.self) var ghostCityManager
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: BikeStation?
+    @State private var showWeatherDetail = false
     @State private var currentRoute: MKRoute?
     @State private var isCalculatingRoute = false
     @State private var hascenteredOnUser = false
@@ -110,6 +113,9 @@ struct MapView: View {
                         }
                         .scaleEffect(showOnlyAvailable ? 1.03 : 1.0)
                         Spacer()
+                        WeatherBadgeView(weather: weatherManager) {
+                            showWeatherDetail = true
+                        }
                     }
                     .padding(.horizontal, 12)
                     .padding(.top, 8)
@@ -135,6 +141,9 @@ struct MapView: View {
                     Task {
                         try? await Task.sleep(for: .seconds(2))
                         withAnimation(.easeIn) { showRefreshToast = false }
+                    }
+                    if viewModel.stations.isEmpty {
+                        ghostCityManager.recordEmptyFetch(city: viewModel.currentCity)
                     }
                 }
 
@@ -238,8 +247,31 @@ struct MapView: View {
                         }
                     }
             }
+            .sheet(isPresented: $showWeatherDetail) {
+                WeatherDetailView(weather: weatherManager)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: Binding(
+                get: { ghostCityManager.shouldShowPrompt },
+                set: { if !$0 { ghostCityManager.dismiss() } }
+            )) {
+                GhostCityPromptView()
+            }
+            .task(id: cityStore.selectedCity.id) {
+                await weatherManager.fetch(
+                    latitude: cityStore.selectedCity.latitude,
+                    longitude: cityStore.selectedCity.longitude,
+                    cityId: cityStore.selectedCity.id
+                )
+            }
             .onAppear {
                 locationManager.requestLocationPermission()
+            }
+            .onChange(of: viewModel.pendingStationToShow) { _, station in
+                guard let station else { return }
+                selectedStation = station
+                viewModel.pendingStationToShow = nil
             }
             .onChange(of: locationManager.userLocation) { _, location in
                 guard let location, !hascenteredOnUser else { return }
@@ -331,86 +363,6 @@ struct MapView: View {
         case .satellite: return .imagery(elevation: .flat)
         case .hybride:   return .hybrid(elevation: .flat, showsTraffic: false)
         case .`3d`:      return .standard(elevation: .realistic, showsTraffic: false)
-        }
-    }
-}
-
-// MARK: - Clustering
-
-struct StationCluster: Identifiable {
-    let id: String
-    let coordinate: CLLocationCoordinate2D
-    let stations: [BikeStation]
-
-    var isCluster: Bool { stations.count > 1 }
-    var totalBikes: Int { stations.reduce(0) { $0 + $1.bikesAvailable } }
-
-    var markerColor: Color {
-        let hasOperational = stations.contains { $0.isOperational }
-        guard hasOperational else { return .red }
-        return totalBikes > 0 ? .green : .orange
-    }
-}
-
-struct ClusterMarkerView: View {
-    let cluster: StationCluster
-    let favoritesStore: FavoritesStore
-    let onTap: () -> Void
-
-    var body: some View {
-        Button(action: onTap) {
-            if cluster.isCluster {
-                ZStack {
-                    Circle()
-                        .fill(cluster.markerColor)
-                        .frame(width: 44, height: 44)
-                        .shadow(radius: 3)
-                    VStack(spacing: 1) {
-                        Text("\(cluster.totalBikes)")
-                            .font(.caption.bold())
-                            .foregroundStyle(.white)
-                        Text(String(format: String(localized: "cluster_stations_count"), Int64(cluster.stations.count)))
-                            .font(.system(size: 7))
-                            .foregroundStyle(.white.opacity(0.85))
-                    }
-                }
-            } else {
-                let station = cluster.stations[0]
-                StationMarkerView(station: station, isFavorite: favoritesStore.isFavorite(station))
-            }
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-// MARK: - Marqueur
-
-struct StationMarkerView: View {
-    let station: BikeStation
-    let isFavorite: Bool
-
-    var markerColor: Color {
-        guard station.isOperational else { return .red }
-        return station.bikesAvailable > 0 ? .green : .orange
-    }
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            ZStack {
-                Circle()
-                    .fill(markerColor)
-                    .frame(width: 32, height: 32)
-                    .shadow(radius: 2)
-                Text("\(station.bikesAvailable)")
-                    .font(.caption.bold())
-                    .foregroundStyle(.white)
-            }
-            if isFavorite {
-                Image(systemName: "star.fill")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.yellow)
-                    .offset(x: 4, y: -4)
-            }
         }
     }
 }

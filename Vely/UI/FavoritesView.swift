@@ -1,41 +1,74 @@
-//
-//  FavoritesView.swift
-//  Vlille
-//
-//  Created by Mohamed Amine AIT BELARBI on 15/05/2026.
-//
-
 import SwiftUI
 import MapKit
 
 struct FavoritesView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(CityStore.self) var cityStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: BikeStation?
 
-    var favoriteStations: [BikeStation] {
-        viewModel.stations.filter { favoritesStore.isFavorite($0) }
+    var activeFavorites: [BikeStation] {
+        viewModel.stations
+            .filter { favoritesStore.isFavorite($0) }
+            .sorted { $0.name < $1.name }
+    }
+
+    var inactiveGroups: [(cityId: String, cityName: String, entries: [FavoriteEntry])] {
+        let activeIds = Set(viewModel.stations.map { $0.id })
+        let currentCityId = viewModel.currentCity.id
+
+        let inactive = favoritesStore.entries.values.filter {
+            !activeIds.contains($0.stationId) && $0.cityId != currentCityId && !$0.cityId.isEmpty
+        }
+
+        let grouped = Dictionary(grouping: inactive) { $0.cityId }
+        return grouped.map { cityId, entries in
+            let name = cityStore.cities.first { $0.id == cityId }?.name ?? cityId
+            return (cityId: cityId, cityName: name, entries: entries.sorted { $0.stationName < $1.stationName })
+        }
+        .sorted { $0.cityName < $1.cityName }
     }
 
     var body: some View {
         NavigationStack {
             Group {
-                if favoriteStations.isEmpty {
+                if favoritesStore.entries.isEmpty {
                     ContentUnavailableView(
                         "favorites_empty_title",
                         systemImage: "star.slash",
                         description: Text("favorites_empty_hint")
                     )
                 } else {
-                    List(favoriteStations) { station in
-                        Button {
-                            goToStation(station)
-                        } label: {
-                            StationRowView(station: station)
+                    List {
+                        if !activeFavorites.isEmpty {
+                            Section(viewModel.currentCity.name) {
+                                ForEach(activeFavorites) { station in
+                                    Button {
+                                        goToStation(station)
+                                    } label: {
+                                        StationRowView(station: station)
+                                            .contentShape(Rectangle())
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                .onDelete { indexSet in
+                                    indexSet.forEach { favoritesStore.remove(stationId: activeFavorites[$0].id) }
+                                }
+                            }
                         }
-                        .buttonStyle(.plain)
+
+                        ForEach(inactiveGroups, id: \.cityId) { group in
+                            Section(group.cityName) {
+                                ForEach(group.entries) { entry in
+                                    InactiveFavoriteRowView(entry: entry)
+                                }
+                                .onDelete { indexSet in
+                                    indexSet.forEach { favoritesStore.remove(stationId: group.entries[$0].stationId) }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -55,7 +88,35 @@ struct FavoritesView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
             )
         )
+        viewModel.pendingStationToShow = station
         selectedTab = 0
+    }
+}
+
+struct InactiveFavoriteRowView: View {
+    let entry: FavoriteEntry
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Circle()
+                .fill(Color.secondary.opacity(0.2))
+                .frame(width: 40, height: 40)
+                .overlay(
+                    Image(systemName: "bicycle")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                )
+            VStack(alignment: .leading, spacing: 2) {
+                Text(entry.stationName.isEmpty ? entry.stationId : entry.stationName)
+                    .font(.headline)
+                Text(entry.stationAddress.isEmpty ? "—" : entry.stationAddress)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+        }
+        .padding(.vertical, 4)
+        .opacity(0.5)
     }
 }
 

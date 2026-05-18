@@ -4,6 +4,7 @@ import MessageUI
 struct MailComposeView: UIViewControllerRepresentable {
     let recipient: String
     let subject: String
+    var body: String?
     var onDismiss: () -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator(onDismiss: onDismiss) }
@@ -15,6 +16,7 @@ struct MailComposeView: UIViewControllerRepresentable {
         let vc = MFMailComposeViewController()
         vc.setToRecipients([recipient])
         vc.setSubject(subject)
+        if let body { vc.setMessageBody(body, isHTML: false) }
         vc.mailComposeDelegate = context.coordinator
         return vc
     }
