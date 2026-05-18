@@ -9,6 +9,7 @@ final class HomeViewModel {
     var errorMessage: String?
     var lastUpdated: Date?
     var currentCity: City = .lille
+    var pendingStationToShow: BikeStation?
 
     @ObservationIgnored private let repository = StationRepository()
     @ObservationIgnored private var currentRequestId = UUID()

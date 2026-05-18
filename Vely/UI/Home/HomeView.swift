@@ -7,6 +7,7 @@ struct MapView: View {
     @Environment(LocationManager.self) var locationManager
     @Environment(CityStore.self) var cityStore
     @Environment(WeatherManager.self) var weatherManager
+    @Environment(GhostCityManager.self) var ghostCityManager
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: BikeStation?
     @State private var showWeatherDetail = false
@@ -141,6 +142,9 @@ struct MapView: View {
                         try? await Task.sleep(for: .seconds(2))
                         withAnimation(.easeIn) { showRefreshToast = false }
                     }
+                    if viewModel.stations.isEmpty {
+                        ghostCityManager.recordEmptyFetch(city: viewModel.currentCity)
+                    }
                 }
 
                 // Right controls
@@ -248,6 +252,12 @@ struct MapView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
+            .sheet(isPresented: Binding(
+                get: { ghostCityManager.shouldShowPrompt },
+                set: { if !$0 { ghostCityManager.dismiss() } }
+            )) {
+                GhostCityPromptView()
+            }
             .task(id: cityStore.selectedCity.id) {
                 await weatherManager.fetch(
                     latitude: cityStore.selectedCity.latitude,
@@ -257,6 +267,11 @@ struct MapView: View {
             }
             .onAppear {
                 locationManager.requestLocationPermission()
+            }
+            .onChange(of: viewModel.pendingStationToShow) { _, station in
+                guard let station else { return }
+                selectedStation = station
+                viewModel.pendingStationToShow = nil
             }
             .onChange(of: locationManager.userLocation) { _, location in
                 guard let location, !hascenteredOnUser else { return }

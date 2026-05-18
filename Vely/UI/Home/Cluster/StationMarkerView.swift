@@ -18,20 +18,24 @@ struct StationMarkerView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            ZStack {
-                Circle()
-                    .fill(markerColor)
-                    .frame(width: 32, height: 32)
-                    .shadow(radius: 2)
-                Text("\(station.bikesAvailable)")
-                    .font(.caption.bold())
-                    .foregroundStyle(.white)
+            HStack(spacing: 2) {
+                Image(systemName: "bicycle")
+                    .font(.system(size: 10, weight: .bold))
+                Text("\(station.bikesAvailable)/\(station.docksAvailable)")
+                    .font(.system(size: 14, weight: .bold))
             }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .foregroundStyle(.white)
+            .background(markerColor.opacity(0.80))
+            .clipShape(Capsule())
+            .shadow(color: .black.opacity(0.25), radius: 3, x: 0, y: 2)
+            
             if isFavorite {
                 Image(systemName: "star.fill")
-                    .font(.system(size: 12))
+                    .font(.system(size: 10))
                     .foregroundStyle(.yellow)
-                    .offset(x: 4, y: -4)
+                    .offset(x: 3, y: -3)
             }
         }
     }
