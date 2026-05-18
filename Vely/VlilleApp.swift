@@ -12,6 +12,7 @@ struct VelyApp: App {
     @State private var favoritesStore = FavoritesStore()
     @State private var locationManager = LocationManager()
     @State private var cityStore = CityStore()
+    @State private var ratingManager = RatingManager()
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
 
@@ -29,9 +30,13 @@ struct VelyApp: App {
                 .environment(favoritesStore)
                 .environment(locationManager)
                 .environment(cityStore)
+                .environment(ratingManager)
                 .preferredColorScheme(preferredColorScheme)
                 .environment(\.locale, appLocale.isEmpty ? .current : Locale(identifier: appLocale))
-                .task { await cityStore.loadCitybikeNetworks() }
+                .task {
+                    ratingManager.recordLaunch()
+                    await cityStore.loadCitybikeNetworks()
+                }
         }
     }
 }
