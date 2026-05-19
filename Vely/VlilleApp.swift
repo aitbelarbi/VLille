@@ -48,7 +48,6 @@ struct VelyApp: App {
                     await cityStore.loadCitybikeNetworks()
                     await purchaseManager.loadProducts()
                     await purchaseManager.updateSubscriptionStatus()
-                    purchaseManager.debugPremiumOverride = true
                 }
         }
     }

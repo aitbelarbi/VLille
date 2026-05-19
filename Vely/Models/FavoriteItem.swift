@@ -78,7 +78,11 @@ struct StationFavorite: FavoriteItem {
     }
     var rowLeadingIcon: String { "bicycle" }
     var rowLeadingBadgeText: String? { liveStation.map { "\($0.bikesAvailable)" } }
-    var rowLeadingColor: Color { markerTint }
+    var rowLeadingColor: Color {
+        guard let s = liveStation else { return .indigo }
+        guard s.isOperational else { return .red }
+        return s.bikesAvailable > 0 ? .green : .orange
+    }
     var bikesAvailable: Int? { liveStation?.bikesAvailable }
     var docksAvailable: Int? { liveStation?.docksAvailable }
     var widgetSlot: Int? { slot }

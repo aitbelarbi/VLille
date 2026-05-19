@@ -36,6 +36,9 @@ protocol ProfileStrategy {
     ) -> [FavoriteSection]
 
     func mapAnnotations(from store: FavoritesStore) -> [AddressFavorite]
+
+    /// All items selectable as trip waypoints for this profile, scoped to the current city.
+    func tripWaypointCandidates(from store: FavoritesStore, currentCity: City) -> [any FavoriteItem]
 }
 
 // MARK: - BikesharingStrategy
@@ -101,6 +104,13 @@ struct BikesharingStrategy: ProfileStrategy {
     }
 
     func mapAnnotations(from store: FavoritesStore) -> [AddressFavorite] { [] }
+
+    func tripWaypointCandidates(from store: FavoritesStore, currentCity: City) -> [any FavoriteItem] {
+        store.entries.values
+            .filter { $0.cityId == currentCity.id }
+            .sorted { $0.stationName < $1.stationName }
+            .map { StationFavorite(entry: $0, liveStation: nil, slot: nil) }
+    }
 }
 
 // MARK: - CyclistStrategy
@@ -132,5 +142,11 @@ struct CyclistStrategy: ProfileStrategy {
 
     func mapAnnotations(from store: FavoritesStore) -> [AddressFavorite] {
         store.savedAddresses.map { AddressFavorite(address: $0) }
+    }
+
+    func tripWaypointCandidates(from store: FavoritesStore, currentCity: City) -> [any FavoriteItem] {
+        store.savedAddresses
+            .sorted { $0.name < $1.name }
+            .map { AddressFavorite(address: $0) }
     }
 }

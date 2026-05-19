@@ -16,13 +16,12 @@ struct PaywallView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header
             VStack(spacing: 16) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 24)
                         .fill(Color.accentColor.gradient)
                         .frame(width: 80, height: 80)
-                    Image(systemName: "rectangle.3.group")
+                    Image(systemName: "sparkles")
                         .font(.system(size: 36))
                         .foregroundStyle(.white)
                 }
@@ -38,9 +37,9 @@ struct PaywallView: View {
                     .padding(.horizontal, 24)
             }
 
-            // Features
             VStack(alignment: .leading, spacing: 16) {
                 FeatureRow(icon: "rectangle.3.group", title: "paywall_feature_widget_title", description: "paywall_feature_widget_desc")
+                FeatureRow(icon: "arrow.trianglehead.branch", title: "paywall_feature_trips_title", description: "paywall_feature_trips_desc")
                 FeatureRow(icon: "star.fill", title: "paywall_feature_stations_title", description: "paywall_feature_stations_desc")
                 FeatureRow(icon: "arrow.clockwise", title: "paywall_feature_refresh_title", description: "paywall_feature_refresh_desc")
             }
@@ -56,7 +55,6 @@ struct PaywallView: View {
                     .padding(.horizontal, 24)
             }
 
-            // CTA
             VStack(spacing: 12) {
                 Button {
                     Task { await buy() }

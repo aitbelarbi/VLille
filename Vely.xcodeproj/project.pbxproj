@@ -55,11 +55,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Managers/FavoritesStore.swift,
+				Managers/ProfileStrategy.swift,
 				Managers/StationRepository.swift,
 				Models/BikeStation.swift,
 				Models/City.swift,
 				Models/CitybikeModel.swift,
 				Models/FavoriteItem.swift,
+				Models/TripModels.swift,
 				"Models/VelibModel+Paris.swift",
 				"Models/VlilleModel+Lille.swift",
 			);

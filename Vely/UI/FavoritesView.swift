@@ -1,6 +1,8 @@
 import SwiftUI
 import MapKit
 
+private enum FavoritesTab { case favorites, trips }
+
 struct FavoritesView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
@@ -11,6 +13,8 @@ struct FavoritesView: View {
     @Binding var cameraPosition: MapCameraPosition
     @State private var showPaywall = false
     @State private var pickerSlot: WidgetSlotSelection? = nil
+    @State private var activeTab: FavoritesTab = .favorites
+    @State private var showTripCreation = false
 
     private var strategy: any ProfileStrategy { profileStore.strategy }
 
@@ -31,13 +35,49 @@ struct FavoritesView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if !strategy.hasFavorites(in: favoritesStore) {
-                    emptyState
-                } else {
-                    favoritesList
+                switch activeTab {
+                case .favorites:
+                    if !strategy.hasFavorites(in: favoritesStore) {
+                        emptyState
+                    } else {
+                        favoritesList
+                    }
+                case .trips:
+                    TripListView(
+                        liveStations: viewModel.stations,
+                        onAdd: {
+                            if purchaseManager.isPremium { showTripCreation = true }
+                            else { showPaywall = true }
+                        },
+                        onShowPaywall: { showPaywall = true }
+                    )
                 }
             }
-            .navigationTitle("tab_favorites")
+            .navigationTitle("")
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Picker("", selection: $activeTab) {
+                        Text("tab_favorites").tag(FavoritesTab.favorites)
+                        Text("tab_trips").tag(FavoritesTab.trips)
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 220)
+                }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    if activeTab == .trips {
+                        Button {
+                            if purchaseManager.isPremium { showTripCreation = true }
+                            else { showPaywall = true }
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    } else if strategy.canAddAddressFavorites {
+                        Button { selectedTab = 2 } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+            }
             .onChange(of: viewModel.stations) { _, stations in
                 favoritesStore.healEntries(with: stations)
             }
@@ -52,6 +92,10 @@ struct FavoritesView: View {
                     liveStations: viewModel.stations
                 )
                 .presentationDetents([.medium, .large])
+            }
+            .sheet(isPresented: $showTripCreation) {
+                TripCreationView()
+                    .presentationDragIndicator(.visible)
             }
         }
     }
@@ -102,6 +146,7 @@ struct FavoritesView: View {
                     ForEach(section.items, id: \.id) { item in
                         Button { handleTap(item) } label: {
                             FavoriteItemRowView(item: item)
+                                .opacity(item.isActive ? 1 : 0.5)
                                 .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
@@ -116,16 +161,6 @@ struct FavoritesView: View {
                 }
             }
 
-            if strategy.canAddAddressFavorites {
-                Section {
-                    Button {
-                        selectedTab = 2
-                    } label: {
-                        Label("cyclist_add_address", systemImage: "plus.circle")
-                            .foregroundStyle(.indigo)
-                    }
-                }
-            }
         }
     }
 
@@ -182,7 +217,6 @@ struct FavoriteItemRowView: View {
             }
         }
         .padding(.vertical, 4)
-        .opacity(item.isActive ? 1 : 0.5)
     }
 
     @ViewBuilder
@@ -239,7 +273,12 @@ struct WidgetSectionView: View {
             }
 
             if !isPremium {
-                PremiumWidgetBannerView(onTap: onUnlock)
+                PremiumBannerView(
+                    icon: "rectangle.3.group",
+                    title: "banner_widget_title",
+                    subtitle: "banner_widget_subtitle",
+                    onTap: onUnlock
+                )
             }
         }
         .padding(.horizontal, 16)
@@ -342,7 +381,10 @@ struct WidgetSlotCard: View {
 
 // MARK: - Shared Row Views
 
-struct PremiumWidgetBannerView: View {
+struct PremiumBannerView: View {
+    let icon: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let onTap: () -> Void
 
     var body: some View {
@@ -352,15 +394,15 @@ struct PremiumWidgetBannerView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.accentColor.opacity(0.15))
                         .frame(width: 44, height: 44)
-                    Image(systemName: "rectangle.3.group")
+                    Image(systemName: icon)
                         .font(.title3)
                         .foregroundStyle(Color.accentColor)
                 }
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("banner_widget_title")
+                    Text(title)
                         .font(.subheadline.bold())
                         .foregroundStyle(.primary)
-                    Text("banner_widget_subtitle")
+                    Text(subtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
