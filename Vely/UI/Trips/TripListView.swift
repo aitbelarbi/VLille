@@ -6,7 +6,9 @@ struct TripListView: View {
     @Environment(WeatherManager.self) var weatherManager
     @Environment(ProfileStore.self) var profileStore
     @Environment(CityStore.self) var cityStore
+    @Environment(AddressStore.self) var addressStore
     @Environment(PurchaseManager.self) var purchaseManager
+    @Environment(NotificationManager.self) var notificationManager
     let liveStations: [BikeStation]
     let onAdd: () -> Void
     let onShowPaywall: () -> Void
@@ -83,6 +85,7 @@ struct TripListView: View {
     }
 
     private func deleteTrip(_ trip: Trip) {
+        notificationManager.cancel(tripId: trip.id)
         guard let index = tripStore.trips.firstIndex(where: { $0.id == trip.id }) else { return }
         tripStore.remove(at: IndexSet(integer: index))
     }
@@ -127,7 +130,7 @@ struct TripListView: View {
     }
 
     private func resolveWaypoint(_ waypoint: TripWaypoint) -> (any FavoriteItem)? {
-        waypoint.resolve(in: favoritesStore, liveStations: liveStations)
+        waypoint.resolve(in: FavoriteStores(favorites: favoritesStore, addresses: addressStore), liveStations: liveStations)
     }
 
 }

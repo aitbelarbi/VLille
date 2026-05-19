@@ -27,6 +27,13 @@ extension SavedAddress {
     }
 }
 
+// MARK: - FavoriteStores
+
+struct FavoriteStores {
+    let favorites: FavoritesStore
+    let addresses: AddressStore
+}
+
 // MARK: - Protocol
 
 protocol FavoriteItem: Identifiable {
@@ -44,7 +51,7 @@ protocol FavoriteItem: Identifiable {
     var widgetSlot: Int? { get }
     var isActive: Bool { get }
     var liveStationReference: BikeStation? { get }
-    func remove(from store: FavoritesStore)
+    func remove(from stores: FavoriteStores)
 }
 
 extension FavoriteItem {
@@ -89,8 +96,8 @@ struct StationFavorite: FavoriteItem {
     var isActive: Bool { liveStation != nil }
     var liveStationReference: BikeStation? { liveStation }
 
-    func remove(from store: FavoritesStore) {
-        store.remove(stationId: entry.stationId)
+    func remove(from stores: FavoriteStores) {
+        stores.favorites.remove(stationId: entry.stationId)
     }
 }
 
@@ -110,7 +117,7 @@ struct AddressFavorite: FavoriteItem {
     var rowLeadingIcon: String { address.systemIcon }
     var rowLeadingColor: Color { address.tintColor }
 
-    func remove(from store: FavoritesStore) {
-        store.removeAddress(id: address.id)
+    func remove(from stores: FavoriteStores) {
+        stores.addresses.remove(id: address.id)
     }
 }

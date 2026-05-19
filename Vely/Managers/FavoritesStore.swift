@@ -13,12 +13,10 @@ struct FavoriteEntry: Codable, Identifiable {
 class FavoritesStore {
     private(set) var entries: [String: FavoriteEntry] = [:]
     private(set) var widgetSlotIds: [String?] = [nil, nil]
-    private(set) var savedAddresses: [SavedAddress] = []
 
     @ObservationIgnored private let entriesKey = "favorite_entries_v2"
     @ObservationIgnored private let legacyKey = "favorite_station_ids"
     @ObservationIgnored private let widgetSlotsKey = "widget_slot_ids"
-    @ObservationIgnored private let addressesKey = "saved_addresses"
     @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely")!
 
     init() {
@@ -78,22 +76,6 @@ class FavoritesStore {
         save()
     }
 
-    func addAddress(_ address: SavedAddress) {
-        savedAddresses.append(address)
-        saveAddresses()
-    }
-
-    func removeAddress(id: UUID) {
-        savedAddresses.removeAll { $0.id == id }
-        saveAddresses()
-    }
-
-    func updateAddress(_ address: SavedAddress) {
-        guard let index = savedAddresses.firstIndex(where: { $0.id == address.id }) else { return }
-        savedAddresses[index] = address
-        saveAddresses()
-    }
-
     func healEntries(with stations: [BikeStation]) {
         var changed = false
         for station in stations {
@@ -109,12 +91,6 @@ class FavoritesStore {
             }
         }
         if changed { save() }
-    }
-
-    private func saveAddresses() {
-        if let data = try? JSONEncoder().encode(savedAddresses) {
-            defaults.set(data, forKey: addressesKey)
-        }
     }
 
     private func save() {
@@ -135,12 +111,6 @@ class FavoritesStore {
         if let data = defaults.data(forKey: widgetSlotsKey),
            let slots = try? JSONDecoder().decode([String].self, from: data) {
             widgetSlotIds = slots.map { $0.isEmpty ? nil : $0 }
-        }
-
-        // Charger les adresses
-        if let data = defaults.data(forKey: addressesKey),
-           let addresses = try? JSONDecoder().decode([SavedAddress].self, from: data) {
-            savedAddresses = addresses
         }
 
         // Charger les entrées

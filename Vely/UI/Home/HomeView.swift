@@ -4,6 +4,7 @@ import MapKit
 struct MapView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(AddressStore.self) var addressStore
     @Environment(LocationManager.self) var locationManager
     @Environment(CityStore.self) var cityStore
     @Environment(WeatherManager.self) var weatherManager
@@ -78,7 +79,7 @@ struct MapView: View {
                             }
                         }
                     }
-                    ForEach(profileStore.strategy.mapAnnotations(from: favoritesStore).filter { $0.coordinate != nil }, id: \.id) { item in
+                    ForEach(profileStore.strategy.mapAnnotations(from: addressStore).filter { $0.coordinate != nil }, id: \.id) { item in
                         Annotation(item.displayName, coordinate: item.coordinate!) {
                             AddressMarkerView(item: item)
                         }
@@ -151,7 +152,7 @@ struct MapView: View {
                         withAnimation(.easeIn) { showRefreshToast = false }
                     }
                     if viewModel.stations.isEmpty {
-                        ghostCityManager.recordEmptyFetch(city: viewModel.currentCity)
+                        ghostCityManager.recordEmptyFetch(city: cityStore.selectedCity)
                     }
                 }
 
@@ -249,12 +250,6 @@ struct MapView: View {
             }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
-                    .onDisappear {
-                        if cityStore.selectedCity.id != viewModel.currentCity.id,
-                           profileStore.strategy.shouldLoadStations {
-                            viewModel.switchCity(to: cityStore.selectedCity)
-                        }
-                    }
             }
             .sheet(isPresented: $showWeatherDetail) {
                 WeatherDetailView(weather: weatherManager)

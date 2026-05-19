@@ -8,7 +8,7 @@ struct OnboardingView: View {
 
     @State private var step: Step = .profile
     @State private var selectedProfile: UserProfile = .bikesharing
-    @State private var selectedCity: City = .lille
+    @State private var selectedCity: City? = nil
     @State private var searchText = ""
     @State private var selectedCountryCode: String? = nil
 
@@ -129,7 +129,12 @@ struct OnboardingView: View {
             Spacer()
 
             Button {
-                locationManager.requestLocationPermission()
+                switch locationManager.authorizationStatus {
+                case .denied, .restricted:
+                    withAnimation(.spring(response: 0.4)) { step = .city }
+                default:
+                    locationManager.requestLocationPermission()
+                }
             } label: {
                 HStack(spacing: 10) {
                     Image(systemName: "location.fill")
@@ -195,9 +200,10 @@ struct OnboardingView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            ctaButton(labelKey: "onboarding_confirm") {
+            ctaButton(labelKey: "onboarding_confirm", disabled: selectedCity == nil) {
+                guard let city = selectedCity else { return }
                 profileStore.setProfile(selectedProfile)
-                cityStore.selectCity(selectedCity)
+                cityStore.selectCity(city)
                 withAnimation { cityStore.completeOnboarding() }
             }
         }
@@ -249,16 +255,17 @@ struct OnboardingView: View {
     }
 
     @ViewBuilder
-    private func ctaButton(labelKey: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+    private func ctaButton(labelKey: LocalizedStringKey, disabled: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(labelKey)
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(.indigo, in: RoundedRectangle(cornerRadius: 14))
+                .background(disabled ? Color.secondary.opacity(0.3) : .indigo, in: RoundedRectangle(cornerRadius: 14))
                 .foregroundStyle(.white)
-                .shadow(color: .indigo.opacity(0.3), radius: 8, x: 0, y: 4)
+                .shadow(color: .indigo.opacity(disabled ? 0 : 0.3), radius: 8, x: 0, y: 4)
         }
+        .disabled(disabled)
         .padding(.horizontal, 24)
         .padding(.bottom, 40)
         .background(
@@ -319,13 +326,13 @@ struct OnboardingView: View {
                             Text(city.serviceName).font(.caption).foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Image(systemName: selectedCity.id == city.id ? "checkmark.circle.fill" : "circle")
+                        Image(systemName: selectedCity?.id == city.id ? "checkmark.circle.fill" : "circle")
                             .font(.title3)
-                            .foregroundStyle(selectedCity.id == city.id ? .indigo : Color.secondary.opacity(0.4))
+                            .foregroundStyle(selectedCity?.id == city.id ? .indigo : Color.secondary.opacity(0.4))
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-                    .background(selectedCity.id == city.id ? Color.indigo.opacity(0.06) : Color.clear)
+                    .background(selectedCity?.id == city.id ? Color.indigo.opacity(0.06) : Color.clear)
                     .contentShape(Rectangle())
                     .overlay(alignment: .bottom) { Divider().padding(.leading, 56) }
                 }

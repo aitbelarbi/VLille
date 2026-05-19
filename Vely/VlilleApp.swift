@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct VelyApp: App {
     @State private var favoritesStore = FavoritesStore()
+    @State private var addressStore = AddressStore()
     @State private var locationManager = LocationManager()
     @State private var cityStore = CityStore()
     @State private var ratingManager = RatingManager()
@@ -18,6 +19,7 @@ struct VelyApp: App {
     @State private var purchaseManager = PurchaseManager()
     @State private var profileStore = ProfileStore()
     @State private var tripStore = TripStore()
+    @State private var notificationManager = NotificationManager()
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
 
@@ -33,6 +35,7 @@ struct VelyApp: App {
         WindowGroup {
             MainTabView()
                 .environment(favoritesStore)
+                .environment(addressStore)
                 .environment(locationManager)
                 .environment(cityStore)
                 .environment(ratingManager)
@@ -41,6 +44,7 @@ struct VelyApp: App {
                 .environment(purchaseManager)
                 .environment(profileStore)
                 .environment(tripStore)
+                .environment(notificationManager)
                 .preferredColorScheme(preferredColorScheme)
                 .environment(\.locale, appLocale.isEmpty ? .current : Locale(identifier: appLocale))
                 .task {
@@ -48,6 +52,9 @@ struct VelyApp: App {
                     await cityStore.loadCitybikeNetworks()
                     await purchaseManager.loadProducts()
                     await purchaseManager.updateSubscriptionStatus()
+                    #if DEBUG
+                    purchaseManager.debugPremiumOverride = true
+                    #endif
                 }
         }
     }

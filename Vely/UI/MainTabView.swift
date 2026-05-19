@@ -14,12 +14,7 @@ struct MainTabView: View {
     @Environment(RatingManager.self) var ratingManager
     @Environment(ProfileStore.self) var profileStore
     @State private var selectedTab = 0
-    @State private var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 50.6292, longitude: 3.0573),
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        )
-    )
+    @State private var cameraPosition: MapCameraPosition = .automatic
 
     var body: some View {
         ZStack {

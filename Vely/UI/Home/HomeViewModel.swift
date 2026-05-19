@@ -9,7 +9,7 @@ final class HomeViewModel {
     var isLoading = false
     var errorMessage: String?
     var lastUpdated: Date?
-    var currentCity: City = .lille
+    private var currentCity: City?
     var pendingStationToShow: BikeStation?
 
     @ObservationIgnored private let repository = StationRepository()
@@ -53,10 +53,11 @@ final class HomeViewModel {
     func dismissError() { errorMessage = nil }
 
     private func loadStations() async {
+        guard let city = currentCity else { return }
         let requestId = currentRequestId
         isLoading = true
         do {
-            let result = try await repository.fetch(city: currentCity)
+            let result = try await repository.fetch(city: city)
             guard currentRequestId == requestId else { return }
             stations = result
             lastUpdated = Date()

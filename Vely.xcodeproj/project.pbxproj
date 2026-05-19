@@ -54,6 +54,7 @@
 		09EA45082FBBBC6000E52314 /* Exceptions for "Vely" folder in "VelyWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Managers/AddressStore.swift,
 				Managers/FavoritesStore.swift,
 				Managers/ProfileStrategy.swift,
 				Managers/StationRepository.swift,

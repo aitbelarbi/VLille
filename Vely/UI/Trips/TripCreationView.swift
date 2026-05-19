@@ -5,8 +5,10 @@ struct TripCreationView: View {
 
     @Environment(TripStore.self) var tripStore
     @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(AddressStore.self) var addressStore
     @Environment(ProfileStore.self) var profileStore
     @Environment(CityStore.self) var cityStore
+    @Environment(NotificationManager.self) var notificationManager
     @Environment(\.dismiss) private var dismiss
 
     @State private var name = ""
@@ -17,6 +19,9 @@ struct TripCreationView: View {
     @State private var originWaypoint: TripWaypoint?
     @State private var destinationWaypoint: TripWaypoint?
     @State private var pickingRole: WaypointRole?
+    @State private var notificationsEnabled = false
+    @State private var notificationLeadMinutes = 15
+    @State private var showNotificationPermissionSheet = false
 
     private enum WaypointRole: Identifiable {
         case origin, destination
@@ -24,12 +29,18 @@ struct TripCreationView: View {
     }
 
     private var allFavoriteItems: [any FavoriteItem] {
-        profileStore.strategy.tripWaypointCandidates(from: favoritesStore, currentCity: cityStore.selectedCity)
+        profileStore.strategy.tripWaypointCandidates(
+            stores: FavoriteStores(favorites: favoritesStore, addresses: addressStore),
+            currentCity: cityStore.selectedCity
+        )
     }
 
     private var originItem: (any FavoriteItem)? { resolveWaypoint(originWaypoint) }
     private var destinationItem: (any FavoriteItem)? { resolveWaypoint(destinationWaypoint) }
-    private var isValid: Bool { originWaypoint != nil && destinationWaypoint != nil && !selectedDays.isEmpty }
+    private var isValid: Bool {
+        guard let o = originWaypoint, let d = destinationWaypoint else { return false }
+        return o != d && !selectedDays.isEmpty
+    }
 
     var body: some View {
         NavigationStack {
@@ -46,6 +57,22 @@ struct TripCreationView: View {
                     DatePicker("trip_departure_time", selection: $departureDate, displayedComponents: .hourAndMinute)
                 } header: {
                     Text("trip_section_schedule")
+                }
+
+                Section {
+                    Toggle("trip_notification_toggle", isOn: $notificationsEnabled)
+                        .onChange(of: notificationsEnabled) { _, newValue in
+                            if newValue { handleNotificationToggle() }
+                        }
+                    if notificationsEnabled {
+                        Picker("trip_notification_lead", selection: $notificationLeadMinutes) {
+                            ForEach([5, 15, 30, 60], id: \.self) { minutes in
+                                Text(leadLabel(minutes)).tag(minutes)
+                            }
+                        }
+                    }
+                } header: {
+                    Text("trip_section_notification")
                 }
 
                 Section {
@@ -80,10 +107,25 @@ struct TripCreationView: View {
                     .disabled(!isValid)
                 }
             }
+            .sheet(isPresented: $showNotificationPermissionSheet) {
+                NotificationPermissionSheet(
+                    notificationManager: notificationManager,
+                    tripName: name,
+                    leadMinutes: notificationLeadMinutes,
+                    onGranted: { showNotificationPermissionSheet = false },
+                    onDismissed: {
+                        notificationsEnabled = false
+                        showNotificationPermissionSheet = false
+                    }
+                )
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+            }
             .sheet(item: $pickingRole) { role in
                 TripWaypointPickerView(
                     items: allFavoriteItems,
-                    selectedWaypoint: role == .origin ? originWaypoint : destinationWaypoint
+                    selectedWaypoint: role == .origin ? originWaypoint : destinationWaypoint,
+                    excludedWaypoint: role == .origin ? destinationWaypoint : originWaypoint
                 ) { waypoint in
                     if role == .origin { originWaypoint = waypoint }
                     else { destinationWaypoint = waypoint }
@@ -93,7 +135,19 @@ struct TripCreationView: View {
                 .presentationDragIndicator(.visible)
             }
         }
-        .onAppear { populateFromEditingTrip() }
+        .onAppear {
+            populateFromEditingTrip()
+            if editingTrip == nil {
+                Task {
+                    await notificationManager.refreshStatus()
+                    await MainActor.run {
+                        if notificationManager.authorizationStatus == .denied {
+                            notificationsEnabled = false
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -134,10 +188,56 @@ struct TripCreationView: View {
                 departureMinute: cal.component(.minute, from: departureDate)
             ),
             origin: origin,
-            destination: destination
+            destination: destination,
+            notificationLeadMinutes: notificationsEnabled ? notificationLeadMinutes : nil
         )
-        if editingTrip != nil { tripStore.update(trip) }
-        else { tripStore.add(trip) }
+        if editingTrip != nil {
+            notificationManager.cancel(tripId: trip.id)
+            tripStore.update(trip)
+        } else {
+            tripStore.add(trip)
+        }
+        Task { await scheduleAfterPermissionCheck(trip) }
+    }
+
+    private func scheduleAfterPermissionCheck(_ trip: Trip) async {
+        guard trip.notificationLeadMinutes != nil else { return }
+        await notificationManager.refreshStatus()
+        switch notificationManager.authorizationStatus {
+        case .authorized, .provisional, .ephemeral:
+            notificationManager.schedule(trip)
+        case .notDetermined:
+            let granted = await notificationManager.requestAuthorization()
+            if granted { notificationManager.schedule(trip) }
+        default:
+            break
+        }
+    }
+
+    private func handleNotificationToggle() {
+        Task {
+            await notificationManager.refreshStatus()
+            switch notificationManager.authorizationStatus {
+            case .authorized, .provisional, .ephemeral:
+                break
+            case .denied:
+                await MainActor.run {
+                    notificationsEnabled = false
+                    showNotificationPermissionSheet = true
+                }
+            case .notDetermined:
+                await MainActor.run { showNotificationPermissionSheet = true }
+            @unknown default:
+                break
+            }
+        }
+    }
+
+    private func leadLabel(_ minutes: Int) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .short
+        formatter.allowedUnits = minutes >= 60 ? [.hour] : [.minute]
+        return formatter.string(from: TimeInterval(minutes * 60)) ?? "\(minutes)"
     }
 
     private func populateFromEditingTrip() {
@@ -149,10 +249,12 @@ struct TripCreationView: View {
         ) ?? Date()
         originWaypoint = t.origin
         destinationWaypoint = t.destination
+        notificationsEnabled = t.notificationLeadMinutes != nil
+        notificationLeadMinutes = t.notificationLeadMinutes ?? 15
     }
 
     private func resolveWaypoint(_ waypoint: TripWaypoint?) -> (any FavoriteItem)? {
-        waypoint?.resolve(in: favoritesStore)
+        waypoint?.resolve(in: FavoriteStores(favorites: favoritesStore, addresses: addressStore))
     }
 }
 

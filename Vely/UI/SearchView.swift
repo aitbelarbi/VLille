@@ -8,7 +8,7 @@ import MapKit
 
 struct SearchView: View {
     var viewModel: HomeViewModel
-    @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(AddressStore.self) var addressStore
     @Environment(CityStore.self) var cityStore
     @Environment(ProfileStore.self) var profileStore
     @Binding var selectedTab: Int
@@ -60,8 +60,9 @@ struct SearchView: View {
                                     .padding(.vertical, 2)
                                     Spacer()
                                     if profileStore.strategy.canAddAddressFavorites {
-                                        Image(systemName: "plus.circle")
-                                            .foregroundStyle(.indigo)
+                                        let saved = isAlreadySaved(item)
+                                        Image(systemName: saved ? "star.fill" : "star")
+                                            .foregroundStyle(saved ? .orange : .secondary)
                                     }
                                 }
                             }
@@ -87,7 +88,7 @@ struct SearchView: View {
             }
             .sheet(item: $pendingAddressItem) { wrapper in
                 AddressNamingSheet(mapItem: wrapper.item) { address in
-                    favoritesStore.addAddress(address)
+                    addressStore.add(address)
                     pendingAddressItem = nil
                 }
                 .presentationDetents([.medium])
@@ -137,7 +138,7 @@ struct SearchView: View {
     }
 
     private func handlePlaceTap(_ item: MKMapItem) {
-        if profileStore.strategy.canAddAddressFavorites {
+        if profileStore.strategy.canAddAddressFavorites && !isAlreadySaved(item) {
             pendingAddressItem = IdentifiableMKMapItem(item)
         } else {
             cameraPosition = .region(MKCoordinateRegion(
@@ -145,6 +146,14 @@ struct SearchView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             ))
             selectedTab = 0
+        }
+    }
+
+    private func isAlreadySaved(_ item: MKMapItem) -> Bool {
+        let coord = item.placemark.coordinate
+        return addressStore.savedAddresses.contains {
+            abs($0.latitude - coord.latitude) < 0.0001 &&
+            abs($0.longitude - coord.longitude) < 0.0001
         }
     }
 }

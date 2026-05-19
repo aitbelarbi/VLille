@@ -6,6 +6,7 @@ private enum FavoritesTab { case favorites, trips }
 struct FavoritesView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(AddressStore.self) var addressStore
     @Environment(CityStore.self) var cityStore
     @Environment(PurchaseManager.self) var purchaseManager
     @Environment(ProfileStore.self) var profileStore
@@ -24,9 +25,9 @@ struct FavoritesView: View {
 
     private var sections: [FavoriteSection] {
         strategy.favoriteSections(
-            store: favoritesStore,
+            stores: FavoriteStores(favorites: favoritesStore, addresses: addressStore),
             liveStations: viewModel.stations,
-            currentCity: viewModel.currentCity,
+            currentCity: cityStore.selectedCity,
             cities: cityStore.cities,
             isPremium: purchaseManager.isPremium
         )
@@ -37,7 +38,7 @@ struct FavoritesView: View {
             Group {
                 switch activeTab {
                 case .favorites:
-                    if !strategy.hasFavorites(in: favoritesStore) {
+                    if !strategy.hasFavorites(in: FavoriteStores(favorites: favoritesStore, addresses: addressStore)) {
                         emptyState
                     } else {
                         favoritesList
@@ -152,7 +153,8 @@ struct FavoritesView: View {
                         .buttonStyle(.plain)
                     }
                     .onDelete { indexSet in
-                        indexSet.forEach { section.items[$0].remove(from: favoritesStore) }
+                        let stores = FavoriteStores(favorites: favoritesStore, addresses: addressStore)
+                        indexSet.forEach { section.items[$0].remove(from: stores) }
                     }
                 } header: {
                     if !section.title.isEmpty {

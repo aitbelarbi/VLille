@@ -3,14 +3,23 @@ import SwiftUI
 struct TripWaypointPickerView: View {
     let items: [any FavoriteItem]
     let selectedWaypoint: TripWaypoint?
+    var excludedWaypoint: TripWaypoint? = nil
     let onSelect: (TripWaypoint) -> Void
+
+    private var displayedItems: [any FavoriteItem] {
+        guard let excluded = excludedWaypoint else { return items }
+        return items.filter { item in
+            guard let wp = tripWaypoint(from: item) else { return true }
+            return wp != excluded
+        }
+    }
 
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
             Group {
-                if items.isEmpty {
+                if displayedItems.isEmpty {
                     ContentUnavailableView(
                         "trip_picker_empty_title",
                         systemImage: "star.slash",
@@ -18,7 +27,7 @@ struct TripWaypointPickerView: View {
                     )
                 } else {
                     List {
-                        ForEach(items, id: \.id) { item in
+                        ForEach(displayedItems, id: \.id) { item in
                             Button {
                                 guard let waypoint = tripWaypoint(from: item) else { return }
                                 onSelect(waypoint)

@@ -25,20 +25,19 @@ protocol ProfileStrategy {
     var supportsWidgets: Bool { get }
     var canAddAddressFavorites: Bool { get }
 
-    func hasFavorites(in store: FavoritesStore) -> Bool
+    func hasFavorites(in stores: FavoriteStores) -> Bool
 
     func favoriteSections(
-        store: FavoritesStore,
+        stores: FavoriteStores,
         liveStations: [BikeStation],
         currentCity: City,
         cities: [City],
         isPremium: Bool
     ) -> [FavoriteSection]
 
-    func mapAnnotations(from store: FavoritesStore) -> [AddressFavorite]
+    func mapAnnotations(from addressStore: AddressStore) -> [AddressFavorite]
 
-    /// All items selectable as trip waypoints for this profile, scoped to the current city.
-    func tripWaypointCandidates(from store: FavoritesStore, currentCity: City) -> [any FavoriteItem]
+    func tripWaypointCandidates(stores: FavoriteStores, currentCity: City) -> [any FavoriteItem]
 }
 
 // MARK: - BikesharingStrategy
@@ -50,17 +49,18 @@ struct BikesharingStrategy: ProfileStrategy {
     var supportsWidgets: Bool { true }
     var canAddAddressFavorites: Bool { false }
 
-    func hasFavorites(in store: FavoritesStore) -> Bool {
-        !store.entries.isEmpty
+    func hasFavorites(in stores: FavoriteStores) -> Bool {
+        !stores.favorites.entries.isEmpty
     }
 
     func favoriteSections(
-        store: FavoritesStore,
+        stores: FavoriteStores,
         liveStations: [BikeStation],
         currentCity: City,
         cities: [City],
         isPremium: Bool
     ) -> [FavoriteSection] {
+        let store = stores.favorites
         let activeIds = Set(liveStations.map { $0.id })
 
         let activeFavorites: [any FavoriteItem] = liveStations
@@ -103,10 +103,10 @@ struct BikesharingStrategy: ProfileStrategy {
         return sections
     }
 
-    func mapAnnotations(from store: FavoritesStore) -> [AddressFavorite] { [] }
+    func mapAnnotations(from addressStore: AddressStore) -> [AddressFavorite] { [] }
 
-    func tripWaypointCandidates(from store: FavoritesStore, currentCity: City) -> [any FavoriteItem] {
-        store.entries.values
+    func tripWaypointCandidates(stores: FavoriteStores, currentCity: City) -> [any FavoriteItem] {
+        stores.favorites.entries.values
             .filter { $0.cityId == currentCity.id }
             .sorted { $0.stationName < $1.stationName }
             .map { StationFavorite(entry: $0, liveStation: nil, slot: nil) }
@@ -122,30 +122,30 @@ struct CyclistStrategy: ProfileStrategy {
     var supportsWidgets: Bool { false }
     var canAddAddressFavorites: Bool { true }
 
-    func hasFavorites(in store: FavoritesStore) -> Bool {
-        !store.savedAddresses.isEmpty
+    func hasFavorites(in stores: FavoriteStores) -> Bool {
+        !stores.addresses.savedAddresses.isEmpty
     }
 
     func favoriteSections(
-        store: FavoritesStore,
+        stores: FavoriteStores,
         liveStations: [BikeStation],
         currentCity: City,
         cities: [City],
         isPremium: Bool
     ) -> [FavoriteSection] {
-        let items: [any FavoriteItem] = store.savedAddresses
+        let items: [any FavoriteItem] = stores.addresses.savedAddresses
             .sorted { $0.name < $1.name }
             .map { AddressFavorite(address: $0) }
         guard !items.isEmpty else { return [] }
         return [FavoriteSection(id: "addresses", title: "", items: items, cityId: nil)]
     }
 
-    func mapAnnotations(from store: FavoritesStore) -> [AddressFavorite] {
-        store.savedAddresses.map { AddressFavorite(address: $0) }
+    func mapAnnotations(from addressStore: AddressStore) -> [AddressFavorite] {
+        addressStore.savedAddresses.map { AddressFavorite(address: $0) }
     }
 
-    func tripWaypointCandidates(from store: FavoritesStore, currentCity: City) -> [any FavoriteItem] {
-        store.savedAddresses
+    func tripWaypointCandidates(stores: FavoriteStores, currentCity: City) -> [any FavoriteItem] {
+        stores.addresses.savedAddresses
             .sorted { $0.name < $1.name }
             .map { AddressFavorite(address: $0) }
     }
