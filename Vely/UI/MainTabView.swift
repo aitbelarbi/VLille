@@ -12,6 +12,7 @@ struct MainTabView: View {
     @State private var viewModel = HomeViewModel()
     @Environment(CityStore.self) var cityStore
     @Environment(RatingManager.self) var ratingManager
+    @Environment(ProfileStore.self) var profileStore
     @State private var selectedTab = 0
     @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
@@ -40,19 +41,29 @@ struct MainTabView: View {
                     center: cityStore.selectedCity.coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 ))
-                viewModel.switchCity(to: cityStore.selectedCity)
-                await viewModel.startAutoRefresh()
+                if profileStore.strategy.shouldLoadStations {
+                    viewModel.switchCity(to: cityStore.selectedCity)
+                    await viewModel.startAutoRefresh()
+                }
             }
             .onChange(of: cityStore.selectedCity) { _, newCity in
-                viewModel.switchCity(to: newCity)
-                Task {
-                    await viewModel.startAutoRefresh()
+                if profileStore.strategy.shouldLoadStations {
+                    viewModel.switchCity(to: newCity)
+                    Task { await viewModel.startAutoRefresh() }
                 }
                 withAnimation {
                     cameraPosition = .region(MKCoordinateRegion(
                         center: newCity.coordinate,
                         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                     ))
+                }
+            }
+            .onChange(of: profileStore.profile) { _, _ in
+                if profileStore.strategy.shouldLoadStations {
+                    viewModel.switchCity(to: cityStore.selectedCity)
+                    Task { await viewModel.startAutoRefresh() }
+                } else {
+                    viewModel.stopAndClear()
                 }
             }
 

@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import WidgetKit
 
 @Observable
 @MainActor
@@ -41,6 +42,14 @@ final class HomeViewModel {
         Task { await loadStations() }
     }
 
+    func stopAndClear() {
+        currentRequestId = UUID()
+        autoRefreshTask?.cancel()
+        stations = []
+        errorMessage = nil
+        isLoading = false
+    }
+
     func dismissError() { errorMessage = nil }
 
     private func loadStations() async {
@@ -58,5 +67,6 @@ final class HomeViewModel {
         }
         guard currentRequestId == requestId else { return }
         isLoading = false
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
