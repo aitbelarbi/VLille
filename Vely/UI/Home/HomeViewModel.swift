@@ -42,6 +42,14 @@ final class HomeViewModel {
         Task { await loadStations() }
     }
 
+    func stopAndClear() {
+        currentRequestId = UUID()
+        autoRefreshTask?.cancel()
+        stations = []
+        errorMessage = nil
+        isLoading = false
+    }
+
     func dismissError() { errorMessage = nil }
 
     private func loadStations() async {

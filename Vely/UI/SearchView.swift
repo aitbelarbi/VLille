@@ -10,12 +10,14 @@ struct SearchView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
     @Environment(CityStore.self) var cityStore
+    @Environment(ProfileStore.self) var profileStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
 
     @State private var query = ""
     @State private var localSearchResults: [MKMapItem] = []
     @State private var isSearchingPlaces = false
+    @State private var pendingAddressItem: IdentifiableMKMapItem?
 
     var filteredStations: [BikeStation] {
         guard !query.isEmpty else { return [] }
@@ -30,7 +32,7 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             List {
-                if !filteredStations.isEmpty {
+                if profileStore.strategy.searchIncludesStations && !filteredStations.isEmpty {
                     Section("home_title") {
                         ForEach(filteredStations) { station in
                             Button { goToStation(station) } label: {
@@ -41,28 +43,33 @@ struct SearchView: View {
                     }
                 }
 
-                // Résultats lieux / adresses
                 if !localSearchResults.isEmpty {
                     Section("search_places_title") {
                         ForEach(localSearchResults, id: \.self) { item in
-                            Button { goToPlace(item) } label: {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(item.name ?? "")
-                                        .font(.headline)
-                                    if let address = item.placemark.title {
-                                        Text(address)
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
+                            Button { handlePlaceTap(item) } label: {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(item.name ?? "")
+                                            .font(.headline)
+                                        if let address = item.placemark.title {
+                                            Text(address)
+                                                .font(.subheadline)
+                                                .foregroundStyle(.secondary)
+                                        }
+                                    }
+                                    .padding(.vertical, 2)
+                                    Spacer()
+                                    if profileStore.strategy.canAddAddressFavorites {
+                                        Image(systemName: "plus.circle")
+                                            .foregroundStyle(.indigo)
                                     }
                                 }
-                                .padding(.vertical, 2)
                             }
                             .buttonStyle(.plain)
                         }
                     }
                 }
 
-                // État vide
                 if query.isEmpty {
                     ContentUnavailableView(
                         "search_empty_title",
@@ -78,6 +85,14 @@ struct SearchView: View {
             .onChange(of: query) { _, newValue in
                 searchPlaces(newValue)
             }
+            .sheet(item: $pendingAddressItem) { wrapper in
+                AddressNamingSheet(mapItem: wrapper.item) { address in
+                    favoritesStore.addAddress(address)
+                    pendingAddressItem = nil
+                }
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+            }
         }
     }
 
@@ -87,16 +102,27 @@ struct SearchView: View {
             return
         }
         isSearchingPlaces = true
+        let cityCoord = cityStore.selectedCity.coordinate
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = text
         request.region = MKCoordinateRegion(
-            center: cityStore.selectedCity.coordinate,
-            span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+            center: cityCoord,
+            span: MKCoordinateSpan(latitudeDelta: 0.3, longitudeDelta: 0.3)
         )
+        if #available(iOS 18.0, *) {
+            request.regionPriority = .required
+        }
         Task {
             let results = try? await MKLocalSearch(request: request).start()
+            let cityLocation = CLLocation(latitude: cityCoord.latitude, longitude: cityCoord.longitude)
             await MainActor.run {
-                localSearchResults = results?.mapItems ?? []
+                localSearchResults = (results?.mapItems ?? []).filter { item in
+                    let loc = CLLocation(
+                        latitude: item.placemark.coordinate.latitude,
+                        longitude: item.placemark.coordinate.longitude
+                    )
+                    return cityLocation.distance(from: loc) < 80_000
+                }
                 isSearchingPlaces = false
             }
         }
@@ -110,11 +136,114 @@ struct SearchView: View {
         selectedTab = 0
     }
 
-    private func goToPlace(_ item: MKMapItem) {
-        cameraPosition = .region(MKCoordinateRegion(
-            center: item.placemark.coordinate,
-            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        ))
-        selectedTab = 0
+    private func handlePlaceTap(_ item: MKMapItem) {
+        if profileStore.strategy.canAddAddressFavorites {
+            pendingAddressItem = IdentifiableMKMapItem(item)
+        } else {
+            cameraPosition = .region(MKCoordinateRegion(
+                center: item.placemark.coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            ))
+            selectedTab = 0
+        }
+    }
+}
+
+// MARK: - MKMapItem wrapper
+
+struct IdentifiableMKMapItem: Identifiable {
+    let id = UUID()
+    let item: MKMapItem
+    init(_ item: MKMapItem) { self.item = item }
+}
+
+// MARK: - AddressNamingSheet
+
+struct AddressNamingSheet: View {
+    let mapItem: MKMapItem
+    let onSave: (SavedAddress) -> Void
+
+    @State private var name = ""
+    @Environment(\.dismiss) private var dismiss
+
+    private var addressString: String {
+        mapItem.placemark.title ?? ""
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(mapItem.name ?? addressString)
+                        .font(.headline)
+                    Text(addressString)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(16)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("address_save_name_label")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+
+                    TextField("address_save_name_placeholder", text: $name)
+                        .padding(12)
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+
+                    HStack(spacing: 8) {
+                        QuickNameButton(label: "address_quick_home", icon: "house.fill", color: .orange) { name = String(localized: "address_quick_home") }
+                        QuickNameButton(label: "address_quick_work", icon: "briefcase.fill", color: .blue) { name = String(localized: "address_quick_work") }
+                    }
+                }
+
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+            .navigationTitle("address_save_title")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("common_cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("common_done") {
+                        let label = name.isEmpty ? (mapItem.name ?? addressString) : name
+                        let coord = mapItem.placemark.coordinate
+                        onSave(SavedAddress(
+                            name: label,
+                            address: addressString,
+                            latitude: coord.latitude,
+                            longitude: coord.longitude
+                        ))
+                        dismiss()
+                    }
+                    .fontWeight(.semibold)
+                }
+            }
+        }
+    }
+}
+
+private struct QuickNameButton: View {
+    let label: LocalizedStringKey
+    let icon: String
+    let color: Color
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            Label(label, systemImage: icon)
+                .font(.subheadline.weight(.medium))
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(color.opacity(0.12), in: Capsule())
+                .foregroundStyle(color)
+        }
+        .buttonStyle(.plain)
     }
 }

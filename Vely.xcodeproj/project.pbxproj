@@ -59,6 +59,7 @@
 				Models/BikeStation.swift,
 				Models/City.swift,
 				Models/CitybikeModel.swift,
+				Models/FavoriteItem.swift,
 				"Models/VelibModel+Paris.swift",
 				"Models/VlilleModel+Lille.swift",
 			);
