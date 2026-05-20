@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "E5B27C27-34F6-4AD5-BE2D-7C3689897467"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D952847E-2C77-4E16-9B53-EB327C1CBEB4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Vely/Managers/NotificationManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "scheduleTest(tripName:leadMinutes:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D952847E-2C77-4E16-9B53-EB327C1CBEB4 - 4f1919f2d944042e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74">
+               </Location>
+               <Location
+                  uuid = "D952847E-2C77-4E16-9B53-EB327C1CBEB4 - 15188f802690350f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74">
+               </Location>
+               <Location
+                  uuid = "D952847E-2C77-4E16-9B53-EB327C1CBEB4 - 1feb118d95119c2a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74">
+               </Location>
+               <Location
+                  uuid = "D952847E-2C77-4E16-9B53-EB327C1CBEB4 - 69183efa5053e81c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A1D7E7F0-2E22-4DC8-A041-B0173F4CD9F1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Vely/Managers/NotificationManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "scheduleTest(tripName:leadMinutes:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A1D7E7F0-2E22-4DC8-A041-B0173F4CD9F1 - f0752a4422af1558"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "A1D7E7F0-2E22-4DC8-A041-B0173F4CD9F1 - 12f6265bf22dcc75"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) await resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "A1D7E7F0-2E22-4DC8-A041-B0173F4CD9F1 - 40c7221efe7cad5c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "A1D7E7F0-2E22-4DC8-A041-B0173F4CD9F1 - 11513ad98a0a2560"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for closure #1 () async -&gt; () in Vely.NotificationManager.scheduleTest(tripName: Swift.String, leadMinutes: Swift.Int) -&gt; ()"
+                  moduleName = "Vely.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/badi/Documents/Projets/VLille/Vely/Managers/NotificationManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

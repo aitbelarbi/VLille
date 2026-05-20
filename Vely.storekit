@@ -1,0 +1,44 @@
+{
+  "identifier" : "com.insightiq.Vely.StoreKit",
+  "nonConsumableProducts" : [],
+  "consumableProducts" : [],
+  "subscriptionGroups" : [
+    {
+      "id" : "premium_group",
+      "localizations" : [],
+      "name" : "Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "2.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "premium_monthly",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Accès aux widgets et fonctionnalités premium",
+              "displayName" : "Vely Premium",
+              "locale" : "fr_FR"
+            },
+            {
+              "description" : "Access to widgets and premium features",
+              "displayName" : "Vely Premium",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.insightiq.Vely.premium.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "premium_group",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

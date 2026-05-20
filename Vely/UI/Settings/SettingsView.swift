@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(CityStore.self) var cityStore
+    @Environment(ProfileStore.self) var profileStore
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
     @Environment(\.dismiss) private var dismiss
@@ -30,6 +31,19 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // Profile
+                Section(LocalizedStringKey("settings_section_profile")) {
+                    Picker(LocalizedStringKey("settings_section_profile"), selection: Binding(
+                        get: { profileStore.profile },
+                        set: { profileStore.setProfile($0) }
+                    )) {
+                        Text("profile_bikesharing_title").tag(UserProfile.bikesharing)
+                        Text("profile_cyclist_title").tag(UserProfile.cyclist)
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                }
+
                 // City
                 Section(LocalizedStringKey("settings_section_city")) {
                     NavigationLink {

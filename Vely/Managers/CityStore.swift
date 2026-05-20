@@ -22,8 +22,8 @@ class CityStore: NSObject, URLSessionDelegate {
     ]
 
     override init() {
-        let savedId = UserDefaults.standard.string(forKey: "selected_city_id") ?? "lille"
-        self.selectedCity = City.staticAll.first { $0.id == savedId } ?? .lille
+        let savedId = UserDefaults.standard.string(forKey: "selected_city_id") ?? ""
+        self.selectedCity = City.staticAll.first { $0.id == savedId } ?? City.staticAll[0]
         self.hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "has_completed_onboarding")
     }
 
@@ -85,8 +85,7 @@ class CityStore: NSObject, URLSessionDelegate {
             .sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
         cities = merged
 
-        let savedId = UserDefaults.standard.string(forKey: cityKey) ?? "lille"
-        if let found = merged.first(where: { $0.id == savedId }) {
+        if let found = merged.first(where: { $0.id == selectedCity.id }) {
             selectedCity = found
         }
         isLoadingCities = false
