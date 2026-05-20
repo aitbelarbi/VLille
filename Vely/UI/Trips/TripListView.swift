@@ -78,6 +78,18 @@ struct TripListView: View {
                         Label("trip_delete", systemImage: "trash")
                     }
                 }
+                #if DEBUG
+                .contextMenu {
+                    Button {
+                        notificationManager.scheduleTest(
+                            tripName: trip.name,
+                            leadMinutes: trip.notificationLeadMinutes ?? 15
+                        )
+                    } label: {
+                        Label("Test notification (5s)", systemImage: "bell.badge")
+                    }
+                }
+                #endif
             }
         }
         .listStyle(.plain)

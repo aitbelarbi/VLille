@@ -2,10 +2,12 @@ import UserNotifications
 import Observation
 
 @Observable
-final class NotificationManager {
+final class NotificationManager: NSObject {
     private(set) var authorizationStatus: UNAuthorizationStatus = .notDetermined
 
-    init() {
+    override init() {
+        super.init()
+        UNUserNotificationCenter.current().delegate = self
         Task { await refreshStatus() }
     }
 
@@ -25,14 +27,16 @@ final class NotificationManager {
         }
     }
 
-    func schedule(_ trip: Trip) {
+    func schedule(_ trip: Trip, originName: String? = nil, destinationName: String? = nil) {
         guard let leadMinutes = trip.notificationLeadMinutes else { return }
         cancel(tripId: trip.id)
 
         let content = UNMutableNotificationContent()
-        content.title = trip.name.isEmpty
-            ? NSLocalizedString("trip_notification_title", comment: "")
-            : trip.name
+        content.title = {
+            if !trip.name.isEmpty { return trip.name }
+            if let o = originName, let d = destinationName { return "\(o) → \(d)" }
+            return NSLocalizedString("trip_notification_title", comment: "")
+        }()
         content.body = String(
             format: NSLocalizedString("trip_notification_body", comment: ""),
             leadMinutes
@@ -62,5 +66,34 @@ final class NotificationManager {
             let ids = requests.filter { $0.identifier.hasPrefix(prefix) }.map(\.identifier)
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
         }
+    }
+
+    #if DEBUG
+    func scheduleTest(tripName: String = "", leadMinutes: Int = 15) {
+        Task {
+            _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
+            await refreshStatus()
+            let content = UNMutableNotificationContent()
+            content.title = tripName.isEmpty
+                ? NSLocalizedString("trip_notification_title", comment: "")
+                : tripName
+            content.body = String(format: NSLocalizedString("trip_notification_body", comment: ""), leadMinutes)
+            content.sound = .default
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            let request = UNNotificationRequest(identifier: "debug-test", content: content, trigger: trigger)
+            try? await UNUserNotificationCenter.current().add(request)
+        }
+    }
+    #endif
+}
+
+// MARK: - UNUserNotificationCenterDelegate
+
+extension NotificationManager: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        return [.banner, .sound]
     }
 }

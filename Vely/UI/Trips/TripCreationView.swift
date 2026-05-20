@@ -197,18 +197,20 @@ struct TripCreationView: View {
         } else {
             tripStore.add(trip)
         }
-        Task { await scheduleAfterPermissionCheck(trip) }
+        let oName = originItem?.displayName
+        let dName = destinationItem?.displayName
+        Task { await scheduleAfterPermissionCheck(trip, originName: oName, destinationName: dName) }
     }
 
-    private func scheduleAfterPermissionCheck(_ trip: Trip) async {
+    private func scheduleAfterPermissionCheck(_ trip: Trip, originName: String?, destinationName: String?) async {
         guard trip.notificationLeadMinutes != nil else { return }
         await notificationManager.refreshStatus()
         switch notificationManager.authorizationStatus {
         case .authorized, .provisional, .ephemeral:
-            notificationManager.schedule(trip)
+            notificationManager.schedule(trip, originName: originName, destinationName: destinationName)
         case .notDetermined:
             let granted = await notificationManager.requestAuthorization()
-            if granted { notificationManager.schedule(trip) }
+            if granted { notificationManager.schedule(trip, originName: originName, destinationName: destinationName) }
         default:
             break
         }
