@@ -40,6 +40,7 @@ struct PaywallView: View {
             VStack(alignment: .leading, spacing: 16) {
                 FeatureRow(icon: "rectangle.3.group", title: "paywall_feature_widget_title", description: "paywall_feature_widget_desc")
                 FeatureRow(icon: "arrow.trianglehead.branch", title: "paywall_feature_trips_title", description: "paywall_feature_trips_desc")
+                FeatureRow(icon: "bell.badge.fill", title: "paywall_feature_liveactivity_title", description: "paywall_feature_liveactivity_desc")
                 FeatureRow(icon: "star.fill", title: "paywall_feature_stations_title", description: "paywall_feature_stations_desc")
                 FeatureRow(icon: "arrow.clockwise", title: "paywall_feature_refresh_title", description: "paywall_feature_refresh_desc")
             }

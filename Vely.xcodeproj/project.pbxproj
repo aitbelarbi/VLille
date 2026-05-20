@@ -68,6 +68,13 @@
 			);
 			target = 09EA44EA2FBBBBE200E52314 /* VelyWidgetExtension */;
 		};
+		09EA45372FBD81E700E52314 /* Exceptions for "VelyWidget" folder in "Vely" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TripActivityAttributes.swift,
+			);
+			target = C4CEB6CB2D5DFE1100968635 /* Vely */;
+		};
 		C4CEB6FF2D5DFE1100968635 /* Exceptions for "Vely" folder in "Vely" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -81,6 +88,7 @@
 		09EA44F12FBBBBE300E52314 /* VelyWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				09EA45372FBD81E700E52314 /* Exceptions for "VelyWidget" folder in "Vely" target */,
 				09EA45052FBBBBE300E52314 /* Exceptions for "VelyWidget" folder in "VelyWidgetExtension" target */,
 			);
 			path = VelyWidget;

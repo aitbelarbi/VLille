@@ -20,6 +20,7 @@ struct VelyApp: App {
     @State private var profileStore = ProfileStore()
     @State private var tripStore = TripStore()
     @State private var notificationManager = NotificationManager()
+    @State private var liveActivityManager = LiveActivityManager()
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
 
@@ -45,13 +46,26 @@ struct VelyApp: App {
                 .environment(profileStore)
                 .environment(tripStore)
                 .environment(notificationManager)
+                .environment(liveActivityManager)
                 .preferredColorScheme(preferredColorScheme)
                 .environment(\.locale, appLocale.isEmpty ? .current : Locale(identifier: appLocale))
+                .onChange(of: purchaseManager.isPremium) { _, isPremium in
+                    if !isPremium { liveActivityManager.end() }
+                }
                 .task {
                     ratingManager.recordLaunch()
                     await cityStore.loadCitybikeNetworks()
                     await purchaseManager.loadProducts()
                     await purchaseManager.updateSubscriptionStatus()
+                    notificationManager.onTripNotificationTap = { displayName, originName, destinationName, departureDate in
+                        guard purchaseManager.isPremium else { return }
+                        liveActivityManager.start(
+                            tripDisplayName: displayName,
+                            originName: originName,
+                            destinationName: destinationName,
+                            departureDate: departureDate
+                        )
+                    }
                     #if DEBUG
                     purchaseManager.debugPremiumOverride = true
                     #endif

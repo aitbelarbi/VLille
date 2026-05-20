@@ -14,7 +14,7 @@ final class PurchaseManager {
 
     var isPremium: Bool {
         #if DEBUG
-        if debugPremiumOverride { return true }
+        if debugPremiumOverride { return false }
         #endif
         switch subscriptionStatus {
         case .subscribed, .inGracePeriod: return true

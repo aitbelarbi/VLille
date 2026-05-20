@@ -4,6 +4,7 @@ import Observation
 @Observable
 final class NotificationManager: NSObject {
     private(set) var authorizationStatus: UNAuthorizationStatus = .notDetermined
+    var onTripNotificationTap: ((String, String, String, Date) -> Void)?
 
     override init() {
         super.init()
@@ -42,6 +43,13 @@ final class NotificationManager: NSObject {
             leadMinutes
         )
         content.sound = .default
+        content.userInfo = [
+            "tripDisplayName": content.title,
+            "originName": originName ?? "",
+            "destinationName": destinationName ?? "",
+            "departureHour": trip.schedule.departureHour,
+            "departureMinute": trip.schedule.departureMinute
+        ]
 
         for day in trip.schedule.days {
             let totalMinutes = trip.schedule.departureHour * 60 + trip.schedule.departureMinute - leadMinutes
@@ -82,6 +90,15 @@ final class NotificationManager: NSObject {
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
             let request = UNNotificationRequest(identifier: "debug-test", content: content, trigger: trigger)
             try? await UNUserNotificationCenter.current().add(request)
+
+            var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            components.hour = Calendar.current.component(.hour, from: Date().addingTimeInterval(Double(leadMinutes) * 60))
+            components.minute = Calendar.current.component(.minute, from: Date().addingTimeInterval(Double(leadMinutes) * 60))
+            let departureDate = Calendar.current.date(from: components) ?? Date().addingTimeInterval(Double(leadMinutes) * 60)
+            let displayName = tripName.isEmpty ? NSLocalizedString("trip_notification_title", comment: "") : tripName
+            await MainActor.run {
+                onTripNotificationTap?(displayName, "Eurallille", "Euratech", departureDate)
+            }
         }
     }
     #endif
@@ -95,5 +112,26 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
         return [.banner, .sound]
+    }
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        defer { completionHandler() }
+        let info = response.notification.request.content.userInfo
+        guard let displayName = info["tripDisplayName"] as? String,
+              let originName = info["originName"] as? String,
+              let destinationName = info["destinationName"] as? String,
+              let hour = info["departureHour"] as? Int,
+              let minute = info["departureMinute"] as? Int else { return }
+
+        var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        components.hour = hour
+        components.minute = minute
+        let departureDate = Calendar.current.date(from: components) ?? Date()
+
+        onTripNotificationTap?(displayName, originName, destinationName, departureDate)
     }
 }
