@@ -38,10 +38,15 @@ final class NotificationManager: NSObject {
             if let o = originName, let d = destinationName { return "\(o) → \(d)" }
             return NSLocalizedString("trip_notification_title", comment: "")
         }()
-        content.body = String(
-            format: NSLocalizedString("trip_notification_body", comment: ""),
-            leadMinutes
-        )
+        content.body = {
+            let base = String(format: NSLocalizedString("trip_notification_body", comment: ""), leadMinutes)
+            let appGroup = UserDefaults(suiteName: "group.com.insightiq.Vely")
+            if appGroup?.string(forKey: "user_profile") == "cyclist",
+               let temp = appGroup?.string(forKey: "cached_weather_temp") {
+                return "\(base) — \(temp)"
+            }
+            return base
+        }()
         content.sound = .default
         content.userInfo = [
             "tripDisplayName": content.title,

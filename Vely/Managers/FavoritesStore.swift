@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import WidgetKit
 
 struct FavoriteEntry: Codable, Identifiable {
     var id: String { stationId }
@@ -12,46 +13,47 @@ struct FavoriteEntry: Codable, Identifiable {
 @Observable
 class FavoritesStore {
     private(set) var entries: [String: FavoriteEntry] = [:]
-    private(set) var widgetSlotIds: [String?] = [nil, nil]
+    private(set) var widgetSlotIdsByCity: [String: [String?]] = [:]
 
     @ObservationIgnored private let entriesKey = "favorite_entries_v2"
     @ObservationIgnored private let legacyKey = "favorite_station_ids"
     @ObservationIgnored private let widgetSlotsKey = "widget_slot_ids"
     @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely")!
 
-    init() {
-        load()
-    }
+    init() { load() }
 
     func isFavorite(_ station: BikeStation) -> Bool {
         entries[station.id] != nil
     }
 
-    func widgetSlot(for stationId: String) -> Int? {
-        if widgetSlotIds[0] == stationId { return 1 }
-        if widgetSlotIds[1] == stationId { return 2 }
+    func widgetSlots(for cityId: String) -> [String?] {
+        widgetSlotIdsByCity[cityId] ?? [nil, nil]
+    }
+
+    func widgetSlot(for stationId: String, cityId: String) -> Int? {
+        let slots = widgetSlots(for: cityId)
+        if slots[0] == stationId { return 1 }
+        if slots[1] == stationId { return 2 }
         return nil
     }
 
-    func setWidgetSlot(_ index: Int, stationId: String?) {
+    func setWidgetSlot(_ index: Int, stationId: String?, cityId: String) {
         guard index < 2 else { return }
-        // Si la station est déjà dans l'autre slot, on la retire
+        var slots = widgetSlots(for: cityId)
         let otherIndex = index == 0 ? 1 : 0
-        if let id = stationId, widgetSlotIds[otherIndex] == id {
-            widgetSlotIds[otherIndex] = nil
+        if let id = stationId, slots[otherIndex] == id {
+            slots[otherIndex] = nil
         }
-        widgetSlotIds[index] = stationId
+        slots[index] = stationId
+        widgetSlotIdsByCity[cityId] = slots
         saveWidgetSlots()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     @discardableResult
     func toggle(_ station: BikeStation) -> Bool {
         if entries[station.id] != nil {
-            // Retirer des slots widget si présent
-            for i in 0..<2 where widgetSlotIds[i] == station.id {
-                widgetSlotIds[i] = nil
-            }
-            saveWidgetSlots()
+            removeFromWidgetSlots(stationId: station.id)
             entries.removeValue(forKey: station.id)
             save()
             return false
@@ -68,10 +70,7 @@ class FavoritesStore {
     }
 
     func remove(stationId: String) {
-        for i in 0..<2 where widgetSlotIds[i] == stationId {
-            widgetSlotIds[i] = nil
-        }
-        saveWidgetSlots()
+        removeFromWidgetSlots(stationId: stationId)
         entries.removeValue(forKey: stationId)
         save()
     }
@@ -93,6 +92,19 @@ class FavoritesStore {
         if changed { save() }
     }
 
+    private func removeFromWidgetSlots(stationId: String) {
+        var changed = false
+        for cityId in widgetSlotIdsByCity.keys {
+            var slots = widgetSlotIdsByCity[cityId]!
+            for i in 0..<2 where slots[i] == stationId {
+                slots[i] = nil
+                changed = true
+            }
+            if changed { widgetSlotIdsByCity[cityId] = slots }
+        }
+        if changed { saveWidgetSlots() }
+    }
+
     private func save() {
         if let data = try? JSONEncoder().encode(Array(entries.values)) {
             defaults.set(data, forKey: entriesKey)
@@ -100,26 +112,22 @@ class FavoritesStore {
     }
 
     private func saveWidgetSlots() {
-        let slots = widgetSlotIds.map { $0 ?? "" }
-        if let data = try? JSONEncoder().encode(slots) {
+        let flat = widgetSlotIdsByCity.mapValues { $0.map { $0 ?? "" } }
+        if let data = try? JSONEncoder().encode(flat) {
             defaults.set(data, forKey: widgetSlotsKey)
         }
     }
 
     private func load() {
-        // Charger les slots widget
         if let data = defaults.data(forKey: widgetSlotsKey),
-           let slots = try? JSONDecoder().decode([String].self, from: data) {
-            widgetSlotIds = slots.map { $0.isEmpty ? nil : $0 }
+           let flat = try? JSONDecoder().decode([String: [String]].self, from: data) {
+            widgetSlotIdsByCity = flat.mapValues { $0.map { $0.isEmpty ? nil : $0 } }
         }
-
-        // Charger les entrées
         if let data = defaults.data(forKey: entriesKey),
            let array = try? JSONDecoder().decode([FavoriteEntry].self, from: data) {
             entries = Dictionary(uniqueKeysWithValues: array.map { ($0.stationId, $0) })
             return
         }
-        // Migration depuis l'ancien format (juste des IDs)
         let legacyIds = UserDefaults.standard.array(forKey: legacyKey) as? [String] ?? []
         guard !legacyIds.isEmpty else { return }
         entries = Dictionary(uniqueKeysWithValues: legacyIds.map { id in

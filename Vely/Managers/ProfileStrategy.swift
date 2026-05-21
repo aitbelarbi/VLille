@@ -2,9 +2,10 @@ import Foundation
 
 // MARK: - UserProfile
 
-enum UserProfile: String, Codable {
+enum UserProfile: String, Codable, Identifiable {
     case bikesharing
     case cyclist
+    var id: String { rawValue }
 }
 
 // MARK: - FavoriteSection
@@ -70,7 +71,7 @@ struct BikesharingStrategy: ProfileStrategy {
                 StationFavorite(
                     entry: store.entries[station.id]!,
                     liveStation: station,
-                    slot: isPremium ? store.widgetSlot(for: station.id) : nil
+                    slot: isPremium ? store.widgetSlot(for: station.id, cityId: currentCity.id) : nil
                 )
             }
 
@@ -119,7 +120,7 @@ struct CyclistStrategy: ProfileStrategy {
     var profile: UserProfile { .cyclist }
     var shouldLoadStations: Bool { false }
     var searchIncludesStations: Bool { false }
-    var supportsWidgets: Bool { false }
+    var supportsWidgets: Bool { true }
     var canAddAddressFavorites: Bool { true }
 
     func hasFavorites(in stores: FavoriteStores) -> Bool {
@@ -134,10 +135,11 @@ struct CyclistStrategy: ProfileStrategy {
         isPremium: Bool
     ) -> [FavoriteSection] {
         let items: [any FavoriteItem] = stores.addresses.savedAddresses
+            .filter { $0.cityId == currentCity.id }
             .sorted { $0.name < $1.name }
             .map { AddressFavorite(address: $0) }
         guard !items.isEmpty else { return [] }
-        return [FavoriteSection(id: "addresses", title: "", items: items, cityId: nil)]
+        return [FavoriteSection(id: "addresses", title: "", items: items, cityId: currentCity.id)]
     }
 
     func mapAnnotations(from addressStore: AddressStore) -> [AddressFavorite] {
@@ -146,6 +148,7 @@ struct CyclistStrategy: ProfileStrategy {
 
     func tripWaypointCandidates(stores: FavoriteStores, currentCity: City) -> [any FavoriteItem] {
         stores.addresses.savedAddresses
+            .filter { $0.cityId == currentCity.id || $0.cityId.isEmpty }
             .sorted { $0.name < $1.name }
             .map { AddressFavorite(address: $0) }
     }

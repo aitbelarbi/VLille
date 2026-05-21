@@ -1,6 +1,11 @@
 import ActivityKit
 import Foundation
 
+enum StatusKind: Codable, Hashable {
+    case bikes(Int)
+    case weather(symbol: String, temp: String)
+}
+
 struct TripActivityAttributes: ActivityAttributes {
     let tripDisplayName: String
     let originName: String
@@ -8,6 +13,6 @@ struct TripActivityAttributes: ActivityAttributes {
 
     struct ContentState: Codable, Hashable {
         let departureDate: Date
-        let bikesAvailable: Int?
+        let statusKind: StatusKind?
     }
 }

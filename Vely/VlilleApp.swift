@@ -59,11 +59,24 @@ struct VelyApp: App {
                     await purchaseManager.updateSubscriptionStatus()
                     notificationManager.onTripNotificationTap = { displayName, originName, destinationName, departureDate in
                         guard purchaseManager.isPremium else { return }
+                        let statusKind: StatusKind?
+                        if profileStore.profile == .cyclist {
+                            let appGroup = UserDefaults(suiteName: "group.com.insightiq.Vely")
+                            if let symbol = appGroup?.string(forKey: "cached_weather_symbol"),
+                               let temp = appGroup?.string(forKey: "cached_weather_temp") {
+                                statusKind = .weather(symbol: symbol, temp: temp)
+                            } else {
+                                statusKind = nil
+                            }
+                        } else {
+                            statusKind = nil
+                        }
                         liveActivityManager.start(
                             tripDisplayName: displayName,
                             originName: originName,
                             destinationName: destinationName,
-                            departureDate: departureDate
+                            departureDate: departureDate,
+                            statusKind: statusKind
                         )
                     }
                     #if DEBUG

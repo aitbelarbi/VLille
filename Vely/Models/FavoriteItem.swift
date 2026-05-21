@@ -9,6 +9,7 @@ struct SavedAddress: Codable, Identifiable {
     var address: String
     var latitude: Double
     var longitude: Double
+    var cityId: String = ""
 }
 
 extension SavedAddress {

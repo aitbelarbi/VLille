@@ -12,16 +12,14 @@ struct FavoritesView: View {
     @Environment(ProfileStore.self) var profileStore
     @Binding var selectedTab: Int
     @Binding var cameraPosition: MapCameraPosition
+    @Binding var navigateToTrips: Bool
     @State private var showPaywall = false
     @State private var pickerSlot: WidgetSlotSelection? = nil
+    @State private var addressPickerSlot: WidgetSlotSelection? = nil
     @State private var activeTab: FavoritesTab = .favorites
     @State private var showTripCreation = false
 
     private var strategy: any ProfileStrategy { profileStore.strategy }
-
-    private var widgetStationIds: Set<String> {
-        Set(favoritesStore.widgetSlotIds.compactMap { $0 })
-    }
 
     private var sections: [FavoriteSection] {
         strategy.favoriteSections(
@@ -82,6 +80,12 @@ struct FavoritesView: View {
             .onChange(of: viewModel.stations) { _, stations in
                 favoritesStore.healEntries(with: stations)
             }
+            .onChange(of: navigateToTrips) { _, should in
+                if should {
+                    activeTab = .trips
+                    navigateToTrips = false
+                }
+            }
             .sheet(isPresented: $showPaywall) {
                 PaywallView()
                     .presentationDragIndicator(.visible)
@@ -90,8 +94,17 @@ struct FavoritesView: View {
                 WidgetSlotPickerView(
                     slotIndex: selection.index,
                     allEntries: Array(favoritesStore.entries.values),
-                    liveStations: viewModel.stations
+                    liveStations: viewModel.stations,
+                    currentCityId: cityStore.selectedCity.id
                 )
+                .presentationDetents([.medium, .large])
+            }
+            .sheet(item: $addressPickerSlot) { selection in
+                AddressWidgetSlotPickerView(
+                    slotIndex: selection.index,
+                    currentCityId: cityStore.selectedCity.id
+                )
+                .environment(addressStore)
                 .presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $showTripCreation) {
@@ -119,14 +132,26 @@ struct FavoritesView: View {
         List {
             if strategy.supportsWidgets {
                 Section {
-                    WidgetSectionView(
-                        slotIds: favoritesStore.widgetSlotIds,
-                        entries: favoritesStore.entries,
-                        liveStations: viewModel.stations,
-                        isPremium: purchaseManager.isPremium,
-                        onTapSlot: { pickerSlot = WidgetSlotSelection(index: $0) },
-                        onUnlock: { showPaywall = true }
-                    )
+                    Group {
+                        if strategy.profile == .cyclist {
+                            AddressWidgetSectionView(
+                                slotIds: addressStore.widgetSlots(for: cityStore.selectedCity.id),
+                                addresses: addressStore.savedAddresses,
+                                isPremium: purchaseManager.isPremium,
+                                onTapSlot: { addressPickerSlot = WidgetSlotSelection(index: $0) },
+                                onUnlock: { showPaywall = true }
+                            )
+                        } else {
+                            WidgetSectionView(
+                                slotIds: favoritesStore.widgetSlots(for: cityStore.selectedCity.id),
+                                entries: favoritesStore.entries,
+                                liveStations: viewModel.stations,
+                                isPremium: purchaseManager.isPremium,
+                                onTapSlot: { pickerSlot = WidgetSlotSelection(index: $0) },
+                                onUnlock: { showPaywall = true }
+                            )
+                        }
+                    }
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
@@ -369,6 +394,115 @@ struct WidgetSlotCard: View {
                                 .font(.caption2)
                                 .foregroundStyle(.white.opacity(0.6))
                         }
+                    }
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 110)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Address Widget Section
+
+struct AddressWidgetSectionView: View {
+    let slotIds: [String?]
+    let addresses: [SavedAddress]
+    let isPremium: Bool
+    let onTapSlot: (Int) -> Void
+    let onUnlock: () -> Void
+
+    var body: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 12) {
+                ForEach(0..<2, id: \.self) { index in
+                    let address = slotIds[index].flatMap { id in addresses.first { $0.id.uuidString == id } }
+                    AddressWidgetSlotCard(
+                        slotNumber: index + 1,
+                        address: address,
+                        isLocked: !isPremium,
+                        onTap: isPremium ? { onTapSlot(index) } : onUnlock
+                    )
+                }
+            }
+
+            if !isPremium {
+                PremiumBannerView(
+                    icon: "rectangle.3.group",
+                    title: "banner_widget_title",
+                    subtitle: "banner_widget_subtitle",
+                    onTap: onUnlock
+                )
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+}
+
+struct AddressWidgetSlotCard: View {
+    let slotNumber: Int
+    let address: SavedAddress?
+    let isLocked: Bool
+    let onTap: () -> Void
+
+    var isEmpty: Bool { address == nil }
+
+    var body: some View {
+        Button(action: onTap) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(isEmpty
+                        ? AnyShapeStyle(Color(.systemGray5))
+                        : AnyShapeStyle(LinearGradient(
+                            colors: [Color.indigo.opacity(0.85), Color.indigo],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(isEmpty ? Color(.systemGray4) : Color.clear, lineWidth: 1)
+                    )
+
+                if isEmpty {
+                    VStack(spacing: 8) {
+                        Image(systemName: "plus.circle")
+                            .font(.title2)
+                            .foregroundStyle(.secondary)
+                        Text("widget_slot_empty")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(12)
+                } else if let addr = address {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text("W\(slotNumber)")
+                                .font(.caption2.bold())
+                                .foregroundStyle(.white.opacity(0.7))
+                            Spacer()
+                            Image(systemName: addr.systemIcon)
+                                .font(.caption2)
+                                .foregroundStyle(.white.opacity(0.8))
+                        }
+
+                        Text(addr.name)
+                            .font(.footnote.bold())
+                            .foregroundStyle(.white)
+                            .lineLimit(2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        Spacer(minLength: 4)
+
+                        Text(addr.address)
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.7))
+                            .lineLimit(1)
                     }
                     .padding(12)
                     .frame(maxWidth: .infinity, alignment: .leading)

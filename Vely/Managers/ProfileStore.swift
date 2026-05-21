@@ -1,5 +1,6 @@
 import Observation
 import Foundation
+import WidgetKit
 
 @Observable
 final class ProfileStore {
@@ -24,5 +25,6 @@ final class ProfileStore {
     func setProfile(_ profile: UserProfile) {
         self.profile = profile
         defaults.set(profile.rawValue, forKey: key)
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }

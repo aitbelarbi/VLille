@@ -3,6 +3,7 @@ import StoreKit
 
 struct PaywallView: View {
     @Environment(PurchaseManager.self) var purchaseManager
+    @Environment(ProfileStore.self) var profileStore
     @Environment(\.dismiss) var dismiss
     @State private var isPurchasing = false
     @State private var errorMessage: String?
@@ -41,8 +42,12 @@ struct PaywallView: View {
                 FeatureRow(icon: "rectangle.3.group", title: "paywall_feature_widget_title", description: "paywall_feature_widget_desc")
                 FeatureRow(icon: "arrow.trianglehead.branch", title: "paywall_feature_trips_title", description: "paywall_feature_trips_desc")
                 FeatureRow(icon: "bell.badge.fill", title: "paywall_feature_liveactivity_title", description: "paywall_feature_liveactivity_desc")
-                FeatureRow(icon: "star.fill", title: "paywall_feature_stations_title", description: "paywall_feature_stations_desc")
-                FeatureRow(icon: "arrow.clockwise", title: "paywall_feature_refresh_title", description: "paywall_feature_refresh_desc")
+                if profileStore.profile == .cyclist {
+                    FeatureRow(icon: "mappin.circle.fill", title: "paywall_feature_addresses_title", description: "paywall_feature_addresses_desc")
+                } else {
+                    FeatureRow(icon: "star.fill", title: "paywall_feature_stations_title", description: "paywall_feature_stations_desc")
+                    FeatureRow(icon: "arrow.clockwise", title: "paywall_feature_refresh_title", description: "paywall_feature_refresh_desc")
+                }
             }
             .padding(24)
             .frame(maxWidth: .infinity)

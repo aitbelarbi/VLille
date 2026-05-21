@@ -15,8 +15,12 @@ struct StationSnapshot {
 
 struct VelyWidgetEntry: TimelineEntry {
     let date: Date
+    let profile: UserProfile
     let slot1: StationSnapshot?
     let slot2: StationSnapshot?
+    let addresses: [SavedAddress]
+    let weatherSymbol: String?
+    let weatherTemp: String?
     var isPremium: Bool = true
 }
 
@@ -27,7 +31,18 @@ struct VelyWidgetProvider: TimelineProvider {
     private let repository = StationRepository()
 
     func placeholder(in context: Context) -> VelyWidgetEntry {
-        VelyWidgetEntry(date: .now, slot1: .placeholder(slot: 1), slot2: .placeholder(slot: 2))
+        VelyWidgetEntry(
+            date: .now,
+            profile: loadProfile(),
+            slot1: .placeholder(slot: 1),
+            slot2: .placeholder(slot: 2),
+            addresses: [
+                SavedAddress(name: "Maison", address: "12 rue de la Paix", latitude: 0, longitude: 0),
+                SavedAddress(name: "Bureau", address: "45 av. de la République", latitude: 0, longitude: 0)
+            ],
+            weatherSymbol: "sun.max.fill",
+            weatherTemp: "22°C"
+        )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (VelyWidgetEntry) -> Void) {
@@ -43,14 +58,38 @@ struct VelyWidgetProvider: TimelineProvider {
     }
 
     private func buildEntry() async -> VelyWidgetEntry {
+        let profile = loadProfile()
         guard defaults?.bool(forKey: "is_premium") == true else {
-            return VelyWidgetEntry(date: .now, slot1: nil, slot2: nil, isPremium: false)
+            return VelyWidgetEntry(date: .now, profile: profile, slot1: nil, slot2: nil, addresses: [], weatherSymbol: nil, weatherTemp: nil, isPremium: false)
         }
-        let slotIds = loadSlotIds()
-        let entries = loadFavoriteEntries()
-        async let snap1 = fetchSnapshot(stationId: slotIds[0], entries: entries)
-        async let snap2 = fetchSnapshot(stationId: slotIds[1], entries: entries)
-        return VelyWidgetEntry(date: .now, slot1: await snap1, slot2: await snap2, isPremium: true)
+
+        switch profile {
+        case .cyclist:
+            let addresses = loadAddresses()
+            let symbol = defaults?.string(forKey: "cached_weather_symbol")
+            let temp = defaults?.string(forKey: "cached_weather_temp")
+            return VelyWidgetEntry(date: .now, profile: profile, slot1: nil, slot2: nil, addresses: addresses, weatherSymbol: symbol, weatherTemp: temp)
+
+        case .bikesharing:
+            let slotIds = loadSlotIds()
+            let entries = loadFavoriteEntries()
+            async let snap1 = fetchSnapshot(stationId: slotIds[0], entries: entries)
+            async let snap2 = fetchSnapshot(stationId: slotIds[1], entries: entries)
+            return VelyWidgetEntry(date: .now, profile: profile, slot1: await snap1, slot2: await snap2, addresses: [], weatherSymbol: nil, weatherTemp: nil)
+        }
+    }
+
+    private func loadProfile() -> UserProfile {
+        guard let raw = defaults?.string(forKey: "user_profile"),
+              let p = UserProfile(rawValue: raw) else { return .bikesharing }
+        return p
+    }
+
+    private func loadAddresses() -> [SavedAddress] {
+        guard let data = defaults?.data(forKey: "saved_addresses"),
+              let addresses = try? JSONDecoder().decode([SavedAddress].self, from: data)
+        else { return [] }
+        return Array(addresses.sorted { $0.name < $1.name }.prefix(2))
     }
 
     private func fetchSnapshot(stationId: String?, entries: [String: FavoriteEntry]) async -> StationSnapshot? {
@@ -158,7 +197,7 @@ struct VelyWidget: Widget {
                 .containerBackground(for: .widget) { WidgetBackground() }
         }
         .configurationDisplayName("Vely")
-        .description("Suivez vos stations favorites en temps réel.")
+        .description("Suivez vos favoris en temps réel.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -172,6 +211,13 @@ struct VelyWidgetEntryView: View {
     var body: some View {
         if !entry.isPremium {
             WidgetUpsellView()
+        } else if entry.profile == .cyclist {
+            switch family {
+            case .systemMedium:
+                CyclistMediumWidgetView(entry: entry)
+            default:
+                CyclistSmallWidgetView(entry: entry)
+            }
         } else {
             switch family {
             case .systemMedium:
@@ -183,7 +229,7 @@ struct VelyWidgetEntryView: View {
     }
 }
 
-// MARK: - Small Widget
+// MARK: - Small Widget (bikesharing)
 
 struct SmallWidgetView: View {
     let station: StationSnapshot?
@@ -259,7 +305,7 @@ struct SmallWidgetView: View {
     }
 }
 
-// MARK: - Medium Widget
+// MARK: - Medium Widget (bikesharing)
 
 struct MediumWidgetView: View {
     let entry: VelyWidgetEntry
@@ -379,6 +425,186 @@ struct StationColumnView: View {
     }
 }
 
+// MARK: - Small Widget (cyclist)
+
+struct CyclistSmallWidgetView: View {
+    let entry: VelyWidgetEntry
+    @Environment(\.colorScheme) var colorScheme
+
+    private var primaryText: Color { colorScheme == .dark ? .white : Color(red: 0.08, green: 0.08, blue: 0.22) }
+    private var secondaryText: Color { primaryText.opacity(0.45) }
+    private var hasWeather: Bool { entry.weatherSymbol != nil && entry.weatherTemp != nil }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Header
+            HStack {
+                Text("CYCLISTE")
+                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .foregroundStyle(secondaryText)
+                Spacer()
+                Image(systemName: "figure.outdoor.cycle")
+                    .font(.system(size: 15))
+                    .foregroundStyle(Color.accentColor)
+            }
+
+            if entry.addresses.isEmpty && !hasWeather {
+                Spacer()
+                CyclistNotConfiguredContent()
+                    .frame(maxWidth: .infinity)
+                Spacer()
+            } else {
+                Spacer()
+
+                if let symbol = entry.weatherSymbol, let temp = entry.weatherTemp {
+                    HStack(alignment: .bottom, spacing: 4) {
+                        Image(systemName: symbol)
+                            .font(.system(size: 22))
+                            .symbolRenderingMode(.multicolor)
+                        Text(temp)
+                            .font(.system(size: 26, weight: .black, design: .rounded))
+                            .foregroundStyle(primaryText)
+                            .minimumScaleFactor(0.7)
+                            .lineLimit(1)
+                    }
+                }
+
+                Spacer(minLength: hasWeather ? 8 : 12)
+
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(entry.addresses.prefix(2)) { address in
+                        HStack(spacing: 6) {
+                            Image(systemName: address.systemIcon)
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(address.tintColor)
+                                .frame(width: 16)
+                            Text(address.name)
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(primaryText)
+                                .lineLimit(1)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(14)
+    }
+}
+
+// MARK: - Medium Widget (cyclist)
+
+struct CyclistMediumWidgetView: View {
+    let entry: VelyWidgetEntry
+    @Environment(\.colorScheme) var colorScheme
+
+    private var primaryText: Color { colorScheme == .dark ? .white : Color(red: 0.08, green: 0.08, blue: 0.22) }
+    private var secondaryText: Color { primaryText.opacity(0.45) }
+    private var dividerColor: Color { colorScheme == .dark ? Color.white.opacity(0.1) : Color.black.opacity(0.07) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Header
+            HStack {
+                Text("CYCLISTE")
+                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .foregroundStyle(secondaryText)
+                Spacer()
+                if let symbol = entry.weatherSymbol, let temp = entry.weatherTemp {
+                    HStack(spacing: 4) {
+                        Image(systemName: symbol)
+                            .font(.system(size: 11))
+                            .symbolRenderingMode(.multicolor)
+                        Text(temp)
+                            .font(.system(size: 11, weight: .semibold, design: .rounded))
+                            .foregroundStyle(primaryText)
+                    }
+                }
+                Image(systemName: "figure.outdoor.cycle")
+                    .font(.system(size: 15))
+                    .foregroundStyle(Color.accentColor)
+                    .padding(.leading, 6)
+            }
+            .padding(.bottom, 10)
+
+            if entry.addresses.isEmpty {
+                Spacer()
+                CyclistNotConfiguredContent()
+                    .frame(maxWidth: .infinity)
+                Spacer()
+            } else {
+                HStack(spacing: 0) {
+                    // Addresses column
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(entry.addresses.prefix(2).enumerated()), id: \.offset) { index, address in
+                            if index > 0 {
+                                Rectangle()
+                                    .fill(dividerColor)
+                                    .frame(height: 1)
+                                    .padding(.vertical, 8)
+                            }
+                            HStack(spacing: 10) {
+                                Image(systemName: address.systemIcon)
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(address.tintColor)
+                                    .frame(width: 20)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(address.name)
+                                        .font(.system(size: 13, weight: .bold))
+                                        .foregroundStyle(primaryText)
+                                        .lineLimit(1)
+                                    Text(address.address)
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundStyle(secondaryText)
+                                        .lineLimit(1)
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    // Weather column
+                    if let symbol = entry.weatherSymbol, let temp = entry.weatherTemp {
+                        Rectangle()
+                            .fill(dividerColor)
+                            .frame(width: 1)
+                            .padding(.vertical, 2)
+
+                        VStack(spacing: 4) {
+                            Spacer()
+                            Image(systemName: symbol)
+                                .font(.system(size: 30))
+                                .symbolRenderingMode(.multicolor)
+                            Text(temp)
+                                .font(.system(size: 18, weight: .black, design: .rounded))
+                                .foregroundStyle(primaryText)
+                                .minimumScaleFactor(0.8)
+                                .lineLimit(1)
+                            Spacer()
+                        }
+                        .frame(width: 72)
+                    }
+                }
+            }
+        }
+        .padding(14)
+    }
+}
+
+private struct CyclistNotConfiguredContent: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "figure.outdoor.cycle")
+                .font(.system(size: 26))
+                .foregroundStyle(Color.accentColor.opacity(0.6))
+            Text("Ajouter des adresses\ndans Vely")
+                .font(.system(size: 11, weight: .medium, design: .rounded))
+                .foregroundStyle(Color.primary.opacity(0.35))
+                .multilineTextAlignment(.center)
+        }
+    }
+}
+
 // MARK: - Upsell (non premium)
 
 struct WidgetUpsellView: View {
@@ -420,16 +646,53 @@ struct NotConfiguredView: View {
 
 // MARK: - Previews
 
-#Preview(as: .systemSmall) {
+#Preview("Small – Bikesharing", as: .systemSmall) {
     VelyWidget()
 } timeline: {
-    VelyWidgetEntry(date: .now, slot1: .placeholder(slot: 1), slot2: .placeholder(slot: 2))
-    VelyWidgetEntry(date: .now, slot1: nil, slot2: nil)
+    VelyWidgetEntry(date: .now, profile: .bikesharing, slot1: .placeholder(slot: 1), slot2: .placeholder(slot: 2), addresses: [], weatherSymbol: nil, weatherTemp: nil)
+    VelyWidgetEntry(date: .now, profile: .bikesharing, slot1: nil, slot2: nil, addresses: [], weatherSymbol: nil, weatherTemp: nil)
 }
 
-#Preview(as: .systemMedium) {
+#Preview("Medium – Bikesharing", as: .systemMedium) {
     VelyWidget()
 } timeline: {
-    VelyWidgetEntry(date: .now, slot1: .placeholder(slot: 1), slot2: .placeholder(slot: 2))
-    VelyWidgetEntry(date: .now, slot1: .placeholder(slot: 1), slot2: nil)
+    VelyWidgetEntry(date: .now, profile: .bikesharing, slot1: .placeholder(slot: 1), slot2: .placeholder(slot: 2), addresses: [], weatherSymbol: nil, weatherTemp: nil)
+}
+
+#Preview("Small – Cyclist", as: .systemSmall) {
+    VelyWidget()
+} timeline: {
+    VelyWidgetEntry(
+        date: .now, profile: .cyclist, slot1: nil, slot2: nil,
+        addresses: [
+            SavedAddress(name: "Maison", address: "12 rue de la Paix", latitude: 0, longitude: 0),
+            SavedAddress(name: "Bureau", address: "45 av. de la République", latitude: 0, longitude: 0)
+        ],
+        weatherSymbol: "sun.max.fill", weatherTemp: "22°C"
+    )
+    VelyWidgetEntry(
+        date: .now, profile: .cyclist, slot1: nil, slot2: nil,
+        addresses: [],
+        weatherSymbol: nil, weatherTemp: nil
+    )
+}
+
+#Preview("Medium – Cyclist", as: .systemMedium) {
+    VelyWidget()
+} timeline: {
+    VelyWidgetEntry(
+        date: .now, profile: .cyclist, slot1: nil, slot2: nil,
+        addresses: [
+            SavedAddress(name: "Maison", address: "12 rue de la Paix", latitude: 0, longitude: 0),
+            SavedAddress(name: "Bureau", address: "45 av. de la République", latitude: 0, longitude: 0)
+        ],
+        weatherSymbol: "cloud.sun.fill", weatherTemp: "18°C"
+    )
+    VelyWidgetEntry(
+        date: .now, profile: .cyclist, slot1: nil, slot2: nil,
+        addresses: [
+            SavedAddress(name: "Maison", address: "12 rue de la Paix", latitude: 0, longitude: 0)
+        ],
+        weatherSymbol: nil, weatherTemp: nil
+    )
 }

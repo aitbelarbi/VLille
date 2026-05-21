@@ -87,7 +87,7 @@ struct SearchView: View {
                 searchPlaces(newValue)
             }
             .sheet(item: $pendingAddressItem) { wrapper in
-                AddressNamingSheet(mapItem: wrapper.item) { address in
+                AddressNamingSheet(mapItem: wrapper.item, cityId: cityStore.selectedCity.id) { address in
                     addressStore.add(address)
                     pendingAddressItem = nil
                 }
@@ -170,6 +170,7 @@ struct IdentifiableMKMapItem: Identifiable {
 
 struct AddressNamingSheet: View {
     let mapItem: MKMapItem
+    let cityId: String
     let onSave: (SavedAddress) -> Void
 
     @State private var name = ""
@@ -227,7 +228,8 @@ struct AddressNamingSheet: View {
                             name: label,
                             address: addressString,
                             latitude: coord.latitude,
-                            longitude: coord.longitude
+                            longitude: coord.longitude,
+                            cityId: cityId
                         ))
                         dismiss()
                     }

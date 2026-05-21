@@ -15,6 +15,7 @@ struct MainTabView: View {
     @Environment(ProfileStore.self) var profileStore
     @State private var selectedTab = 0
     @State private var cameraPosition: MapCameraPosition = .automatic
+    @State private var navigateToTrips = false
 
     var body: some View {
         ZStack {
@@ -24,7 +25,7 @@ struct MainTabView: View {
                 }
                 if selectedTab != 2 {
                     Tab("tab_favorites", systemImage: "star", value: 1) {
-                        FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
+                        FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition, navigateToTrips: $navigateToTrips)
                     }
                 }
                 Tab("tab_search", systemImage: "magnifyingglass", value: 2, role: .search) {
@@ -68,6 +69,11 @@ struct MainTabView: View {
             }
         }
         .animation(.easeInOut, value: cityStore.hasCompletedOnboarding)
+        .onOpenURL { url in
+            guard url.scheme == "vely", url.host == "trips" else { return }
+            selectedTab = 1
+            navigateToTrips = true
+        }
         .sheet(isPresented: Binding(
             get: { ratingManager.shouldShowPrompt },
             set: { if !$0 { ratingManager.dismissWithoutAction() } }
@@ -75,4 +81,5 @@ struct MainTabView: View {
             RatingPromptView()
         }
     }
+
 }

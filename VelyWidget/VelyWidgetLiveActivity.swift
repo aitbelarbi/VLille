@@ -32,11 +32,7 @@ struct VelyWidgetLiveActivity: Widget {
                         Text(context.state.departureDate, style: .time)
                             .font(.caption.weight(.bold).monospacedDigit())
                             .foregroundStyle(.white)
-                        if let bikes = context.state.bikesAvailable {
-                            Label("\(bikes)", systemImage: "bicycle")
-                                .font(.caption2.weight(.medium))
-                                .foregroundStyle(.white.opacity(0.7))
-                        }
+                        StatusBadgeView(statusKind: context.state.statusKind, style: .compact)
                     }
                     .padding(.trailing, 4)
                 }
@@ -68,9 +64,7 @@ struct VelyWidgetLiveActivity: Widget {
                     .padding(.bottom, 4)
                 }
             } compactLeading: {
-                Image(systemName: "bicycle")
-                    .foregroundStyle(.indigo)
-                    .font(.caption.weight(.semibold))
+                compactLeadingIcon(statusKind: context.state.statusKind)
             } compactTrailing: {
                 Text(context.state.departureDate, style: .timer)
                     .monospacedDigit()
@@ -78,11 +72,53 @@ struct VelyWidgetLiveActivity: Widget {
                     .foregroundStyle(.indigo)
                     .frame(minWidth: 36)
             } minimal: {
-                Image(systemName: "bicycle")
-                    .foregroundStyle(.indigo)
+                compactLeadingIcon(statusKind: context.state.statusKind)
             }
             .widgetURL(URL(string: "vely://trips"))
             .keylineTint(.indigo)
+        }
+    }
+
+    @ViewBuilder
+    private func compactLeadingIcon(statusKind: StatusKind?) -> some View {
+        switch statusKind {
+        case .weather(let symbol, _):
+            Image(systemName: symbol)
+                .symbolRenderingMode(.multicolor)
+                .font(.caption.weight(.semibold))
+        default:
+            Image(systemName: "bicycle")
+                .foregroundStyle(.indigo)
+                .font(.caption.weight(.semibold))
+        }
+    }
+}
+
+// MARK: - Status Badge
+
+private enum StatusBadgeStyle { case compact, full }
+
+private struct StatusBadgeView: View {
+    let statusKind: StatusKind?
+    let style: StatusBadgeStyle
+
+    var body: some View {
+        switch statusKind {
+        case .bikes(let count):
+            Label("\(count)", systemImage: "bicycle")
+                .font(style == .compact ? .caption2.weight(.medium) : .caption.weight(.medium))
+                .foregroundStyle(.white.opacity(0.7))
+        case .weather(let symbol, let temp):
+            HStack(spacing: 3) {
+                Image(systemName: symbol)
+                    .symbolRenderingMode(.multicolor)
+                    .font(style == .compact ? .caption2 : .caption)
+                Text(temp)
+                    .font(style == .compact ? .caption2.weight(.medium) : .caption.weight(.medium))
+                    .foregroundStyle(.white.opacity(0.7))
+            }
+        case nil:
+            EmptyView()
         }
     }
 }
@@ -95,9 +131,7 @@ private struct TripLockScreenView: View {
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 10) {
-                Image(systemName: "bicycle.circle.fill")
-                    .font(.title3)
-                    .foregroundStyle(.indigo)
+                lockScreenLeadingIcon
                 Text(context.attributes.tripDisplayName)
                     .font(.headline)
                     .lineLimit(1)
@@ -128,14 +162,24 @@ private struct TripLockScreenView: View {
                         .monospacedDigit()
                         .font(.title2.bold())
                         .foregroundStyle(.indigo)
-                    if let bikes = context.state.bikesAvailable {
-                        Label("\(bikes) vélos", systemImage: "bicycle")
-                            .font(.caption.weight(.medium))
-                            .foregroundStyle(.secondary)
-                    }
+                    StatusBadgeView(statusKind: context.state.statusKind, style: .full)
                 }
             }
         }
         .padding(16)
+    }
+
+    @ViewBuilder
+    private var lockScreenLeadingIcon: some View {
+        switch context.state.statusKind {
+        case .weather(let symbol, _):
+            Image(systemName: symbol)
+                .symbolRenderingMode(.multicolor)
+                .font(.title3)
+        default:
+            Image(systemName: "bicycle.circle.fill")
+                .font(.title3)
+                .foregroundStyle(.indigo)
+        }
     }
 }
