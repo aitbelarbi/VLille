@@ -2,9 +2,13 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(CityStore.self) var cityStore
+    @Environment(ProfileStore.self) var profileStore
     @AppStorage("app_color_scheme") private var colorSchemePreference = "auto"
     @AppStorage("app_locale") private var appLocale = ""
+    @AppStorage("profile_switch_seen_cyclist") private var seenCyclist = false
+    @AppStorage("profile_switch_seen_bikesharing") private var seenBikesharing = false
     @Environment(\.dismiss) private var dismiss
+    @State private var profileSwitchTarget: UserProfile? = nil
 
     private let languages: [(code: String, name: String)] = [
         ("", "settings_lang_system"),
@@ -30,6 +34,26 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // Profile
+                Section(LocalizedStringKey("settings_section_profile")) {
+                    Picker(LocalizedStringKey("settings_section_profile"), selection: Binding(
+                        get: { profileStore.profile },
+                        set: { newProfile in
+                            profileStore.setProfile(newProfile)
+                            let alreadySeen = newProfile == .cyclist ? seenCyclist : seenBikesharing
+                            if !alreadySeen {
+                                if newProfile == .cyclist { seenCyclist = true } else { seenBikesharing = true }
+                                profileSwitchTarget = newProfile
+                            }
+                        }
+                    )) {
+                        Text("profile_bikesharing_title").tag(UserProfile.bikesharing)
+                        Text("profile_cyclist_title").tag(UserProfile.cyclist)
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                }
+
                 // City
                 Section(LocalizedStringKey("settings_section_city")) {
                     NavigationLink {
@@ -99,6 +123,11 @@ struct SettingsView: View {
             }
         }
         .preferredColorScheme(preferredColorScheme)
+        .sheet(item: $profileSwitchTarget) { profile in
+            ProfileSwitchSheet(profile: profile)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 

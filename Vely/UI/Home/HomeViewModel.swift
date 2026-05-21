@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import WidgetKit
 
 @Observable
 @MainActor
@@ -8,7 +9,7 @@ final class HomeViewModel {
     var isLoading = false
     var errorMessage: String?
     var lastUpdated: Date?
-    var currentCity: City = .lille
+    private var currentCity: City?
     var pendingStationToShow: BikeStation?
 
     @ObservationIgnored private let repository = StationRepository()
@@ -21,10 +22,13 @@ final class HomeViewModel {
         currentCity = city
         stations = []
         errorMessage = nil
+        isLoading = false
+        guard city.provider.isSupported else { return }
         fetchStations()
     }
 
     func startAutoRefresh() async {
+        guard currentCity?.provider.isSupported == true else { return }
         autoRefreshTask?.cancel()
         autoRefreshTask = Task {
             await loadStations()
@@ -41,13 +45,22 @@ final class HomeViewModel {
         Task { await loadStations() }
     }
 
+    func stopAndClear() {
+        currentRequestId = UUID()
+        autoRefreshTask?.cancel()
+        stations = []
+        errorMessage = nil
+        isLoading = false
+    }
+
     func dismissError() { errorMessage = nil }
 
     private func loadStations() async {
+        guard let city = currentCity else { return }
         let requestId = currentRequestId
         isLoading = true
         do {
-            let result = try await repository.fetch(city: currentCity)
+            let result = try await repository.fetch(city: city)
             guard currentRequestId == requestId else { return }
             stations = result
             lastUpdated = Date()
@@ -58,5 +71,6 @@ final class HomeViewModel {
         }
         guard currentRequestId == requestId else { return }
         isLoading = false
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }

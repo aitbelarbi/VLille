@@ -4,10 +4,12 @@ import MapKit
 struct MapView: View {
     var viewModel: HomeViewModel
     @Environment(FavoritesStore.self) var favoritesStore
+    @Environment(AddressStore.self) var addressStore
     @Environment(LocationManager.self) var locationManager
     @Environment(CityStore.self) var cityStore
     @Environment(WeatherManager.self) var weatherManager
     @Environment(GhostCityManager.self) var ghostCityManager
+    @Environment(ProfileStore.self) var profileStore
     @Binding var cameraPosition: MapCameraPosition
     @State private var selectedStation: BikeStation?
     @State private var showWeatherDetail = false
@@ -77,6 +79,11 @@ struct MapView: View {
                             }
                         }
                     }
+                    ForEach(profileStore.strategy.mapAnnotations(from: addressStore).filter { $0.coordinate != nil }, id: \.id) { item in
+                        Annotation(item.displayName, coordinate: item.coordinate!) {
+                            AddressMarkerView(item: item)
+                        }
+                    }
                     if let route = currentRoute {
                         MapPolyline(route.polyline)
                             .stroke(.blue, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
@@ -91,6 +98,7 @@ struct MapView: View {
                 // Top bar : filtre
                 VStack {
                     HStack {
+                        if profileStore.strategy.shouldLoadStations {
                         Button {
                             withAnimation(.spring(response: 0.3)) {
                                 showOnlyAvailable.toggle()
@@ -112,6 +120,7 @@ struct MapView: View {
                             .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 3)
                         }
                         .scaleEffect(showOnlyAvailable ? 1.03 : 1.0)
+                        } // end if shouldLoadStations
                         Spacer()
                         WeatherBadgeView(weather: weatherManager) {
                             showWeatherDetail = true
@@ -142,8 +151,8 @@ struct MapView: View {
                         try? await Task.sleep(for: .seconds(2))
                         withAnimation(.easeIn) { showRefreshToast = false }
                     }
-                    if viewModel.stations.isEmpty {
-                        ghostCityManager.recordEmptyFetch(city: viewModel.currentCity)
+                    if viewModel.stations.isEmpty && cityStore.selectedCity.provider.isSupported {
+                        ghostCityManager.recordEmptyFetch(city: cityStore.selectedCity)
                     }
                 }
 
@@ -220,6 +229,10 @@ struct MapView: View {
                             .padding()
                     }
                 }
+
+                if profileStore.strategy.shouldLoadStations && !cityStore.selectedCity.provider.isSupported {
+                    UnsupportedCityBanner(cityName: cityStore.selectedCity.name)
+                }
             }
             .navigationTitle("home_title")
             .navigationBarTitleDisplayMode(.inline)
@@ -241,11 +254,6 @@ struct MapView: View {
             }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
-                    .onDisappear {
-                        if cityStore.selectedCity.id != viewModel.currentCity.id {
-                            viewModel.switchCity(to: cityStore.selectedCity)
-                        }
-                    }
             }
             .sheet(isPresented: $showWeatherDetail) {
                 WeatherDetailView(weather: weatherManager)
@@ -266,6 +274,7 @@ struct MapView: View {
                 )
             }
             .onAppear {
+                guard cityStore.hasCompletedOnboarding else { return }
                 locationManager.requestLocationPermission()
             }
             .onChange(of: viewModel.pendingStationToShow) { _, station in

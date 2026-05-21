@@ -3,19 +3,18 @@ import Observation
 
 @Observable
 final class RatingManager {
-    @ObservationIgnored private let launchCountKey  = "rating_launch_count"
-    @ObservationIgnored private let hasCompletedKey = "rating_has_completed"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
 
     var shouldShowPrompt = false
 
     private var launchCount: Int {
-        get { UserDefaults.standard.integer(forKey: launchCountKey) }
-        set { UserDefaults.standard.set(newValue, forKey: launchCountKey) }
+        get { persistence.get(.ratingLaunchCount, default: 0) }
+        set { persistence.set(.ratingLaunchCount, newValue) }
     }
 
     private var hasCompleted: Bool {
-        get { UserDefaults.standard.bool(forKey: hasCompletedKey) }
-        set { UserDefaults.standard.set(newValue, forKey: hasCompletedKey) }
+        get { persistence.get(.ratingCompleted, default: false) }
+        set { persistence.set(.ratingCompleted, newValue) }
     }
 
     func recordLaunch() {

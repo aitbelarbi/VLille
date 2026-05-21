@@ -8,8 +8,20 @@ class CityStore: NSObject, URLSessionDelegate {
     var cities: [City] = City.staticAll
     var isLoadingCities: Bool = false
 
-    @ObservationIgnored private let cityKey = "selected_city_id"
-    @ObservationIgnored private let onboardingKey = "has_completed_onboarding"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
+
+    private struct CustomCityData: Codable {
+        let id: String
+        let name: String
+        let latitude: Double
+        let longitude: Double
+        let countryCode: String
+
+        var toCity: City {
+            City(id: id, name: name, latitude: latitude, longitude: longitude,
+                 provider: .unsupported, serviceName: "", countryCode: countryCode)
+        }
+    }
     @ObservationIgnored private lazy var session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
 
     // CityBike network IDs that overlap with our static cities (skip to avoid duplicates)
@@ -22,19 +34,38 @@ class CityStore: NSObject, URLSessionDelegate {
     ]
 
     override init() {
-        let savedId = UserDefaults.standard.string(forKey: "selected_city_id") ?? "lille"
-        self.selectedCity = City.staticAll.first { $0.id == savedId } ?? .lille
-        self.hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "has_completed_onboarding")
+        let p = PersistenceStore.shared
+        let savedId = p.get(.selectedCityId, default: "")
+        if let city = City.staticAll.first(where: { $0.id == savedId }) {
+            self.selectedCity = city
+        } else if let data = p.get(.selectedCustomCity),
+                  let custom = try? JSONDecoder().decode(CustomCityData.self, from: data),
+                  custom.id == savedId {
+            self.selectedCity = custom.toCity
+        } else {
+            self.selectedCity = City.staticAll[0]
+        }
+        self.hasCompletedOnboarding = p.get(.hasCompletedOnboarding, default: false)
     }
 
     func selectCity(_ city: City) {
         selectedCity = city
-        UserDefaults.standard.set(city.id, forKey: cityKey)
+        persistence.set(.selectedCityId, city.id)
+        if !city.provider.isSupported {
+            let data = try? JSONEncoder().encode(CustomCityData(
+                id: city.id, name: city.name,
+                latitude: city.latitude, longitude: city.longitude,
+                countryCode: city.countryCode
+            ))
+            persistence.set(.selectedCustomCity, data ?? Data())
+        } else {
+            persistence.remove(.selectedCustomCity)
+        }
     }
 
     func completeOnboarding() {
         hasCompletedOnboarding = true
-        UserDefaults.standard.set(true, forKey: onboardingKey)
+        persistence.set(.hasCompletedOnboarding, true)
     }
 
     // MARK: - Dynamic CityBike loading
@@ -85,8 +116,7 @@ class CityStore: NSObject, URLSessionDelegate {
             .sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
         cities = merged
 
-        let savedId = UserDefaults.standard.string(forKey: cityKey) ?? "lille"
-        if let found = merged.first(where: { $0.id == savedId }) {
+        if let found = merged.first(where: { $0.id == selectedCity.id }) {
             selectedCity = found
         }
         isLoadingCities = false

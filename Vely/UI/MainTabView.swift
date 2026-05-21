@@ -12,13 +12,10 @@ struct MainTabView: View {
     @State private var viewModel = HomeViewModel()
     @Environment(CityStore.self) var cityStore
     @Environment(RatingManager.self) var ratingManager
+    @Environment(ProfileStore.self) var profileStore
     @State private var selectedTab = 0
-    @State private var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 50.6292, longitude: 3.0573),
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        )
-    )
+    @State private var cameraPosition: MapCameraPosition = .automatic
+    @State private var navigateToTrips = false
 
     var body: some View {
         ZStack {
@@ -28,7 +25,7 @@ struct MainTabView: View {
                 }
                 if selectedTab != 2 {
                     Tab("tab_favorites", systemImage: "star", value: 1) {
-                        FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition)
+                        FavoritesView(viewModel: viewModel, selectedTab: $selectedTab, cameraPosition: $cameraPosition, navigateToTrips: $navigateToTrips)
                     }
                 }
                 Tab("tab_search", systemImage: "magnifyingglass", value: 2, role: .search) {
@@ -40,19 +37,29 @@ struct MainTabView: View {
                     center: cityStore.selectedCity.coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 ))
-                viewModel.switchCity(to: cityStore.selectedCity)
-                await viewModel.startAutoRefresh()
+                if profileStore.strategy.shouldLoadStations {
+                    viewModel.switchCity(to: cityStore.selectedCity)
+                    await viewModel.startAutoRefresh()
+                }
             }
             .onChange(of: cityStore.selectedCity) { _, newCity in
-                viewModel.switchCity(to: newCity)
-                Task {
-                    await viewModel.startAutoRefresh()
+                if profileStore.strategy.shouldLoadStations {
+                    viewModel.switchCity(to: newCity)
+                    Task { await viewModel.startAutoRefresh() }
                 }
                 withAnimation {
                     cameraPosition = .region(MKCoordinateRegion(
                         center: newCity.coordinate,
                         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                     ))
+                }
+            }
+            .onChange(of: profileStore.profile) { _, _ in
+                if profileStore.strategy.shouldLoadStations {
+                    viewModel.switchCity(to: cityStore.selectedCity)
+                    Task { await viewModel.startAutoRefresh() }
+                } else {
+                    viewModel.stopAndClear()
                 }
             }
 
@@ -62,6 +69,11 @@ struct MainTabView: View {
             }
         }
         .animation(.easeInOut, value: cityStore.hasCompletedOnboarding)
+        .onOpenURL { url in
+            guard url.scheme == "vely", url.host == "trips" else { return }
+            selectedTab = 1
+            navigateToTrips = true
+        }
         .sheet(isPresented: Binding(
             get: { ratingManager.shouldShowPrompt },
             set: { if !$0 { ratingManager.dismissWithoutAction() } }
@@ -69,4 +81,5 @@ struct MainTabView: View {
             RatingPromptView()
         }
     }
+
 }

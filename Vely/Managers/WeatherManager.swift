@@ -13,21 +13,17 @@ final class WeatherManager {
     var hasError = false
 
     @ObservationIgnored private let service = WeatherService.shared
-    @ObservationIgnored private let cacheKeyPrefix = "weather_last_fetch_"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
     @ObservationIgnored private let cacheDuration: TimeInterval = 6 * 3600
 
-    // Garde en mémoire la ville actuellement chargée pour éviter les doubles fetches
     @ObservationIgnored private var cachedCityId: String?
 
     func fetch(latitude: Double, longitude: Double, cityId: String) async {
-        let cacheKey = cacheKeyPrefix + cityId
-        let lastFetch = UserDefaults.standard.double(forKey: cacheKey)
+        let cacheKey = AppKey<Double>.weatherLastFetch(cityId: cityId)
+        let lastFetch = persistence.get(cacheKey, default: 0)
         let elapsed = Date().timeIntervalSince1970 - lastFetch
 
-        // Skip si même ville et données récentes (< 6h)
-        if cachedCityId == cityId, elapsed < cacheDuration {
-            return
-        }
+        if cachedCityId == cityId, elapsed < cacheDuration { return }
 
         isLoading = true
         hasError = false
@@ -40,7 +36,10 @@ final class WeatherManager {
             hourly      = Array(weather.hourlyForecast.filter { $0.date >= Date() }.prefix(24))
             attribution = attr
             cachedCityId = cityId
-            UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: cacheKey)
+            persistence.set(cacheKey, Date().timeIntervalSince1970)
+            let tempStr = weather.currentWeather.temperature.formatted(.measurement(width: .narrow, usage: .weather))
+            persistence.set(.cachedWeatherSymbol, weather.currentWeather.symbolName)
+            persistence.set(.cachedWeatherTemp, tempStr)
         } catch {
             hasError = true
         }
