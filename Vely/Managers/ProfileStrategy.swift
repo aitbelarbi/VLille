@@ -17,6 +17,48 @@ struct FavoriteSection: Identifiable {
     let cityId: String?
 }
 
+// MARK: - Strategy enums
+
+enum WidgetDataKind {
+    case stations
+    case addresses
+}
+
+enum LiveActivityStatusSource {
+    case bikeCount
+    case weather
+}
+
+enum PaywallFeature: Hashable {
+    case widget
+    case trips
+    case liveActivity
+    case stations
+    case refresh
+    case addresses
+}
+
+enum SwitchBenefit: Hashable {
+    case widget
+    case notifications
+    case liveActivity
+}
+
+struct EmptyStateConfig {
+    let titleKey: String
+    let hintKey: String
+    let icon: String
+}
+
+extension UserProfile {
+    var widgetDataKind: WidgetDataKind {
+        switch self {
+        case .bikesharing: return .stations
+        case .cyclist:     return .addresses
+        }
+    }
+}
+
 // MARK: - Protocol
 
 protocol ProfileStrategy {
@@ -25,6 +67,12 @@ protocol ProfileStrategy {
     var searchIncludesStations: Bool { get }
     var supportsWidgets: Bool { get }
     var canAddAddressFavorites: Bool { get }
+    var widgetDataKind: WidgetDataKind { get }
+    var liveActivityStatusSource: LiveActivityStatusSource { get }
+    var notificationIncludesWeather: Bool { get }
+    var paywallFeatures: [PaywallFeature] { get }
+    var switchBenefits: [SwitchBenefit] { get }
+    var emptyFavoritesConfig: EmptyStateConfig { get }
 
     func hasFavorites(in stores: FavoriteStores) -> Bool
 
@@ -49,6 +97,12 @@ struct BikesharingStrategy: ProfileStrategy {
     var searchIncludesStations: Bool { true }
     var supportsWidgets: Bool { true }
     var canAddAddressFavorites: Bool { false }
+    var widgetDataKind: WidgetDataKind { .stations }
+    var liveActivityStatusSource: LiveActivityStatusSource { .bikeCount }
+    var notificationIncludesWeather: Bool { false }
+    var paywallFeatures: [PaywallFeature] { [.widget, .trips, .liveActivity, .stations, .refresh] }
+    var switchBenefits: [SwitchBenefit] { [.widget, .notifications, .liveActivity] }
+    var emptyFavoritesConfig: EmptyStateConfig { EmptyStateConfig(titleKey: "favorites_empty_title", hintKey: "favorites_empty_hint", icon: "star.slash") }
 
     func hasFavorites(in stores: FavoriteStores) -> Bool {
         !stores.favorites.entries.isEmpty
@@ -122,6 +176,12 @@ struct CyclistStrategy: ProfileStrategy {
     var searchIncludesStations: Bool { false }
     var supportsWidgets: Bool { true }
     var canAddAddressFavorites: Bool { true }
+    var widgetDataKind: WidgetDataKind { .addresses }
+    var liveActivityStatusSource: LiveActivityStatusSource { .weather }
+    var notificationIncludesWeather: Bool { true }
+    var paywallFeatures: [PaywallFeature] { [.widget, .trips, .liveActivity, .addresses] }
+    var switchBenefits: [SwitchBenefit] { [.widget, .notifications, .liveActivity] }
+    var emptyFavoritesConfig: EmptyStateConfig { EmptyStateConfig(titleKey: "cyclist_addresses_empty_title", hintKey: "cyclist_addresses_empty_hint", icon: "mappin.slash") }
 
     func hasFavorites(in stores: FavoriteStores) -> Bool {
         !stores.addresses.savedAddresses.isEmpty

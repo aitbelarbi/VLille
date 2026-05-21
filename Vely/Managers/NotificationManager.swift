@@ -28,7 +28,7 @@ final class NotificationManager: NSObject {
         }
     }
 
-    func schedule(_ trip: Trip, originName: String? = nil, destinationName: String? = nil) {
+    func schedule(_ trip: Trip, originName: String? = nil, destinationName: String? = nil, includesWeather: Bool = false) {
         guard let leadMinutes = trip.notificationLeadMinutes else { return }
         cancel(tripId: trip.id)
 
@@ -40,9 +40,8 @@ final class NotificationManager: NSObject {
         }()
         content.body = {
             let base = String(format: NSLocalizedString("trip_notification_body", comment: ""), leadMinutes)
-            let appGroup = UserDefaults(suiteName: "group.com.insightiq.Vely")
-            if appGroup?.string(forKey: "user_profile") == "cyclist",
-               let temp = appGroup?.string(forKey: "cached_weather_temp") {
+            if includesWeather,
+               let temp = UserDefaults(suiteName: "group.com.insightiq.Vely")?.string(forKey: "cached_weather_temp") {
                 return "\(base) — \(temp)"
             }
             return base

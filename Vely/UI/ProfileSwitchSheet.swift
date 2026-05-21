@@ -4,6 +4,13 @@ struct ProfileSwitchSheet: View {
     let profile: UserProfile
     @Environment(\.dismiss) var dismiss
 
+    private var strategy: any ProfileStrategy {
+        switch profile {
+        case .cyclist:     return CyclistStrategy()
+        case .bikesharing: return BikesharingStrategy()
+        }
+    }
+
     private var icon: String {
         profile == .cyclist ? "figure.outdoor.cycle" : "bicycle.circle.fill"
     }
@@ -41,29 +48,18 @@ struct ProfileSwitchSheet: View {
             )
 
             VStack(alignment: .leading, spacing: 0) {
-                SwitchBenefitRow(
-                    icon: "rectangle.3.group",
-                    color: .indigo,
-                    titleKey: "paywall_feature_widget_title",
-                    fromKey: profile == .cyclist ? "profile_content_widget_bs" : "profile_content_widget_cy",
-                    toKey:   profile == .cyclist ? "profile_content_widget_cy" : "profile_content_widget_bs"
-                )
-                Divider().padding(.leading, 56)
-                SwitchBenefitRow(
-                    icon: "bell.badge.fill",
-                    color: .orange,
-                    titleKey: "trip_section_notification",
-                    fromKey: profile == .cyclist ? "profile_content_notif_bs" : "profile_content_notif_cy",
-                    toKey:   profile == .cyclist ? "profile_content_notif_cy" : "profile_content_notif_bs"
-                )
-                Divider().padding(.leading, 56)
-                SwitchBenefitRow(
-                    icon: "timer",
-                    color: .purple,
-                    titleKey: "paywall_feature_liveactivity_title",
-                    fromKey: profile == .cyclist ? "profile_content_live_bs" : "profile_content_live_cy",
-                    toKey:   profile == .cyclist ? "profile_content_live_cy" : "profile_content_live_bs"
-                )
+                ForEach(Array(strategy.switchBenefits.enumerated()), id: \.element) { index, benefit in
+                    SwitchBenefitRow(
+                        icon: benefit.icon,
+                        color: benefit.color,
+                        titleKey: benefit.titleKey,
+                        fromKey: benefit.fromKey(targeting: profile),
+                        toKey: benefit.toKey(targeting: profile)
+                    )
+                    if index < strategy.switchBenefits.count - 1 {
+                        Divider().padding(.leading, 56)
+                    }
+                }
             }
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
             .padding(.horizontal, 24)
@@ -85,6 +81,58 @@ struct ProfileSwitchSheet: View {
         }
     }
 }
+
+// MARK: - SwitchBenefit display mapping
+
+private extension SwitchBenefit {
+    var icon: String {
+        switch self {
+        case .widget:       return "rectangle.3.group"
+        case .notifications: return "bell.badge.fill"
+        case .liveActivity: return "timer"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .widget:       return .indigo
+        case .notifications: return .orange
+        case .liveActivity: return .purple
+        }
+    }
+
+    var titleKey: LocalizedStringKey {
+        switch self {
+        case .widget:       return "paywall_feature_widget_title"
+        case .notifications: return "trip_section_notification"
+        case .liveActivity: return "paywall_feature_liveactivity_title"
+        }
+    }
+
+    func fromKey(targeting profile: UserProfile) -> LocalizedStringKey {
+        switch (self, profile) {
+        case (.widget,       .cyclist):     return "profile_content_widget_bs"
+        case (.widget,       .bikesharing): return "profile_content_widget_cy"
+        case (.notifications, .cyclist):    return "profile_content_notif_bs"
+        case (.notifications, .bikesharing): return "profile_content_notif_cy"
+        case (.liveActivity, .cyclist):     return "profile_content_live_bs"
+        case (.liveActivity, .bikesharing): return "profile_content_live_cy"
+        }
+    }
+
+    func toKey(targeting profile: UserProfile) -> LocalizedStringKey {
+        switch (self, profile) {
+        case (.widget,       .cyclist):     return "profile_content_widget_cy"
+        case (.widget,       .bikesharing): return "profile_content_widget_bs"
+        case (.notifications, .cyclist):    return "profile_content_notif_cy"
+        case (.notifications, .bikesharing): return "profile_content_notif_bs"
+        case (.liveActivity, .cyclist):     return "profile_content_live_cy"
+        case (.liveActivity, .bikesharing): return "profile_content_live_bs"
+        }
+    }
+}
+
+// MARK: - Row
 
 private struct SwitchBenefitRow: View {
     let icon: String

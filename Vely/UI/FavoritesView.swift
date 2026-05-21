@@ -133,7 +133,8 @@ struct FavoritesView: View {
             if strategy.supportsWidgets {
                 Section {
                     Group {
-                        if strategy.profile == .cyclist {
+                        switch strategy.widgetDataKind {
+                        case .addresses:
                             AddressWidgetSectionView(
                                 slotIds: addressStore.widgetSlots(for: cityStore.selectedCity.id),
                                 addresses: addressStore.savedAddresses,
@@ -141,7 +142,7 @@ struct FavoritesView: View {
                                 onTapSlot: { addressPickerSlot = WidgetSlotSelection(index: $0) },
                                 onUnlock: { showPaywall = true }
                             )
-                        } else {
+                        case .stations:
                             WidgetSectionView(
                                 slotIds: favoritesStore.widgetSlots(for: cityStore.selectedCity.id),
                                 entries: favoritesStore.entries,

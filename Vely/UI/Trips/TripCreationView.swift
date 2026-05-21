@@ -207,10 +207,10 @@ struct TripCreationView: View {
         await notificationManager.refreshStatus()
         switch notificationManager.authorizationStatus {
         case .authorized, .provisional, .ephemeral:
-            notificationManager.schedule(trip, originName: originName, destinationName: destinationName)
+            notificationManager.schedule(trip, originName: originName, destinationName: destinationName, includesWeather: profileStore.strategy.notificationIncludesWeather)
         case .notDetermined:
             let granted = await notificationManager.requestAuthorization()
-            if granted { notificationManager.schedule(trip, originName: originName, destinationName: destinationName) }
+            if granted { notificationManager.schedule(trip, originName: originName, destinationName: destinationName, includesWeather: profileStore.strategy.notificationIncludesWeather) }
         default:
             break
         }

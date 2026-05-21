@@ -39,14 +39,8 @@ struct PaywallView: View {
             }
 
             VStack(alignment: .leading, spacing: 16) {
-                FeatureRow(icon: "rectangle.3.group", title: "paywall_feature_widget_title", description: "paywall_feature_widget_desc")
-                FeatureRow(icon: "arrow.trianglehead.branch", title: "paywall_feature_trips_title", description: "paywall_feature_trips_desc")
-                FeatureRow(icon: "bell.badge.fill", title: "paywall_feature_liveactivity_title", description: "paywall_feature_liveactivity_desc")
-                if profileStore.profile == .cyclist {
-                    FeatureRow(icon: "mappin.circle.fill", title: "paywall_feature_addresses_title", description: "paywall_feature_addresses_desc")
-                } else {
-                    FeatureRow(icon: "star.fill", title: "paywall_feature_stations_title", description: "paywall_feature_stations_desc")
-                    FeatureRow(icon: "arrow.clockwise", title: "paywall_feature_refresh_title", description: "paywall_feature_refresh_desc")
+                ForEach(profileStore.strategy.paywallFeatures, id: \.self) { feature in
+                    FeatureRow(icon: feature.icon, title: feature.titleKey, description: feature.descriptionKey)
                 }
             }
             .padding(24)
@@ -109,6 +103,39 @@ struct PaywallView: View {
             errorMessage = String(localized: "paywall_error")
         }
         isPurchasing = false
+    }
+}
+
+private extension PaywallFeature {
+    var icon: String {
+        switch self {
+        case .widget:       return "rectangle.3.group"
+        case .trips:        return "arrow.trianglehead.branch"
+        case .liveActivity: return "bell.badge.fill"
+        case .stations:     return "star.fill"
+        case .refresh:      return "arrow.clockwise"
+        case .addresses:    return "mappin.circle.fill"
+        }
+    }
+    var titleKey: LocalizedStringKey {
+        switch self {
+        case .widget:       return "paywall_feature_widget_title"
+        case .trips:        return "paywall_feature_trips_title"
+        case .liveActivity: return "paywall_feature_liveactivity_title"
+        case .stations:     return "paywall_feature_stations_title"
+        case .refresh:      return "paywall_feature_refresh_title"
+        case .addresses:    return "paywall_feature_addresses_title"
+        }
+    }
+    var descriptionKey: LocalizedStringKey {
+        switch self {
+        case .widget:       return "paywall_feature_widget_desc"
+        case .trips:        return "paywall_feature_trips_desc"
+        case .liveActivity: return "paywall_feature_liveactivity_desc"
+        case .stations:     return "paywall_feature_stations_desc"
+        case .refresh:      return "paywall_feature_refresh_desc"
+        case .addresses:    return "paywall_feature_addresses_desc"
+        }
     }
 }
 

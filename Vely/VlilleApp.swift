@@ -60,7 +60,8 @@ struct VelyApp: App {
                     notificationManager.onTripNotificationTap = { displayName, originName, destinationName, departureDate in
                         guard purchaseManager.isPremium else { return }
                         let statusKind: StatusKind?
-                        if profileStore.profile == .cyclist {
+                        switch profileStore.strategy.liveActivityStatusSource {
+                        case .weather:
                             let appGroup = UserDefaults(suiteName: "group.com.insightiq.Vely")
                             if let symbol = appGroup?.string(forKey: "cached_weather_symbol"),
                                let temp = appGroup?.string(forKey: "cached_weather_temp") {
@@ -68,7 +69,7 @@ struct VelyApp: App {
                             } else {
                                 statusKind = nil
                             }
-                        } else {
+                        case .bikeCount:
                             statusKind = nil
                         }
                         liveActivityManager.start(
