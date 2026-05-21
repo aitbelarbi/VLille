@@ -4,8 +4,7 @@ import Foundation
 @Observable
 final class TripStore {
     private(set) var trips: [Trip] = []
-    @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely") ?? .standard
-    @ObservationIgnored private let key = "saved_trips"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
 
     init() { load() }
 
@@ -27,12 +26,12 @@ final class TripStore {
 
     private func save() {
         if let data = try? JSONEncoder().encode(trips) {
-            defaults.set(data, forKey: key)
+            persistence.set(.savedTrips, data)
         }
     }
 
     private func load() {
-        guard let data = defaults.data(forKey: key),
+        guard let data = persistence.get(.savedTrips),
               let saved = try? JSONDecoder().decode([Trip].self, from: data) else { return }
         trips = saved
     }

@@ -7,9 +7,7 @@ final class AddressStore {
     private(set) var savedAddresses: [SavedAddress] = []
     private(set) var widgetSlotIdsByCity: [String: [String?]] = [:]
 
-    @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely") ?? .standard
-    @ObservationIgnored private let key = "saved_addresses"
-    @ObservationIgnored private let widgetSlotsKey = "address_widget_slot_ids"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
 
     init() { load() }
 
@@ -68,7 +66,7 @@ final class AddressStore {
 
     private func save() {
         if let data = try? JSONEncoder().encode(savedAddresses) {
-            defaults.set(data, forKey: key)
+            persistence.set(.savedAddresses, data)
         }
         WidgetCenter.shared.reloadAllTimelines()
     }
@@ -76,16 +74,16 @@ final class AddressStore {
     private func saveWidgetSlots() {
         let flat = widgetSlotIdsByCity.mapValues { $0.map { $0 ?? "" } }
         if let data = try? JSONEncoder().encode(flat) {
-            defaults.set(data, forKey: widgetSlotsKey)
+            persistence.set(.addressWidgetSlots, data)
         }
     }
 
     private func load() {
-        if let data = defaults.data(forKey: key),
+        if let data = persistence.get(.savedAddresses),
            let saved = try? JSONDecoder().decode([SavedAddress].self, from: data) {
             savedAddresses = saved
         }
-        if let data = defaults.data(forKey: widgetSlotsKey),
+        if let data = persistence.get(.addressWidgetSlots),
            let flat = try? JSONDecoder().decode([String: [String]].self, from: data) {
             widgetSlotIdsByCity = flat.mapValues { $0.map { $0.isEmpty ? nil : $0 } }
         }

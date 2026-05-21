@@ -5,8 +5,7 @@ import WidgetKit
 @Observable
 final class ProfileStore {
     private(set) var profile: UserProfile = .bikesharing
-    @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely") ?? .standard
-    @ObservationIgnored private let key = "user_profile"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
 
     var strategy: any ProfileStrategy {
         switch profile {
@@ -16,7 +15,7 @@ final class ProfileStore {
     }
 
     init() {
-        if let raw = defaults.string(forKey: key),
+        if let raw = PersistenceStore.shared.get(.userProfile),
            let p = UserProfile(rawValue: raw) {
             profile = p
         }
@@ -24,7 +23,7 @@ final class ProfileStore {
 
     func setProfile(_ profile: UserProfile) {
         self.profile = profile
-        defaults.set(profile.rawValue, forKey: key)
+        persistence.set(.userProfile, profile.rawValue)
         WidgetCenter.shared.reloadAllTimelines()
     }
 }

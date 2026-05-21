@@ -33,7 +33,6 @@ struct MainTabView: View {
                 }
             }
             .task {
-                print("[Onboarding] MainTabView.task — cityStore.hasCompletedOnboarding=\(cityStore.hasCompletedOnboarding)")
                 cameraPosition = .region(MKCoordinateRegion(
                     center: cityStore.selectedCity.coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
@@ -67,9 +66,6 @@ struct MainTabView: View {
             if !cityStore.hasCompletedOnboarding {
                 OnboardingView()
                     .transition(.opacity)
-                    .onAppear {
-                        print("[Onboarding] OnboardingView appeared — cityStore.hasCompletedOnboarding=\(cityStore.hasCompletedOnboarding)")
-                    }
             }
         }
         .animation(.easeInOut, value: cityStore.hasCompletedOnboarding)

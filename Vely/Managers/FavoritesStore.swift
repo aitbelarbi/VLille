@@ -15,10 +15,7 @@ class FavoritesStore {
     private(set) var entries: [String: FavoriteEntry] = [:]
     private(set) var widgetSlotIdsByCity: [String: [String?]] = [:]
 
-    @ObservationIgnored private let entriesKey = "favorite_entries_v2"
-    @ObservationIgnored private let legacyKey = "favorite_station_ids"
-    @ObservationIgnored private let widgetSlotsKey = "widget_slot_ids"
-    @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely")!
+    @ObservationIgnored private let persistence = PersistenceStore.shared
 
     init() { load() }
 
@@ -107,32 +104,25 @@ class FavoritesStore {
 
     private func save() {
         if let data = try? JSONEncoder().encode(Array(entries.values)) {
-            defaults.set(data, forKey: entriesKey)
+            persistence.set(.favoriteEntries, data)
         }
     }
 
     private func saveWidgetSlots() {
         let flat = widgetSlotIdsByCity.mapValues { $0.map { $0 ?? "" } }
         if let data = try? JSONEncoder().encode(flat) {
-            defaults.set(data, forKey: widgetSlotsKey)
+            persistence.set(.favoriteWidgetSlots, data)
         }
     }
 
     private func load() {
-        if let data = defaults.data(forKey: widgetSlotsKey),
+        if let data = persistence.get(.favoriteWidgetSlots),
            let flat = try? JSONDecoder().decode([String: [String]].self, from: data) {
             widgetSlotIdsByCity = flat.mapValues { $0.map { $0.isEmpty ? nil : $0 } }
         }
-        if let data = defaults.data(forKey: entriesKey),
+        if let data = persistence.get(.favoriteEntries),
            let array = try? JSONDecoder().decode([FavoriteEntry].self, from: data) {
             entries = Dictionary(uniqueKeysWithValues: array.map { ($0.stationId, $0) })
-            return
         }
-        let legacyIds = UserDefaults.standard.array(forKey: legacyKey) as? [String] ?? []
-        guard !legacyIds.isEmpty else { return }
-        entries = Dictionary(uniqueKeysWithValues: legacyIds.map { id in
-            (id, FavoriteEntry(stationId: id, cityId: "", stationName: "", stationAddress: ""))
-        })
-        save()
     }
 }

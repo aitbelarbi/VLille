@@ -26,8 +26,7 @@ final class PurchaseManager {
     var debugPremiumOverride = false
     #endif
 
-    @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely")!
-    @ObservationIgnored private let premiumKey = "is_premium"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
     private var updatesTask: Task<Void, Never>?
 
     init() {
@@ -90,7 +89,7 @@ final class PurchaseManager {
     }
 
     private func syncPremiumStatus() {
-        defaults.set(isPremium, forKey: premiumKey)
+        persistence.set(.isPremium, isPremium)
         WidgetCenter.shared.reloadAllTimelines()
     }
 

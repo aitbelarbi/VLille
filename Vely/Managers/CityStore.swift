@@ -8,10 +8,7 @@ class CityStore: NSObject, URLSessionDelegate {
     var cities: [City] = City.staticAll
     var isLoadingCities: Bool = false
 
-    @ObservationIgnored private let defaults = UserDefaults(suiteName: "group.com.insightiq.Vely") ?? .standard
-    @ObservationIgnored private let cityKey = "selected_city_id"
-    @ObservationIgnored private let customCityKey = "selected_custom_city"
-    @ObservationIgnored private let onboardingKey = "has_completed_onboarding"
+    @ObservationIgnored private let persistence = PersistenceStore.shared
 
     private struct CustomCityData: Codable {
         let id: String
@@ -37,44 +34,38 @@ class CityStore: NSObject, URLSessionDelegate {
     ]
 
     override init() {
-        let appGroupDefaults = UserDefaults(suiteName: "group.com.insightiq.Vely") ?? .standard
-        let savedId = appGroupDefaults.string(forKey: "selected_city_id") ?? ""
+        let p = PersistenceStore.shared
+        let savedId = p.get(.selectedCityId, default: "")
         if let city = City.staticAll.first(where: { $0.id == savedId }) {
             self.selectedCity = city
-        } else if let data = appGroupDefaults.data(forKey: "selected_custom_city"),
+        } else if let data = p.get(.selectedCustomCity),
                   let custom = try? JSONDecoder().decode(CustomCityData.self, from: data),
                   custom.id == savedId {
             self.selectedCity = custom.toCity
         } else {
             self.selectedCity = City.staticAll[0]
         }
-        let onboardingValue = appGroupDefaults.bool(forKey: "has_completed_onboarding")
-        self.hasCompletedOnboarding = onboardingValue
-        print("[Onboarding] CityStore.init() → has_completed_onboarding=\(onboardingValue), selected_city_id='\(savedId)'")
+        self.hasCompletedOnboarding = p.get(.hasCompletedOnboarding, default: false)
     }
 
     func selectCity(_ city: City) {
         selectedCity = city
-        defaults.set(city.id, forKey: cityKey)
+        persistence.set(.selectedCityId, city.id)
         if !city.provider.isSupported {
             let data = try? JSONEncoder().encode(CustomCityData(
                 id: city.id, name: city.name,
                 latitude: city.latitude, longitude: city.longitude,
                 countryCode: city.countryCode
             ))
-            defaults.set(data, forKey: customCityKey)
+            persistence.set(.selectedCustomCity, data ?? Data())
         } else {
-            defaults.removeObject(forKey: customCityKey)
+            persistence.remove(.selectedCustomCity)
         }
     }
 
     func completeOnboarding() {
-        print("[Onboarding] completeOnboarding() called — writing true to '\(onboardingKey)'")
         hasCompletedOnboarding = true
-        defaults.set(true, forKey: onboardingKey)
-        defaults.synchronize()
-        let verified = defaults.bool(forKey: onboardingKey)
-        print("[Onboarding] completeOnboarding() done — verified readback=\(verified)")
+        persistence.set(.hasCompletedOnboarding, true)
     }
 
     // MARK: - Dynamic CityBike loading

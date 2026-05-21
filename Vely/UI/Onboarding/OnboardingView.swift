@@ -211,7 +211,6 @@ struct OnboardingView: View {
         .safeAreaInset(edge: .bottom) {
             ctaButton(labelKey: "onboarding_confirm", disabled: selectedCity == nil) {
                 guard let city = selectedCity else { return }
-                print("[Onboarding] cityStep confirm tapped — city=\(city.id), profile=\(selectedProfile)")
                 profileStore.setProfile(selectedProfile)
                 cityStore.selectCity(city)
                 withAnimation { cityStore.completeOnboarding() }
@@ -452,7 +451,6 @@ struct OnboardingView: View {
             return
         }
         await MainActor.run {
-            print("[Onboarding] detectAndComplete — auto-completing with city=\(nearest.id), profile=\(selectedProfile)")
             profileStore.setProfile(selectedProfile)
             cityStore.selectCity(nearest)
             withAnimation { cityStore.completeOnboarding() }

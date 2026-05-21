@@ -41,7 +41,7 @@ final class NotificationManager: NSObject {
         content.body = {
             let base = String(format: NSLocalizedString("trip_notification_body", comment: ""), leadMinutes)
             if includesWeather,
-               let temp = UserDefaults(suiteName: "group.com.insightiq.Vely")?.string(forKey: "cached_weather_temp") {
+               let temp = PersistenceStore.shared.get(.cachedWeatherTemp) {
                 return "\(base) — \(temp)"
             }
             return base

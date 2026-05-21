@@ -62,9 +62,9 @@ struct VelyApp: App {
                         let statusKind: StatusKind?
                         switch profileStore.strategy.liveActivityStatusSource {
                         case .weather:
-                            let appGroup = UserDefaults(suiteName: "group.com.insightiq.Vely")
-                            if let symbol = appGroup?.string(forKey: "cached_weather_symbol"),
-                               let temp = appGroup?.string(forKey: "cached_weather_temp") {
+                            let p = PersistenceStore.shared
+                            if let symbol = p.get(.cachedWeatherSymbol),
+                               let temp = p.get(.cachedWeatherTemp) {
                                 statusKind = .weather(symbol: symbol, temp: temp)
                             } else {
                                 statusKind = nil
