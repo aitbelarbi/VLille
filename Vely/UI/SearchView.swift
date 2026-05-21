@@ -103,7 +103,8 @@ struct SearchView: View {
             return
         }
         isSearchingPlaces = true
-        let cityCoord = cityStore.selectedCity.coordinate
+        let city = cityStore.selectedCity
+        let cityCoord = city.coordinate
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = text
         request.region = MKCoordinateRegion(
@@ -118,11 +119,12 @@ struct SearchView: View {
             let cityLocation = CLLocation(latitude: cityCoord.latitude, longitude: cityCoord.longitude)
             await MainActor.run {
                 localSearchResults = (results?.mapItems ?? []).filter { item in
+                    guard item.placemark.isoCountryCode?.uppercased() == city.countryCode.uppercased() else { return false }
                     let loc = CLLocation(
                         latitude: item.placemark.coordinate.latitude,
                         longitude: item.placemark.coordinate.longitude
                     )
-                    return cityLocation.distance(from: loc) < 80_000
+                    return cityLocation.distance(from: loc) < 30_000
                 }
                 isSearchingPlaces = false
             }

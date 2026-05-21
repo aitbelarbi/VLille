@@ -151,7 +151,7 @@ struct MapView: View {
                         try? await Task.sleep(for: .seconds(2))
                         withAnimation(.easeIn) { showRefreshToast = false }
                     }
-                    if viewModel.stations.isEmpty {
+                    if viewModel.stations.isEmpty && cityStore.selectedCity.provider.isSupported {
                         ghostCityManager.recordEmptyFetch(city: cityStore.selectedCity)
                     }
                 }
@@ -228,6 +228,10 @@ struct MapView: View {
                             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
                             .padding()
                     }
+                }
+
+                if profileStore.strategy.shouldLoadStations && !cityStore.selectedCity.provider.isSupported {
+                    UnsupportedCityBanner(cityName: cityStore.selectedCity.name)
                 }
             }
             .navigationTitle("home_title")

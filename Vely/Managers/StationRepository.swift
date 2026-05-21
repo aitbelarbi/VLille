@@ -14,6 +14,8 @@ final class StationRepository: NSObject, URLSessionDelegate, URLSessionTaskDeleg
         case .citybike:
             guard let statusURL = city.provider.statusURL else { throw URLError(.badURL) }
             return try await fetchCitybike(city: city, url: statusURL)
+        case .unsupported:
+            return []
         }
     }
 

@@ -115,16 +115,11 @@ struct FavoritesView: View {
     }
 
     private var emptyState: some View {
-        ContentUnavailableView(
-            strategy.canAddAddressFavorites
-                ? LocalizedStringKey("cyclist_addresses_empty_title")
-                : LocalizedStringKey("favorites_empty_title"),
-            systemImage: strategy.canAddAddressFavorites ? "mappin.slash" : "star.slash",
-            description: Text(
-                strategy.canAddAddressFavorites
-                    ? LocalizedStringKey("cyclist_addresses_empty_hint")
-                    : LocalizedStringKey("favorites_empty_hint")
-            )
+        let config = strategy.emptyFavoritesConfig
+        return ContentUnavailableView(
+            LocalizedStringKey(config.titleKey),
+            systemImage: config.icon,
+            description: Text(LocalizedStringKey(config.hintKey))
         )
     }
 

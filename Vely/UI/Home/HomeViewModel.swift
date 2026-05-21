@@ -22,10 +22,13 @@ final class HomeViewModel {
         currentCity = city
         stations = []
         errorMessage = nil
+        isLoading = false
+        guard city.provider.isSupported else { return }
         fetchStations()
     }
 
     func startAutoRefresh() async {
+        guard currentCity?.provider.isSupported == true else { return }
         autoRefreshTask?.cancel()
         autoRefreshTask = Task {
             await loadStations()

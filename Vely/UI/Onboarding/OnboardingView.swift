@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreLocation
+import MapKit
 
 struct OnboardingView: View {
     @Environment(CityStore.self) var cityStore
@@ -11,6 +12,7 @@ struct OnboardingView: View {
     @State private var selectedCity: City? = nil
     @State private var searchText = ""
     @State private var selectedCountryCode: String? = nil
+    @State private var onboardingViewModel = OnboardingViewModel()
 
     enum Step { case profile, location, locating, city }
 
@@ -180,6 +182,9 @@ struct OnboardingView: View {
                 Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
                 TextField("onboarding_search_placeholder", text: $searchText)
                     .autocorrectionDisabled()
+                if onboardingViewModel.isSearching {
+                    ProgressView().scaleEffect(0.8)
+                }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
@@ -193,7 +198,11 @@ struct OnboardingView: View {
                     if searchText.isEmpty {
                         countryChips
                     }
-                    cityList
+                    if !filteredCities.isEmpty {
+                        cityList
+                    } else if !onboardingViewModel.results.isEmpty {
+                        mapKitCityList
+                    }
                     Color.clear.frame(height: 80)
                 }
                 .padding(.top, 8)
@@ -202,11 +211,53 @@ struct OnboardingView: View {
         .safeAreaInset(edge: .bottom) {
             ctaButton(labelKey: "onboarding_confirm", disabled: selectedCity == nil) {
                 guard let city = selectedCity else { return }
+                print("[Onboarding] cityStep confirm tapped — city=\(city.id), profile=\(selectedProfile)")
                 profileStore.setProfile(selectedProfile)
                 cityStore.selectCity(city)
                 withAnimation { cityStore.completeOnboarding() }
             }
         }
+        .onChange(of: searchText) { _, newValue in
+            selectedCity = nil
+            onboardingViewModel.search(newValue, fallbackFrom: filteredCities)
+        }
+    }
+
+    private var mapKitCityList: some View {
+        LazyVStack(spacing: 0) {
+            ForEach(onboardingViewModel.results, id: \.self) { item in
+                let cityName = item.placemark.locality ?? item.placemark.administrativeArea ?? item.name ?? ""
+                let countryCode = item.placemark.isoCountryCode ?? ""
+                let isSelected = selectedCity?.name == cityName
+                Button {
+                    withAnimation(.spring(response: 0.3)) {
+                        selectedCity = City.unsupported(from: item.placemark)
+                    }
+                } label: {
+                    HStack(spacing: 12) {
+                        Text(countryCode.flagEmoji).font(.title2)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(cityName).font(.headline).foregroundStyle(.primary)
+                            if let country = item.placemark.country {
+                                Text(country).font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
+                        Spacer()
+                        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                            .font(.title3)
+                            .foregroundStyle(isSelected ? .indigo : Color.secondary.opacity(0.4))
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .background(isSelected ? Color.indigo.opacity(0.06) : Color.clear)
+                    .contentShape(Rectangle())
+                    .overlay(alignment: .bottom) { Divider().padding(.leading, 56) }
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .background(.background, in: RoundedRectangle(cornerRadius: 14))
+        .padding(.horizontal, 16)
     }
 
     // MARK: - Shared subviews
@@ -401,6 +452,7 @@ struct OnboardingView: View {
             return
         }
         await MainActor.run {
+            print("[Onboarding] detectAndComplete — auto-completing with city=\(nearest.id), profile=\(selectedProfile)")
             profileStore.setProfile(selectedProfile)
             cityStore.selectCity(nearest)
             withAnimation { cityStore.completeOnboarding() }

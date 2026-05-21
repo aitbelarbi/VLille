@@ -1,4 +1,5 @@
 import CoreLocation
+import MapKit
 
 struct City: Identifiable, Hashable {
     let id: String
@@ -27,6 +28,20 @@ struct City: Identifiable, Hashable {
     /// Nom localisé selon la langue de l'app, fallback sur `name`
     var localizedName: String {
         NSLocalizedString("city_\(id)", value: name, comment: "")
+    }
+
+    static func unsupported(from placemark: MKPlacemark) -> City {
+        let name = placemark.locality ?? placemark.administrativeArea ?? placemark.name ?? ""
+        let id = "custom_\(name.lowercased().replacingOccurrences(of: " ", with: "_"))"
+        return City(
+            id: id,
+            name: name,
+            latitude: placemark.coordinate.latitude,
+            longitude: placemark.coordinate.longitude,
+            provider: .unsupported,
+            serviceName: "",
+            countryCode: placemark.isoCountryCode ?? ""
+        )
     }
 
     static let lille = City(id: "lille", name: "Lille", latitude: 50.6292, longitude: 3.0573, provider: .vlille, serviceName: "VLille", countryCode: "FR")
@@ -70,6 +85,7 @@ enum CityProvider: Hashable {
     case velib
     case jcdecaux(contractName: String)
     case citybike(networkId: String)
+    case unsupported
 
     private static let jcdecauxBase = "https://api.cyclocity.fr/contracts"
 
@@ -82,6 +98,8 @@ enum CityProvider: Hashable {
         case .jcdecaux(let contractName):
             return URL(string: "\(Self.jcdecauxBase)/\(contractName)/gbfs/v2/station_information.json")
         case .citybike:
+            return nil
+        case .unsupported:
             return nil
         }
     }
@@ -96,15 +114,20 @@ enum CityProvider: Hashable {
             return URL(string: "\(Self.jcdecauxBase)/\(contractName)/gbfs/v2/station_status.json")
         case .citybike(let networkId):
             return URL(string: "https://api.citybik.es/v2/networks/\(networkId)?fields=stations")
+        case .unsupported:
+            return nil
         }
     }
 
     var dataCredit: String {
         switch self {
-        case .vlille:    return "© Métropole Européenne de Lille / Ilévia"
-        case .velib:     return "© Vélib' Métropole / Smovengo"
-        case .jcdecaux:  return "© JCDecaux CycloCity"
-        case .citybike:  return "© CityBikes contributors"
+        case .vlille:       return "© Métropole Européenne de Lille / Ilévia"
+        case .velib:        return "© Vélib' Métropole / Smovengo"
+        case .jcdecaux:     return "© JCDecaux CycloCity"
+        case .citybike:     return "© CityBikes contributors"
+        case .unsupported:  return ""
         }
     }
+
+    var isSupported: Bool { self != .unsupported }
 }

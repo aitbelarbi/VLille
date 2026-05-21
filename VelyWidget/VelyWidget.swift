@@ -211,19 +211,18 @@ struct VelyWidgetEntryView: View {
     var body: some View {
         if !entry.isPremium {
             WidgetUpsellView()
-        } else if entry.profile == .cyclist {
-            switch family {
-            case .systemMedium:
-                CyclistMediumWidgetView(entry: entry)
-            default:
-                CyclistSmallWidgetView(entry: entry)
-            }
         } else {
-            switch family {
-            case .systemMedium:
-                MediumWidgetView(entry: entry)
-            default:
-                SmallWidgetView(station: entry.slot1 ?? entry.slot2)
+            switch entry.profile.widgetDataKind {
+            case .addresses:
+                switch family {
+                case .systemMedium: CyclistMediumWidgetView(entry: entry)
+                default:            CyclistSmallWidgetView(entry: entry)
+                }
+            case .stations:
+                switch family {
+                case .systemMedium: MediumWidgetView(entry: entry)
+                default:            SmallWidgetView(station: entry.slot1 ?? entry.slot2)
+                }
             }
         }
     }

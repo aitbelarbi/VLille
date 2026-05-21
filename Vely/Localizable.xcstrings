@@ -1144,6 +1144,42 @@
         }
       }
     },
+    "unsupported_city_cta" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Contact us" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contáctanos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Contactez-nous" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Contattaci" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Contate-nos" } }
+      }
+    },
+    "unsupported_city_mail_subject" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "City request: %@" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Solicitud de ciudad: %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Demande de ville : %@" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Richiesta città: %@" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Solicitação de cidade: %@" } }
+      }
+    },
+    "unsupported_city_subtitle" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Help us prioritize your city" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ayúdanos a priorizar tu ciudad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aidez-nous à prioriser votre ville" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Aiutaci a dare priorità alla tua città" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Ajude-nos a priorizar sua cidade" } }
+      }
+    },
+    "unsupported_city_title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Station data not yet available" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Datos de estaciones no disponibles" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Données de stations non disponibles" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Dati delle stazioni non ancora disponibili" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Dados das estações ainda não disponíveis" } }
+      }
+    },
     "home_title" : {
       "localizations" : {
         "en" : {
